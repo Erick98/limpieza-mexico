@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone, CheckCircle2, AlertCircle } from "lucide-react";
 import { db } from "@/lib/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 
@@ -19,6 +19,48 @@ export default function Contacto() {
     });
     return () => unsub();
   }, []);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    company: "",
+    email: "",
+    phone: "",
+    service: "",
+    message: ""
+  });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { id, value } = e.target;
+    setFormData(prev => ({ ...prev, [id]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+
+    try {
+      const response = await fetch("/api/notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "new_contact",
+          data: formData
+        })
+      });
+
+      if (!response.ok) throw new Error("Error en la respuesta del servidor");
+      
+      setStatus("success");
+      setFormData({ name: "", company: "", email: "", phone: "", service: "", message: "" });
+      
+      // Regresar al estado inactivo después de unos segundos
+      setTimeout(() => setStatus("idle"), 5000);
+    } catch (err) {
+      console.error(err);
+      setStatus("error");
+    }
+  };
 
   return (
     <div className="pt-24 pb-16 min-h-screen bg-gray-50">
@@ -70,32 +112,53 @@ export default function Contacto() {
           {/* Form */}
           <div className="p-10 lg:p-16 lg:w-2/3">
             <h3 className="text-2xl font-bold text-gray-900 mb-8">Envíenos un mensaje</h3>
-            <form className="space-y-6">
+            
+            {status === "success" && (
+              <div className="mb-6 p-4 rounded-xl bg-emerald-50 text-emerald-800 flex items-start gap-3 border border-emerald-100">
+                <CheckCircle2 className="w-6 h-6 flex-shrink-0 text-emerald-500" />
+                <div>
+                  <h4 className="font-semibold">¡Mensaje enviado correctamente!</h4>
+                  <p className="text-sm mt-1">Nuestro equipo ha recibido su solicitud y nos pondremos en contacto con usted a la brevedad.</p>
+                </div>
+              </div>
+            )}
+
+            {status === "error" && (
+              <div className="mb-6 p-4 rounded-xl bg-red-50 text-red-800 flex items-start gap-3 border border-red-100">
+                <AlertCircle className="w-6 h-6 flex-shrink-0 text-red-500" />
+                <div>
+                  <h4 className="font-semibold">Error al enviar el mensaje</h4>
+                  <p className="text-sm mt-1">Ocurrió un problema de comunicación. Por favor, intente enviarlo de nuevo o comuníquese vía WhatsApp.</p>
+                </div>
+              </div>
+            )}
+
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Nombre completo</label>
-                  <input type="text" id="name" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" placeholder="Ej. Juan Pérez" />
+                  <input required value={formData.name} onChange={handleChange} type="text" id="name" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" placeholder="Ej. Juan Pérez" />
                 </div>
                 <div>
                   <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">Empresa</label>
-                  <input type="text" id="company" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" placeholder="Nombre de su empresa" />
+                  <input value={formData.company} onChange={handleChange} type="text" id="company" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" placeholder="Nombre de su empresa" />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Correo electrónico</label>
-                  <input type="email" id="email" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" placeholder="juan@empresa.com" />
+                  <input required value={formData.email} onChange={handleChange} type="email" id="email" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" placeholder="juan@empresa.com" />
                 </div>
                 <div>
                   <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
-                  <input type="tel" id="phone" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" placeholder="(55) 0000-0000" />
+                  <input required value={formData.phone} onChange={handleChange} type="tel" id="phone" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all" placeholder="(55) 0000-0000" />
                 </div>
               </div>
 
               <div>
                 <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-2">Servicio de interés</label>
-                <select id="service" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all bg-white">
+                <select required value={formData.service} onChange={handleChange} id="service" className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all bg-white">
                   <option value="">Seleccione una opción</option>
                   <option value="corporativo">Servicios Corporativos (Oficinas, Industria)</option>
                   <option value="executive">Servicios Executive (Robots, Sanitización)</option>
@@ -106,11 +169,11 @@ export default function Contacto() {
 
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">Detalles del proyecto</label>
-                <textarea id="message" rows={4} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all resize-none" placeholder="Cuéntenos sobre dimensiones, tipo de inmueble y requerimientos específicos..."></textarea>
+                <textarea required value={formData.message} onChange={handleChange} id="message" rows={4} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all resize-none" placeholder="Cuéntenos sobre dimensiones, tipo de inmueble y requerimientos específicos..."></textarea>
               </div>
 
-              <button type="button" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 rounded-xl transition-colors shadow-lg shadow-emerald-500/30">
-                Solicitar Cotización
+              <button disabled={status === "loading"} type="submit" className={`w-full text-white font-bold py-4 rounded-xl transition-all shadow-lg ${status === "loading" ? "bg-emerald-400 cursor-not-allowed shadow-none" : "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-500/30"}`}>
+                {status === "loading" ? "Enviando..." : "Solicitar Cotización"}
               </button>
             </form>
           </div>

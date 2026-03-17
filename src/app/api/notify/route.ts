@@ -51,6 +51,28 @@ export async function POST(req: Request) {
         `;
         break;
 
+      case "new_contact":
+        subject = `📞 NUEVO MENSAJE DE CONTACTO: ${data.name}`;
+        htmlContent = `
+          <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+            <h2 style="color: #0284c7;">Nueva Solicitud desde Formulario Web</h2>
+            <p>Un cliente potencial ha completado el formulario en la página de contacto.</p>
+            <table style="width: 100%; max-width: 600px; border-collapse: collapse; margin-top: 20px; font-size: 14px;">
+               <tr><td style="padding: 10px; border-bottom: 1px solid #eee; width: 150px;"><strong>Nombre:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.name}</td></tr>
+               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Empresa:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.company || "No especificada"}</td></tr>
+               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Email:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;"><a href="mailto:${data.email}">${data.email}</a></td></tr>
+               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Teléfono:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.phone}</td></tr>
+               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Servicio:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.service || "No especificado"}</td></tr>
+            </table>
+            <div style="margin-top: 20px; padding: 15px; background-color: #f8fafc; border-left: 4px solid #0284c7;">
+               <h4 style="margin-top: 0; color: #0f172a;">Detalles del proyecto:</h4>
+               <p style="white-space: pre-line;">${data.message || "Sin detalles adicionales."}</p>
+            </div>
+            <p style="margin-top: 30px; font-size: 12px; color: #888;">Responder a este correo no contactará directamente al usuario. Use la información de contacto provista arriba.</p>
+          </div>
+        `;
+        break;
+
       default:
         subject = "Aviso del Sistema";
         htmlContent = `<p>Ha ocurrido una acción no clasificada en el sistema: ${JSON.stringify(data)}</p>`;
