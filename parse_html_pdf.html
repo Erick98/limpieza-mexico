@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  @media print {
+    body * {
+      visibility: hidden;
+    }
+    #pdf-membrete, #pdf-membrete * {
+      visibility: visible;
+    }
+    #pdf-membrete {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    /* Force hide next.js wrappers margins */
+    body, html {
+      background-color: white !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  }
+</style>
+</head>
+<body>
+  <div>
+    <h1>Some title</h1>
+    <p>some text</p>
+    <div style="height: 2000px; background: red;">Long div</div>
+  </div>
+  <div id="pdf-membrete">
+    <h1>PDF Title</h1>
+    <p>PDF Content</p>
+  </div>
+</body>
+</html>
