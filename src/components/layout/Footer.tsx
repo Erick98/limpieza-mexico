@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin } from "lucide-react";
 import { db } from "@/lib/firebase";
@@ -12,6 +13,8 @@ export default function Footer() {
     contactoWhatsapp: "+52 55 1234 5678",
     direccionFisica: "Sófocles 133, Polanco, Granada, Miguel Hidalgo, 11530 Ciudad de México, CDMX"
   });
+  
+  const pathname = usePathname();
 
   useEffect(() => {
     const companyRef = doc(db, "settings", "company");
@@ -24,7 +27,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-gray-950 text-gray-300 py-16 border-t border-gray-900 print:hidden">
+    <footer className={`bg-gray-950 text-gray-300 py-16 border-t border-gray-900 print:hidden ${pathname.startsWith('/landing') ? 'hidden' : ''}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Info */}

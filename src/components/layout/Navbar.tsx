@@ -71,7 +71,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 print:hidden ${showLightNavbar ? "bg-white/80 backdrop-blur-md shadow-sm py-3" : "bg-transparent py-5"
+      className={`fixed top-0 w-full z-50 transition-all duration-300 print:hidden ${pathname.startsWith('/landing') ? 'hidden' : ''} ${showLightNavbar ? "bg-white/80 backdrop-blur-md shadow-sm py-3" : "bg-transparent py-5"
         }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
