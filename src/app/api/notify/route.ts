@@ -72,6 +72,24 @@ export async function POST(req: Request) {
 
     const success = await sendEmail(destinationEmails, subject, htmlContent);
 
+    // Enviar correo de bienvenida al cliente si es un nuevo usuario
+    if (action === "new_user" && data.email) {
+      const welcomeSubject = "¡Bienvenido a Limpieza México!";
+      const welcomeHtml = `
+        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 10px;">
+          <h2 style="color: #059669; text-align: center;">¡Bienvenido a Limpieza México!</h2>
+          <p style="font-size: 16px; line-height: 1.5;">Hola,</p>
+          <p style="font-size: 16px; line-height: 1.5;">Gracias por registrarte en nuestra plataforma. Estamos muy felices de tenerte con nosotros.</p>
+          <p style="font-size: 16px; line-height: 1.5;">A través de tu cuenta podrás gestionar y contratar servicios de limpieza a la medida, solicitar cotizaciones y administrar tu personal.</p>
+          <hr style="border: none; border-top: 1px solid #eaeaea; margin: 20px 0;" />
+          <p style="font-size: 14px; color: #666; text-align: center;">Si tienes alguna pregunta, responde a este correo y te atenderemos con gusto.</p>
+          <p style="font-size: 14px; text-align: center;"><strong>El equipo de Limpieza México</strong></p>
+        </div>
+      `;
+      // No bloqueamos la respuesta principal si falla el correo de bienvenida
+      await sendEmail(data.email, welcomeSubject, welcomeHtml).catch(err => console.error("Error al enviar bienvenida:", err));
+    }
+
     if (success) {
       return NextResponse.json({ success: true, message: "Notificación enviada" });
     } else {

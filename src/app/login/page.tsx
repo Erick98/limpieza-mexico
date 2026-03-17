@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, sendPasswordResetEmail } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, googleProvider, db } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
@@ -15,6 +15,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
   const [loading, setLoading] = useState(false);
   
   const router = useRouter();
@@ -40,6 +41,7 @@ export default function Login() {
 
     setLoading(true);
     setError("");
+    setSuccessMsg("");
     
     try {
       if (isLogin) {
@@ -134,6 +136,39 @@ export default function Login() {
     router.push("/dashboard/cliente");
   }
 
+  const handlePasswordReset = async () => {
+    if (auth.app.options.apiKey === "mock_api_key") {
+      setError("Este es un entorno de demostración. La recuperación de contraseña requiere conexión real a Firebase.");
+      return;
+    }
+
+    if (!email) {
+      setError("Por favor, ingrese su correo electrónico en el campo superior para enviarle el enlace de recuperación.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setSuccessMsg("");
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setSuccessMsg(`Se ha enviado un enlace de recuperación a ${email}. Revise su bandeja de entrada o spam.`);
+    } catch (err: any) {
+      // Firebase throws 'auth/user-not-found' if email doesn't exist, but for security, 
+      // it's often better to just say it was sent. Here we'll show actual errors for clarity during development.
+      if (err.code === 'auth/user-not-found') {
+         setError("No se encontró ninguna cuenta con este correo electrónico.");
+      } else if (err.code === 'auth/invalid-email') {
+         setError("El correo electrónico no tiene un formato válido.");
+      } else {
+         setError("Error al enviar el correo de recuperación. Intente más tarde.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 pt-24">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -155,6 +190,13 @@ export default function Login() {
             <div className="mb-4 bg-red-50 p-4 rounded-md flex gap-3 text-red-800 text-sm">
               <AlertCircle className="w-5 h-5 flex-shrink-0" />
               <p>{error}</p>
+            </div>
+          )}
+
+          {successMsg && (
+            <div className="mb-4 bg-emerald-50 p-4 rounded-md flex gap-3 text-emerald-800 text-sm">
+              <Mail className="w-5 h-5 flex-shrink-0" />
+              <p>{successMsg}</p>
             </div>
           )}
 
@@ -221,7 +263,13 @@ export default function Login() {
                 </div>
 
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-emerald-600 hover:text-emerald-500"> ¿Olvidó su contraseña? </a>
+                  <button 
+                    type="button" 
+                    onClick={handlePasswordReset}
+                    className="font-medium text-emerald-600 hover:text-emerald-500 bg-transparent border-none p-0 cursor-pointer"
+                  > 
+                    ¿Olvidó su contraseña? 
+                  </button>
                 </div>
               </div>
             )}
