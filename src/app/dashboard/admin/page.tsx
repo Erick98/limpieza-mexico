@@ -70,6 +70,10 @@ export default function AdminDashboard() {
   const [quotationPage, setQuotationPage] = useState(1);
   const itemsPerPage = 8;
 
+  // --- BOLETÍN INFORMATIVO (NEWSLETTER) ---
+  const [showNewsletterModal, setShowNewsletterModal] = useState(false);
+  const [newsletterList, setNewsletterList] = useState<any[]>([]);
+
   // Formulario Nueva Cotización (Fase 22)
   const [quoteSearchClient, setQuoteSearchClient] = useState("");
   const [showClientSuggestions, setShowClientSuggestions] = useState(false);
@@ -168,11 +172,16 @@ export default function AdminDashboard() {
       }));
       setUsersList(usersData);
 
-      // Sincronizar Caché de Notificaciones: Identificar todos los emails de Administradores
       const adminEmails = usersData.filter((u: any) => u.role === 'admin' && u.email).map((u: any) => u.email);
       if (adminEmails.length > 0) {
         setDoc(doc(db, "settings", "admins_cache"), { emails: adminEmails }, { merge: true }).catch(e => console.error("Error sincronizando cache admin:", e));
       }
+    });
+
+    // Escuchar Newsletter
+    const qNewsletter = query(collection(db, "newsletter"), orderBy("createdAt", "desc"));
+    const unsubNewsletter = onSnapshot(qNewsletter, (snapshot) => {
+      setNewsletterList(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     });
 
     return () => {
@@ -180,6 +189,7 @@ export default function AdminDashboard() {
        unsubPricing();
        unsubCompany();
        unsubUsers();
+       unsubNewsletter();
     }
   }, []);
 
@@ -577,6 +587,7 @@ export default function AdminDashboard() {
                 <li><button onClick={() => setShowStaffModal(true)} className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 font-medium text-gray-700 hover:text-emerald-700 transition flex justify-between items-center group"><span className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-gray-400 group-hover:text-emerald-600"/> Gestión de Personal (Staff)</span> <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-600"/></button></li>
                 <li><button onClick={() => setShowQuotationsModal(true)} className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 font-medium text-gray-700 hover:text-emerald-700 transition flex justify-between items-center group"><span className="flex items-center gap-2"><FileText className="w-4 h-4 text-gray-400 group-hover:text-emerald-600"/> Gestor de Cotizaciones</span> <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-600"/></button></li>
                 <li><button onClick={() => setShowBlogModal(true)} className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 font-medium text-gray-700 hover:text-emerald-700 transition flex justify-between items-center group"><span className="flex items-center gap-2"><BookOpen className="w-4 h-4 text-gray-400 group-hover:text-emerald-600"/> Crear Artículo (Blog)</span> <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-600"/></button></li>
+                <li><button onClick={() => setShowNewsletterModal(true)} className="w-full text-left px-4 py-3 rounded-lg hover:bg-gray-50 font-medium text-gray-700 hover:text-emerald-700 transition flex justify-between items-center group"><span className="flex items-center gap-2"><Mail className="w-4 h-4 text-gray-400 group-hover:text-emerald-600"/> Suscriptores Boletín</span> <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-emerald-600"/></button></li>
               </ul>
             </div>
 
@@ -594,6 +605,59 @@ export default function AdminDashboard() {
 
         </div>
       </div>
+
+      {/* --- MODAL SUSCRIPTORES NEWSLETTER --- */}
+      {showNewsletterModal && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex justify-end">
+           <div className="bg-white max-w-2xl w-full p-6 shadow-xl relative animate-in slide-in-from-right duration-300 flex flex-col h-full ml-auto overflow-hidden">
+             <button onClick={() => setShowNewsletterModal(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 bg-gray-100 hover:bg-gray-200 p-2 rounded-full transition z-10">
+               <X className="w-5 h-5"/>
+             </button>
+             
+             <div className="mb-6 pr-8">
+                <h2 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2"><Mail className="w-6 h-6 text-emerald-600"/> Suscriptores del Boletín</h2>
+                <p className="text-sm text-gray-500">Lista total de correos que han decidido recibir noticias, ofertas y artículos de Limpieza México.</p>
+             </div>
+             
+             <div className="bg-emerald-50 rounded-xl p-4 mb-4 flex justify-between items-center border border-emerald-100">
+                <span className="font-bold text-emerald-800 text-lg">{newsletterList.length} Suscriptores</span>
+                <button 
+                  onClick={() => {
+                     const emails = newsletterList.map(n => n.email).join(", ");
+                     navigator.clipboard.writeText(emails);
+                     alert("Todos los correos copiados al portapapeles.");
+                  }}
+                  className="bg-white text-emerald-700 font-semibold px-4 py-2 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition shadow-sm text-sm"
+                >
+                  Copiar Correos
+                </button>
+             </div>
+
+             <div className="flex-grow overflow-auto border border-gray-100 rounded-xl relative shadow-sm">
+               <table className="min-w-full text-left text-sm text-gray-600 border-collapse whitespace-nowrap">
+                  <thead className="bg-gray-50/80 sticky top-0 z-10 backdrop-blur-sm border-b border-gray-200">
+                    <tr>
+                       <th className="px-6 py-4 font-bold text-gray-900">Correo Electrónico</th>
+                       <th className="px-6 py-4 font-bold text-gray-900">Fecha de Registro</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                     {newsletterList.length === 0 ? (
+                        <tr><td colSpan={2} className="px-6 py-8 text-center text-gray-400 font-medium">Aún no hay suscriptores.</td></tr>
+                     ) : newsletterList.map((subscriber, idx) => (
+                        <tr key={subscriber.id || idx} className="hover:bg-gray-50 transition">
+                           <td className="px-6 py-4 font-semibold text-gray-900">{subscriber.email}</td>
+                           <td className="px-6 py-4 text-gray-500">
+                             {subscriber.createdAt ? new Date(subscriber.createdAt).toLocaleString() : "N/A"}
+                           </td>
+                        </tr>
+                     ))}
+                  </tbody>
+               </table>
+             </div>
+           </div>
+        </div>
+      )}
 
       {/* --- MODAL DE PRECIOS --- */}
       {showPricingModal && (

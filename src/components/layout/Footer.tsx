@@ -6,13 +6,17 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { Facebook, Instagram, Linkedin, Twitter, Mail, Phone, MapPin } from "lucide-react";
 import { db } from "@/lib/firebase";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, collection, addDoc } from "firebase/firestore";
 
 export default function Footer() {
   const [companySettings, setCompanySettings] = useState({
     contactoWhatsapp: "+52 55 1234 5678",
     direccionFisica: "Sófocles 133, Polanco, Granada, Miguel Hidalgo, 11530 Ciudad de México, CDMX"
   });
+
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [message, setMessage] = useState("");
   
   const pathname = usePathname();
 
@@ -25,6 +29,41 @@ export default function Footer() {
     });
     return () => unsub();
   }, []);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setStatus("loading");
+    setMessage("");
+
+    try {
+      await addDoc(collection(db, "newsletter"), {
+        email,
+        createdAt: new Date().toISOString()
+      });
+
+      await fetch('/api/notify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'new_newsletter', data: { email } })
+      });
+
+      setStatus("success");
+      setMessage("¡Gracias por suscribirte al boletín!");
+      setEmail("");
+      
+      setTimeout(() => {
+        setStatus("idle");
+        setMessage("");
+      }, 5000);
+
+    } catch (error) {
+      console.error("Error al suscribirse:", error);
+      setStatus("error");
+      setMessage("Error procesando solicitud. Por favor intenta de nuevo.");
+    }
+  };
 
   return (
     <footer className={`bg-gray-950 text-gray-300 py-16 border-t border-gray-900 print:hidden ${pathname.startsWith('/landing') ? 'hidden' : ''}`}>
@@ -104,18 +143,29 @@ export default function Footer() {
             <p className="text-sm text-gray-400 mb-4">
               Recibe consejos de limpieza corporativa y noticias sobre nuevas tecnologías.
             </p>
-            <form className="flex flex-col space-y-2">
+            <form onSubmit={handleSubscribe} className="flex flex-col space-y-2">
               <input
                 type="email"
                 placeholder="Tu correo electrónico"
-                className="bg-gray-900 border border-gray-800 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={status === "loading" || status === "success"}
+                className="bg-gray-900 border border-gray-800 text-white px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:opacity-50"
               />
               <button
                 type="submit"
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md transition-colors text-sm font-medium"
+                disabled={status === "loading" || status === "success"}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md transition-colors text-sm font-medium disabled:opacity-50 flex justify-center items-center"
               >
-                Suscribirse
+                {status === "loading" ? "Procesando..." : "Suscribirse"}
               </button>
+              
+              {message && (
+                <div className={`text-sm mt-2 p-2 rounded-md ${status === "success" ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30" : "bg-red-500/20 text-red-400 border border-red-500/30"}`}>
+                  {message}
+                </div>
+              )}
             </form>
           </div>
         </div>

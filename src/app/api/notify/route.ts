@@ -73,6 +73,19 @@ export async function POST(req: Request) {
         `;
         break;
 
+      case "new_newsletter":
+        subject = `📬 ¡Nuevo Suscriptor al Boletín Informativo!`;
+        htmlContent = `
+          <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
+            <h2 style="color: #059669;">Nuevo Registro en el Boletín</h2>
+            <p>Se ha registrado un nuevo correo electrónico interesado en recibir contenido y noticias.</p>
+            <table style="width: 100%; max-width: 600px; border-collapse: collapse; margin-top: 20px;">
+               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Email Suscrito:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;"><a href="mailto:${data.email}">${data.email}</a></td></tr>
+            </table>
+          </div>
+        `;
+        break;
+
       default:
         subject = "Aviso del Sistema";
         htmlContent = `<p>Ha ocurrido una acción no clasificada en el sistema: ${JSON.stringify(data)}</p>`;
@@ -110,6 +123,19 @@ export async function POST(req: Request) {
       `;
       // No bloqueamos la respuesta principal si falla el correo de bienvenida
       await sendEmail(data.email, welcomeSubject, welcomeHtml).catch(err => console.error("Error al enviar bienvenida:", err));
+    } else if (action === "new_newsletter" && data.email) {
+      const newsSubject = "¡Gracias por suscribirte al boletín de Limpieza México!";
+      const newsHtml = `
+        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 10px;">
+          <h2 style="color: #059669; text-align: center;">¡Suscripción Confirmada!</h2>
+          <p style="font-size: 16px; line-height: 1.5;">Hola,</p>
+          <p style="font-size: 16px; line-height: 1.5;">Tu correo electrónico (<strong>${data.email}</strong>) ha sido registrado exitosamente en nuestro boletín informativo.</p>
+          <p style="font-size: 16px; line-height: 1.5;">A partir de ahora recibirás consejos sobre limpieza corporativa, noticias y promociones exclusivas de Limpieza México.</p>
+          <hr style="border: none; border-top: 1px solid #eaeaea; margin: 20px 0;" />
+          <p style="font-size: 14px; text-align: center;"><strong>El equipo de Limpieza México</strong></p>
+        </div>
+      `;
+      await sendEmail(data.email, newsSubject, newsHtml).catch(err => console.error("Error al enviar confirmación de newsletter:", err));
     }
 
     if (success) {
