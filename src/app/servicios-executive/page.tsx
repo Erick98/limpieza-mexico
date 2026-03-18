@@ -1,5 +1,11 @@
 import { ShieldCheck, Cpu, Sun, Sparkles, AlertCircle } from "lucide-react";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Servicios Executive | Tecnología de Mantenimiento",
+  description: "Tratamientos avanzados, limpieza con robots autónomos (barredoras y restregadoras), sanitización certificada y limpieza de paneles solares.",
+};
 
 export default function ServiciosExecutive() {
   return (

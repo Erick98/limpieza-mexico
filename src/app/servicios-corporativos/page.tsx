@@ -1,5 +1,11 @@
 import { Building2, CheckCircle2, Factory, GraduationCap, School, Utensils } from "lucide-react";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Servicios Corporativos | B2B",
+  description: "Planes de mantenimiento estructurado para oficinas, condominios, restaurantes y naves industriales. Personal uniformado, insumos incluidos y supervisión activa.",
+};
 
 export default function ServiciosCorporativos() {
   return (

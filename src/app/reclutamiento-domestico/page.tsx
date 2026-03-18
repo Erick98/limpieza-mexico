@@ -1,5 +1,11 @@
 import { CheckCircle2, HeartHandshake, ShieldCheck, UserCheck } from "lucide-react";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Reclutamiento de Personal Doméstico y Corporativo",
+  description: "Selección de perfiles de alta confianza: niñeras, amas de llaves, mozos, jardineros y personal de mantenimiento. Background check y test psicológicos.",
+};
 
 export default function ReclutamientoDomestico() {
   return (

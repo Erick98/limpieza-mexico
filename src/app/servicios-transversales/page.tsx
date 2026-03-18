@@ -1,5 +1,11 @@
 import { Bug, Droplet, HardHat, TreePine } from "lucide-react";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Aseo Industrial y Transversal | Plagas y Cisternas",
+  description: "Control integral de plagas (MIP), mantenimiento de áreas verdes, limpieza de cisternas con buzos y aseo post-construcción fina y gruesa.",
+};
 
 export default function ServiciosTransversales() {
   return (
