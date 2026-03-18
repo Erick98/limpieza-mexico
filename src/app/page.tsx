@@ -30,56 +30,87 @@ export default function Home() {
       />
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image/Gradient */}
-        <div className="absolute inset-0 bg-gray-900 z-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent z-10" />
-          {/* We use a placeholder image URL for the background */}
-          <div 
-            className="absolute inset-0 opacity-40 bg-cover bg-center"
-            style={{ backgroundImage: 'url("/images/hero_office_cleaning.png")' }}
+        {/* Background Video/Image & Overlay */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-gray-900/40 z-10" />
+          <motion.div 
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 20, ease: "easeOut" }}
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: 'url("/images/hero_ultra_premium.png")' }}
           />
         </div>
 
         <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-20">
           <motion.div 
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-3xl"
+            transition={{ duration: 1, ease: "easeOut" }}
+            className="max-w-4xl"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mb-6 backdrop-blur-sm">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span className="text-sm font-medium">Líderes en limpieza corporativa a nivel nacional</span>
+            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 shadow-sm">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+              </span>
+              <span className="text-sm font-semibold text-emerald-100 tracking-wide uppercase">El Estándar de Oro en Limpieza Corporativa</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-tight">
-              Excelencia en <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500">Limpieza y Mantenimiento</span>
+            <h1 className="text-5xl sm:text-7xl lg:text-[5.5rem] font-black text-white tracking-tighter mb-6 leading-[1.05]">
+              Excelencia Absoluta en <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Limpieza B2B</span>
             </h1>
-            <p className="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl leading-relaxed">
-              Soluciones integrales de primer nivel para corporativos, condominios, naves industriales y residencias. Impulsamos tu productividad a través de espacios impecables.
+            <p className="text-xl text-gray-300 mb-10 max-w-2xl leading-relaxed font-light">
+              Elevando la imagen de las empresas líderes en México mediante operaciones de mantenimiento hiper-profesionales, garantizadas bajo estándares internacionales.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 items-center">
               <Link 
                 href="/contacto" 
-                className="group relative inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-emerald-600 overflow-hidden text-white font-semibold transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] transform hover:-translate-y-1"
+                className="group w-full sm:w-auto relative inline-flex justify-center items-center gap-2 px-10 py-5 rounded-full bg-emerald-600/90 backdrop-blur-sm overflow-hidden text-white font-bold text-lg transition-all shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(16,185,129,0.5)] transform hover:-translate-y-1 border border-emerald-400/30"
               >
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                Solicitar Cotización <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                Solicitar Cotización Express <ArrowRight className="w-6 h-6 group-hover:translate-x-1.5 transition-transform" />
               </Link>
               <Link 
                 href="/servicios-corporativos" 
-                className="inline-flex justify-center items-center gap-2 px-8 py-4 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold backdrop-blur-md border border-white/20 transition-all"
+                className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-5 rounded-full bg-white/5 hover:bg-white/10 text-white font-semibold backdrop-blur-md border border-white/10 transition-colors"
               >
-                Conocer Servicios
+                Conocer Infraestructura
               </Link>
+            </div>
+            
+            <div className="mt-12 flex items-center gap-8 text-sm text-gray-400 font-medium">
+               <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-emerald-500"/> Personal Verificado</div>
+               <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-emerald-500"/> Sistema Híbrido Tech</div>
+               <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-emerald-500"/> Cobertura Nacional</div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Services Pillars */}
-      <section className="py-24 bg-gray-50 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Social Proof Marquee Belt */}
+      <section className="bg-gray-900 border-y border-white/5 py-8 overflow-hidden relative">
+         <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-gray-900 to-transparent z-10"></div>
+         <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-gray-900 to-transparent z-10"></div>
+         <div className="flex w-fit animate-marquee items-center opacity-60 hover:opacity-100 transition-opacity duration-500">
+            {/* Generamos logos ficticios texto corporativo que lucen como logos por su tipografía */}
+            {[...Array(2)].map((_, j) => (
+              <div key={j} className="flex gap-20 px-10 items-center">
+                 <span className="font-black text-2xl tracking-tighter text-white">TERRANOVA</span>
+                 <span className="font-serif italic font-bold text-xl text-white">Symmetria Group</span>
+                 <span className="font-sans font-bold text-2xl tracking-widest text-white uppercase">Axiom</span>
+                 <span className="font-mono font-bold text-xl text-white">| NEXUS |</span>
+                 <span className="font-extrabold text-2xl text-white tracking-tight">O K T A V E</span>
+                 <span className="font-bold text-2xl text-white flex items-center gap-1"><Building2 className="w-6 h-6"/> URBANIA</span>
+              </div>
+            ))}
+         </div>
+      </section>
+
+      {/* Services Pillars (Glassmorphism on Dark Mesh) */}
+      <section className="py-24 relative overflow-hidden bg-gray-900">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,_rgba(16,185,129,0.15)_0%,_transparent_50%),radial-gradient(circle_at_100%_100%,_rgba(20,184,166,0.1)_0%,_transparent_50%)]"></div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div 
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -88,43 +119,43 @@ export default function Home() {
             className="text-center md:text-left mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6"
           >
             <div className="max-w-2xl">
-              <h2 className="text-emerald-700 font-black tracking-widest uppercase text-xs mb-3">Nuestros Pilares</h2>
-              <h3 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight">
-                Soluciones adaptadas a cada necesidad
+              <h2 className="text-emerald-400 font-bold tracking-[0.2em] text-xs mb-3">INFRAESTRUCTURA OPERATIVA</h2>
+              <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.1]">
+                Soluciones B2B Adaptadas
               </h3>
             </div>
-            <p className="text-gray-700 max-w-md text-lg leading-relaxed font-medium">
-              Diseñamos operativos de servicio enfocados en la calidad técnica, eficiencia y cuidado del medio ambiente.
+            <p className="text-gray-400 max-w-md text-lg leading-relaxed font-light">
+              Diseñamos operativos de servicio enfocados en la calidad técnica, máxima eficiencia y sustentabilidad medioambiental corporativa.
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                title: "Servicios Corporativos",
-                description: "Mantenimiento integral para oficinas, corporativos y complejos industriales.",
-                icon: <Building2 className="w-8 h-8 text-emerald-600" />,
+                title: "Corporativo",
+                description: "Mantenimiento integral para oficinas y complejos corporativos A+.",
+                icon: <Building2 className="w-8 h-8 text-emerald-400" />,
                 link: "/servicios-corporativos",
                 bgImg: "/images/service_office.png",
               },
               {
-                title: "Servicios Executive",
-                description: "Tecnología de punta, robots autónomos y sanitización hiper-profesional.",
-                icon: <ShieldCheck className="w-8 h-8 text-emerald-600" />,
+                title: "Executive",
+                description: "Tecnología de punta, robots autónomos y sanitización técnica.",
+                icon: <ShieldCheck className="w-8 h-8 text-emerald-400" />,
                 link: "/servicios-executive",
                 bgImg: "/images/service_sanitization.png",
               },
               {
-                title: "Reclutamiento",
-                description: "Personal doméstico y corporativo altamente calificado y con garantías legales.",
-                icon: <Users className="w-8 h-8 text-emerald-600" />,
+                title: "Staffing",
+                description: "Personal corporativo e industrial altamente calificado y afianzado.",
+                icon: <Users className="w-8 h-8 text-emerald-400" />,
                 link: "/reclutamiento-domestico",
                 bgImg: "/images/service_industrial.png",
               },
               {
-                title: "Especializados",
-                description: "Control de plagas, limpieza en alturas y conservación de espacios urbanos.",
-                icon: <Droplets className="w-8 h-8 text-emerald-600" />,
+                title: "Especializado",
+                description: "Control de plagas, alturas y blindaje de espacios sensibles.",
+                icon: <Droplets className="w-8 h-8 text-emerald-400" />,
                 link: "/servicios-transversales",
                 bgImg: "/images/service_inhouse.png",
               }
@@ -136,23 +167,23 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: idx * 0.1 }}
                 whileHover={{ y: -10 }}
-                className="group relative rounded-2xl overflow-hidden bg-white shadow-xl hover:shadow-2xl transition-all duration-300 border border-gray-100 flex flex-col h-full"
+                className="group relative rounded-3xl overflow-hidden bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-300 border border-white/10 flex flex-col h-full shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]"
               >
-                <div className="h-48 relative overflow-hidden">
-                  <div className="absolute inset-0 bg-gray-900/20 group-hover:bg-transparent transition-colors z-10" />
-                  <img src={service.bgImg} alt={service.title} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                <div className="h-48 relative overflow-hidden border-b border-white/10">
+                  <div className="absolute inset-0 bg-gray-900/40 group-hover:bg-gray-900/10 transition-colors z-10" />
+                  <img src={service.bgImg} alt={service.title} className="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-700" />
                 </div>
-                <div className="p-8 flex-1 flex flex-col bg-white relative z-20 -mt-6 rounded-t-3xl border-t border-gray-100">
-                  <div className="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
+                <div className="p-8 flex-1 flex flex-col relative z-20">
+                  <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mb-6 shadow-inner backdrop-blur-md">
                     {service.icon}
                   </div>
-                  <h4 className="text-2xl font-bold text-gray-900 mb-3">{service.title}</h4>
-                  <p className="text-gray-600 mb-6 flex-1">{service.description}</p>
+                  <h4 className="text-2xl font-bold text-white mb-3 tracking-tight">{service.title}</h4>
+                  <p className="text-gray-400 mb-6 flex-1 text-sm font-light leading-relaxed">{service.description}</p>
                   <Link 
                     href={service.link}
-                    className="inline-flex items-center text-emerald-600 font-semibold group-hover:text-emerald-700 transition-colors"
+                    className="inline-flex items-center text-emerald-400 font-bold group-hover:text-emerald-300 transition-colors text-sm hover:underline"
                   >
-                    Saber más <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
+                    Detalles Técnicos <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </motion.div>

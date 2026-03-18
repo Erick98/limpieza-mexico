@@ -13,7 +13,7 @@ export default function AppLandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 py-4 lg:py-5 flex items-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex justify-between items-center">
           <Link href="/" className="flex-shrink-0">
-             <Image src="/logo_dark.png" alt="Limpieza México" width={320} height={100} className="w-auto h-16 lg:h-20 object-contain drop-shadow-md transition-transform hover:scale-105" priority />
+             <Image src="/logo_dark.png" alt="Limpieza México" width={280} height={80} className="w-auto h-12 lg:h-14 object-contain drop-shadow-md transition-transform hover:scale-105" priority />
           </Link>
           <div className="flex gap-4 items-center">
              <Link href="/login" className="text-gray-600 font-medium hover:text-emerald-600 transition-colors hidden sm:block">Entrar al Portal</Link>
@@ -38,8 +38,8 @@ export default function AppLandingPage() {
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 text-emerald-800 font-medium text-sm mb-6 border border-emerald-200">
                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> App de Limpieza México
             </div>
-            <h1 className="text-5xl md:text-6xl font-black text-gray-900 tracking-tight leading-tight mb-6">
-              Cotiza, Contrata y Gestiona la limpieza de tu negocio <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-400">100% online.</span>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 tracking-tighter leading-[1.05] mb-6">
+              Cotiza, Contrata y Gestiona tu limpieza <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-cyan-500">100% online.</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-lg leading-relaxed">
               Únete a cientos de empresas que ya automatizaron sus operaciones de limpieza y mantenimiento en nuestra plataforma tecnológica.
@@ -63,15 +63,15 @@ export default function AppLandingPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="lg:w-1/2 w-full relative"
           >
-             <div className="absolute inset-0 bg-gradient-to-tr from-emerald-400/20 to-teal-300/20 transform blur-3xl rounded-full scale-110 -z-10"></div>
-             <div className="relative rounded-2xl overflow-hidden border border-gray-200/50 shadow-2xl bg-white p-2">
-                <div className="bg-gray-100 h-8 flex items-center px-4 gap-2 rounded-t-xl mb-2">
-                   <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                   <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                   <div className="w-3 h-3 rounded-full bg-green-400"></div>
+             <div className="absolute inset-0 bg-gradient-to-tr from-emerald-400/30 to-cyan-400/30 transform blur-[80px] rounded-full scale-125 -z-10 animate-pulse"></div>
+             <div className="relative rounded-3xl overflow-hidden border border-white shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] bg-white/50 backdrop-blur-2xl p-3">
+                <div className="bg-gray-900/5 backdrop-blur-md h-10 flex items-center px-5 gap-2.5 rounded-t-2xl mb-3 border-b border-gray-200/50">
+                   <div className="w-3.5 h-3.5 rounded-full bg-red-400 shadow-sm"></div>
+                   <div className="w-3.5 h-3.5 rounded-full bg-yellow-400 shadow-sm"></div>
+                   <div className="w-3.5 h-3.5 rounded-full bg-emerald-400 shadow-sm"></div>
                 </div>
                 {/* Dashboard real Screenshot*/}
-                <img src="/images/screenshots/app_dashboard.png" alt="Dashboard de Limpieza México" className="w-full h-auto object-cover rounded-lg border border-gray-100" />
+                <img src="/images/screenshots/app_dashboard.png" alt="Dashboard de Limpieza México" className="w-full h-auto object-cover rounded-xl border border-gray-100 shadow-inner" />
              </div>
           </motion.div>
         </div>
@@ -181,17 +181,30 @@ export default function AppLandingPage() {
          <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/80 to-transparent"></div>
          
          <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-6">Pase a la modernidad con Limpieza México.</h2>
-            <p className="text-xl text-gray-400 mb-10">Más rápido. Más transparente. Cree su cuenta hoy y cotice su primer servicio sin ningún compromiso.</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 tracking-tighter">Pase a la modernidad con Limpieza México.</h2>
+            <p className="text-xl text-gray-400 mb-10 font-light">Más rápido. Más transparente. Cree su cuenta hoy y cotice su primer servicio en la plataforma más avanzada del país.</p>
             
             <Link 
               href="/login" 
-              className="inline-flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-400 text-gray-950 px-10 py-5 rounded-2xl font-black text-xl transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(16,185,129,0.4)]"
+              className="inline-flex items-center justify-center gap-3 bg-emerald-500 hover:bg-emerald-400 text-gray-950 px-10 py-5 rounded-full font-black text-lg transition-all hover:-translate-y-1 shadow-[0_0_40px_rgba(16,185,129,0.3)] hover:shadow-[0_0_60px_rgba(16,185,129,0.5)]"
             >
-              <UserPlus className="w-6 h-6" /> Entrar a la Plataforma Libremente
+              <UserPlus className="w-6 h-6" /> Crear Cuenta Gratuita
             </Link>
          </div>
       </section>
+
+      {/* Sticky Bottom WebApp CTA */}
+      <div className="fixed bottom-0 left-0 w-full bg-white/95 border-t border-gray-200 text-gray-900 py-4 px-6 z-50 transform transition-transform shadow-[0_-10px_30px_rgba(0,0,0,0.05)] flex justify-between items-center sm:px-12 backdrop-blur-xl">
+         <div className="hidden sm:block">
+            <h4 className="font-bold text-lg leading-tight tracking-tight">Software exclusivo para clientes de Limpieza México</h4>
+            <p className="text-sm text-gray-500 font-medium">Gestione facturación, reportes operativos y programaciones interactivas.</p>
+         </div>
+         <div className="w-full sm:w-auto flex justify-center">
+            <Link href="/login" className="bg-emerald-600 hover:bg-emerald-500 text-white px-8 py-3 rounded-full font-bold text-sm transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+               Entrar a la Plataforma
+            </Link>
+         </div>
+      </div>
       
     </div>
   );

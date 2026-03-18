@@ -163,7 +163,7 @@ export default function WizardContratacion() {
         serviceDate,
         serviceAddress,
         isExpress,
-        status: "pendiente",
+        status: "solicitud",
         createdAt: new Date().toISOString(),
         ...(serviceType === "contrato" && {
           contractTerm,
@@ -183,7 +183,7 @@ export default function WizardContratacion() {
 
       // Si es a Crédito, terminamos aquí y mandamos al dashboard
       if (serviceType === "contrato" && paymentMethod === "credito") {
-        alert("¡Solicitud de línea de crédito enviada exitosamente!");
+        alert("Hemos recibido sus requerimientos operativos. Un administrador analizará su solicitud y emitirá una cotización formal en breve.");
         router.push("/dashboard/cliente");
         return;
       }

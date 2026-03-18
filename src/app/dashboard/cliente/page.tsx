@@ -23,6 +23,26 @@ export default function ClienteDashboard() {
   
   const [recentGlobalReports, setRecentGlobalReports] = useState<any[]>([]);
 
+  // Phase 1: Cotizaciones State
+  const [quotations, setQuotations] = useState<any[]>([]);
+  const [showQuoteViewer, setShowQuoteViewer] = useState(false);
+  const [activeQuote, setActiveQuote] = useState<any>(null);
+  const [isAcceptingQuote, setIsAcceptingQuote] = useState(false);
+
+  const handleAcceptQuote = async (quote: any) => {
+    setIsAcceptingQuote(true);
+    try {
+      await updateDoc(doc(db, "cotizaciones", quote.id), { status: "aceptada_por_cliente" });
+      alert("Presupuesto aceptado exitosamente. El área administrativa ha sido notificada para proceder legalmente con su contrato.");
+      setShowQuoteViewer(false);
+    } catch (err) {
+      console.error("Error aceptando cotización:", err);
+      alert("Hubo un error procesando tu aceptación.");
+    } finally {
+      setIsAcceptingQuote(false);
+    }
+  };
+
   const handleViewReports = async (svc: any) => {
     setActiveReportContext(svc);
     setShowReportModal(true);
@@ -90,9 +110,18 @@ export default function ClienteDashboard() {
       }
     });
 
+    // 4. Suscribirse a las cotizaciones del usuario
+    const qQuotes = query(collection(db, "cotizaciones"), where("userId", "==", user.uid));
+    const unsubQuotes = onSnapshot(qQuotes, (querySnapshot) => {
+      const data = querySnapshot.docs.map(d => ({ id: d.id, ...d.data() as any }));
+      data.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
+      setQuotations(data);
+    });
+
     return () => {
        unsubscribe();
        unsubCompany();
+       unsubQuotes();
     };
   }, [user]);
 
@@ -238,6 +267,32 @@ export default function ClienteDashboard() {
              </div>
           )}
           
+          {/* Dashboard Body / Active Quotes */}
+          {quotations.length > 0 && (
+            <div className="mb-10">
+              <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2"><FileText className="w-6 h-6 text-emerald-600"/> Mis Cotizaciones y Presupuestos</h2>
+              <div className="grid grid-cols-1 gap-4">
+                {quotations.map(q => (
+                  <div key={q.id} className={`bg-white p-6 rounded-2xl shadow-sm border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 ${q.status === 'enviada' ? 'border-orange-200 border-l-4 border-l-orange-500 bg-orange-50/30' : 'border-gray-200 border-l-4 border-l-gray-400'}`}>
+                     <div>
+                       <h4 className="font-bold text-lg text-gray-900 mb-1">Presupuesto Comercial {q.id}</h4>
+                       <p className="text-gray-500 text-sm">Servicio: <span className="capitalize font-semibold text-gray-700">{q.serviceType?.replace('-', ' ')}</span></p>
+                       <p className="text-emerald-700 font-black mt-2 text-xl">${(q.amount || 0).toLocaleString()} <span className="text-xs font-normal text-gray-500">MXN</span></p>
+                     </div>
+                     <div className="flex flex-col items-end gap-2">
+                       <span className={`inline-block px-3 py-1 text-xs font-bold rounded-full ${q.status === 'enviada' ? 'bg-orange-100 text-orange-800' : 'bg-gray-100 text-gray-800'}`}>
+                         {q.status === 'enviada' ? 'Requiere tu revisión ✅' : (q.status === 'aceptada_por_cliente' ? 'Procesando Acuerdo...' : q.status.toUpperCase())}
+                       </span>
+                       <button onClick={() => { setActiveQuote(q); setShowQuoteViewer(true); }} className="px-5 py-2.5 mt-2 bg-gray-900 text-white font-bold text-sm rounded-xl hover:bg-gray-800 transition shadow-md w-full sm:w-auto">
+                         {q.status === 'enviada' ? 'Revisar Detalle' : 'Ver Archivo'}
+                       </button>
+                     </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Dashboard Body / Active Services */}
           <div>
             <h2 className="text-xl font-bold text-gray-900 mb-4">Mis Servicios Operativos</h2>
@@ -430,6 +485,71 @@ export default function ClienteDashboard() {
                </button>
              </div>
            </div>
+        </div>
+      )}
+
+      {/* --- VISOR DE COTIZACIÓN PARA EL CLIENTE --- */}
+      {showQuoteViewer && activeQuote && (
+        <div className="fixed inset-0 bg-black/60 z-[70] flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-8 shadow-2xl relative animate-in fade-in zoom-in-95 flex flex-col">
+            <button onClick={() => setShowQuoteViewer(false)} className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 bg-gray-100 p-2 rounded-full transition">
+              <X className="w-5 h-5"/>
+            </button>
+            <h2 className="text-2xl font-black text-gray-900 mb-1 flex items-center gap-2">
+              <FileText className="w-6 h-6 text-emerald-600"/> Detalle de Presupuesto
+            </h2>
+            <p className="text-sm text-gray-500 mb-6">Cotización formal emitida por el equipo corporativo de Limpieza México.</p>
+
+            <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 mb-6">
+               <div className="flex justify-between items-center mb-4 pb-4 border-b border-gray-200">
+                  <div>
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">ID Cotización</p>
+                    <p className="font-mono font-black text-gray-800">{activeQuote.id}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs font-bold text-gray-500 uppercase tracking-wide">Fecha de Emisión</p>
+                    <p className="font-semibold text-gray-800">{activeQuote.createdAt ? new Date(activeQuote.createdAt).toLocaleDateString() : 'N/A'}</p>
+                  </div>
+               </div>
+
+               <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">Conceptos Incluidos</p>
+               <ul className="space-y-3 mb-6">
+                 {activeQuote.concepts?.map((c: any, idx: number) => (
+                    <li key={idx} className="flex justify-between items-start text-sm">
+                       <span className="font-medium text-gray-800 flex-1 pr-4">{c.qty}x {c.description}</span>
+                       <span className="font-bold text-gray-600 whitespace-nowrap">${(c.qty * c.unitPrice).toLocaleString()}</span>
+                    </li>
+                 ))}
+                 {activeQuote.suppliesCost > 0 && (
+                    <li className="flex justify-between items-start text-sm">
+                       <span className="font-medium text-gray-800 flex-1 pr-4">Suministro de Insumos</span>
+                       <span className="font-bold text-gray-600 whitespace-nowrap">${Number(activeQuote.suppliesCost).toLocaleString()}</span>
+                    </li>
+                 )}
+               </ul>
+
+               {activeQuote.notes && (
+                  <div className="mt-4 pt-4 border-t border-gray-200">
+                     <p className="text-xs font-bold text-gray-500 uppercase tracking-wide mb-1">Notas Comerciales</p>
+                     <p className="text-sm text-gray-700 whitespace-pre-wrap">{activeQuote.notes}</p>
+                  </div>
+               )}
+            </div>
+
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 bg-emerald-50 border border-emerald-100 p-5 rounded-2xl mb-6">
+               <p className="text-sm font-bold text-emerald-900">Monto Total de Operación</p>
+               <p className="text-2xl font-black text-emerald-700">${(activeQuote.amount || 0).toLocaleString()} <span className="text-sm">MXN</span></p>
+            </div>
+
+            <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 mt-auto">
+               <button onClick={() => setShowQuoteViewer(false)} className="px-6 py-3 text-gray-600 font-bold hover:bg-gray-100 rounded-xl transition">Cerrar Visor</button>
+               {activeQuote.status === 'enviada' && (
+                  <button onClick={() => handleAcceptQuote(activeQuote)} disabled={isAcceptingQuote} className="flex items-center justify-center gap-2 px-8 py-3 bg-emerald-600 text-white font-black rounded-xl hover:bg-emerald-700 disabled:opacity-50 transition shadow-lg shadow-emerald-600/20">
+                    {isAcceptingQuote ? <Loader2 className="w-5 h-5 animate-spin"/> : <CheckCircle2 className="w-5 h-5"/>} Aceptar y Proceder
+                  </button>
+               )}
+            </div>
+          </div>
         </div>
       )}
     </div>

@@ -61,7 +61,7 @@ export default function B2BLandingPage() {
       {/* Navbar Minimalista */}
       <nav className="bg-white border-b border-gray-100 py-4 px-6 md:px-12 flex justify-between items-center sticky top-0 z-50">
          <Link href="/" className="flex-shrink-0">
-           <Image src="/logo_dark.png" alt="Limpieza México" width={320} height={100} className="w-auto h-16 lg:h-20 object-contain drop-shadow-md transition-transform hover:scale-105" priority />
+           <Image src="/logo_dark.png" alt="Limpieza México" width={280} height={80} className="w-auto h-12 lg:h-14 object-contain drop-shadow-md transition-transform hover:scale-105" priority />
          </Link>
          <a 
            href={`https://wa.me/${adminPhone}?text=Hola,%20me%20interesa%20contratar%20servicios%20de%20limpieza%20para%20mi%20negocio.`} 
@@ -75,16 +75,18 @@ export default function B2BLandingPage() {
       {/* Hero Content */}
       <section className="bg-gray-900 text-white relative py-20 lg:py-32 overflow-hidden">
         <div className="absolute inset-0 z-0">
-           <img src="/images/service_office.png" alt="Limpieza de oficinas" className="w-full h-full object-cover opacity-20" />
-           <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/90 to-transparent"></div>
+           <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/90 to-gray-900/40 z-10"></div>
+           <img src="/images/hero_ultra_premium.png" alt="Limpieza Corporativa" className="w-full h-full object-cover opacity-60 mix-blend-overlay" />
         </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col lg:flex-row gap-16 items-center">
           
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="lg:w-1/2">
-            <span className="text-emerald-400 font-bold tracking-wider uppercase text-sm mb-4 block">Soluciones B2B Especializadas</span>
-            <h1 className="text-5xl md:text-6xl font-black mb-6 leading-tight">
-              La imagen de su empresa <br/><span className="text-emerald-400">en manos expertas.</span>
+            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mb-6 backdrop-blur-sm text-xs font-bold uppercase tracking-widest">
+              Soluciones B2B Especializadas
+            </span>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-[1.1] tracking-tighter">
+              La imagen de su empresa <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">en manos expertas.</span>
             </h1>
             <p className="text-lg text-gray-300 mb-8 max-w-xl leading-relaxed">
               Entendemos que cada industria tiene requerimientos únicos. Proveemos personal capacitado, insumos de grado industrial y supervisión tecnológica para mantener la excelencia en sus instalaciones.
@@ -103,43 +105,43 @@ export default function B2BLandingPage() {
             </div>
           </motion.div>
 
-          {/* Formulario Hero */}
-          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="lg:w-5/12 w-full max-w-md" id="solicitar">
-            <div className="bg-white rounded-3xl p-8 shadow-2xl text-gray-900">
-              <h3 className="text-2xl font-bold mb-2">Cotice sin compromiso</h3>
-              <p className="text-gray-500 text-sm mb-6">Deje sus datos y un corporativo le contactará hoy mismo.</p>
+          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2 }} className="lg:w-5/12 w-full max-w-md relative z-20" id="solicitar">
+            <div className="bg-white/95 backdrop-blur-2xl rounded-3xl p-8 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] border border-white/20 text-gray-900 relative">
+              <div className="absolute -top-3 -right-3 bg-red-500 text-white text-xs font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-lg animate-pulse">Respuesta en 15 min</div>
+              <h3 className="text-2xl font-black mb-2 tracking-tight">Cotice sin compromiso</h3>
+              <p className="text-gray-500 text-sm mb-6 font-medium">Llene el formulario y un corporativo le contactará hoy mismo.</p>
               
               {status === "success" && (
                 <div className="mb-4 p-4 rounded-xl bg-emerald-50 text-emerald-800 flex items-start gap-3 border border-emerald-100">
                   <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-emerald-500" />
-                  <p className="text-sm font-medium">¡Solicitud recibida! Le contactaremos a la brevedad.</p>
+                  <p className="text-sm font-bold">¡Solicitud recibida! Le contactaremos a la brevedad.</p>
                 </div>
               )}
               {status === "error" && (
                 <div className="mb-4 p-4 rounded-xl bg-red-50 text-red-800 flex items-start gap-3 border border-red-100">
                   <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-500" />
-                  <p className="text-sm font-medium">Ocurrió un error. Intente por WhatsApp.</p>
+                  <p className="text-sm font-bold">Ocurrió un error. Intente por WhatsApp.</p>
                 </div>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
                  <div>
-                   <input required id="name" value={formData.name} onChange={handleChange} type="text" placeholder="Su Nombre *" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none" />
+                   <input required id="name" value={formData.name} onChange={handleChange} type="text" placeholder="Su Nombre *" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none font-medium bg-gray-50 focus:bg-white transition-colors" />
                  </div>
                  <div className="flex gap-4">
-                   <input required id="company" value={formData.company} onChange={handleChange} type="text" placeholder="Empresa *" className="w-1/2 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none" />
-                   <input required id="phone" value={formData.phone} onChange={handleChange} type="tel" placeholder="Teléfono *" className="w-1/2 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none" />
+                   <input required id="company" value={formData.company} onChange={handleChange} type="text" placeholder="Empresa *" className="w-1/2 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none font-medium bg-gray-50 focus:bg-white transition-colors" />
+                   <input required id="phone" value={formData.phone} onChange={handleChange} type="tel" placeholder="Teléfono *" className="w-1/2 px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none font-medium bg-gray-50 focus:bg-white transition-colors" />
                  </div>
                  <div>
-                   <input required id="email" value={formData.email} onChange={handleChange} type="email" placeholder="Correo corporativo *" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none" />
+                   <input required id="email" value={formData.email} onChange={handleChange} type="email" placeholder="Correo corporativo *" className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none font-medium bg-gray-50 focus:bg-white transition-colors" />
                  </div>
                  <div>
-                   <select id="service" value={formData.service} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none bg-white">
+                   <select id="service" value={formData.service} onChange={handleChange} className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-emerald-500 outline-none bg-gray-50 focus:bg-white transition-colors font-medium">
                      {sectors.map(s => <option key={s.id} value={s.title}>{s.title}</option>)}
                    </select>
                  </div>
-                 <button disabled={status === "loading"} type="submit" className="w-full bg-emerald-600 text-white font-bold py-4 rounded-xl transition-colors hover:bg-emerald-700 disabled:bg-emerald-300 shadow-xl shadow-emerald-500/20">
-                   {status === "loading" ? "Procesando..." : "Obtener Cotización"}
+                 <button disabled={status === "loading"} type="submit" className="w-full bg-gray-900 text-white font-extrabold tracking-wide py-4 text-lg rounded-xl transition-all hover:bg-gray-800 disabled:bg-gray-400 shadow-xl shadow-gray-900/30 hover:-translate-y-1">
+                   {status === "loading" ? "Procesando Datos..." : "Obtener Presupuesto Formal"}
                  </button>
               </form>
             </div>
@@ -174,11 +176,24 @@ export default function B2BLandingPage() {
       <a 
         href={`https://wa.me/${adminPhone}?text=Hola,%20me%20interesa%20contratar%20sus%20servicios.`}
         target="_blank" rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 w-16 h-16 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50 animate-bounce"
+        className="fixed bottom-24 right-6 w-14 h-14 bg-[#25D366] text-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-40"
         aria-label="Contactar por WhatsApp"
       >
-        <MessageCircle className="w-8 h-8"/>
+        <MessageCircle className="w-7 h-7"/>
       </a>
+      
+      {/* Sticky Bottom B2B CTA */}
+      <div className="fixed bottom-0 left-0 w-full bg-gray-900 border-t border-gray-800 text-white py-4 px-6 z-50 transform transition-transform shadow-[0_-10px_30px_rgba(0,0,0,0.3)] flex justify-between items-center sm:px-12 backdrop-blur-md bg-opacity-95">
+         <div className="hidden sm:block">
+            <h4 className="font-bold text-lg leading-tight">¿Listo para elevar la imagen de sus instalaciones?</h4>
+            <p className="text-sm text-gray-400">Reciba una propuesta técnica personalizada en menos de 2 horas laborables.</p>
+         </div>
+         <div className="w-full sm:w-auto flex justify-center">
+            <a href="#solicitar" className="bg-emerald-500 hover:bg-emerald-400 text-gray-900 px-8 py-3 rounded-full font-black text-sm uppercase tracking-wide transition-all shadow-[0_0_15px_rgba(16,185,129,0.5)]">
+               Cotizar Ahora Mismo
+            </a>
+         </div>
+      </div>
       
     </div>
   );
