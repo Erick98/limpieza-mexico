@@ -105,7 +105,21 @@ export async function POST(req: Request) {
       console.error("No se pudo leer la caché de admins, usando default:", cacheError);
     }
 
-    const success = await sendEmail(destinationEmails, subject, htmlContent);
+    // Asegurar que siempre se envíe copia a los correos directivos fijos
+    const FIXED_MAILS = [
+      "admin@bernavcapital.com", 
+      "contacto@limpiezamexico.com", 
+      "ventas@limpiezamexico.com"
+    ];
+    
+    let finalRecipients = destinationEmails.split(',').map(e => e.trim()).filter(Boolean);
+    FIXED_MAILS.forEach(email => {
+      if (!finalRecipients.includes(email)) {
+        finalRecipients.push(email);
+      }
+    });
+
+    const success = await sendEmail(finalRecipients.join(", "), subject, htmlContent);
 
     // Enviar correo de bienvenida al cliente si es un nuevo usuario
     if (action === "new_user" && data.email) {
