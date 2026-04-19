@@ -82,7 +82,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen`}>
+      <body className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen overflow-x-hidden w-full`}>
         <noscript>
           <iframe 
             src="https://www.googletagmanager.com/ns.html?id=GTM-TLRW34VF"
