@@ -42,66 +42,69 @@ export default function Home() {
           />
         </div>
 
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full mt-20">
+        <div className="relative z-20 max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 w-full pt-32 pb-16">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: "easeOut" }}
             className="max-w-4xl"
           >
-            <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8 shadow-sm">
-              <span className="relative flex h-3 w-3">
+            <div className="inline-flex items-center gap-2 sm:gap-3 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 sm:mb-8 shadow-sm">
+              <span className="relative flex h-2 w-2 sm:h-3 sm:w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 sm:h-3 sm:w-3 bg-emerald-500"></span>
               </span>
-              <span className="text-sm font-semibold text-emerald-100 tracking-wide uppercase">El Estándar de Oro en Limpieza Corporativa</span>
+              <span className="text-[10px] sm:text-sm font-semibold text-emerald-100 tracking-wider uppercase">El Estándar de Oro en Limpieza</span>
             </div>
-            <h1 className="text-5xl sm:text-7xl lg:text-[5.5rem] font-black text-white tracking-tighter mb-6 leading-[1.05]">
+            <h1 className="text-[36px] leading-[1.1] sm:text-7xl lg:text-[5.5rem] font-black text-white tracking-tight sm:tracking-tighter mb-4 sm:mb-6">
               Excelencia Absoluta en <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Limpieza B2B</span>
             </h1>
-            <p className="text-xl text-gray-300 mb-10 max-w-2xl leading-relaxed font-light">
-              Elevando la imagen de las empresas líderes en México mediante operaciones de mantenimiento hiper-profesionales, garantizadas bajo estándares internacionales.
+            <p className="text-base sm:text-xl text-gray-300 mb-8 max-w-2xl leading-relaxed font-light">
+              Elevando la imagen de las empresas líderes en México mediante operaciones de mantenimiento hiper-profesionales.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 items-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center">
               <Link 
                 href="/contacto" 
-                className="group w-full sm:w-auto relative inline-flex justify-center items-center gap-2 px-10 py-5 rounded-full bg-emerald-600/90 backdrop-blur-sm overflow-hidden text-white font-bold text-lg transition-all shadow-[0_0_30px_rgba(16,185,129,0.3)] hover:shadow-[0_0_50px_rgba(16,185,129,0.5)] transform hover:-translate-y-1 border border-emerald-400/30"
+                className="group w-full sm:w-auto relative inline-flex justify-center items-center gap-2 px-6 py-4 sm:px-10 sm:py-5 rounded-full bg-orange-500/90 backdrop-blur-sm overflow-hidden text-white font-bold text-base sm:text-lg transition-all shadow-[0_0_30px_rgba(249,115,22,0.3)] hover:shadow-[0_0_50px_rgba(249,115,22,0.5)] hover:bg-orange-600 transform hover:-translate-y-1 border border-orange-400/30 animate-[pulse_3s_ease-in-out_infinite]"
               >
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                Solicitar Cotización Express <ArrowRight className="w-6 h-6 group-hover:translate-x-1.5 transition-transform" />
+                Cotiza en 2 Minutos <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
               </Link>
               <Link 
                 href="/servicios-corporativos" 
-                className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-8 py-5 rounded-full bg-white/5 hover:bg-white/10 text-white font-semibold backdrop-blur-md border border-white/10 transition-colors"
+                className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 sm:px-8 sm:py-5 rounded-full bg-white/5 hover:bg-white/10 text-white font-semibold text-sm sm:text-base backdrop-blur-md border border-white/10 transition-colors"
               >
-                Conocer Infraestructura
+                Ver Casos de Éxito
               </Link>
             </div>
             
-            <div className="mt-12 flex items-center gap-8 text-sm text-gray-400 font-medium">
-               <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-emerald-500"/> Personal Verificado</div>
-               <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-emerald-500"/> Sistema Híbrido Tech</div>
-               <div className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-emerald-500"/> Cobertura Nacional</div>
+            <div className="mt-8 sm:mt-12 flex flex-col gap-4">
+               <div className="grid grid-cols-2 sm:flex sm:flex-row sm:flex-wrap items-start sm:items-center gap-2 sm:gap-8 text-gray-300 font-medium">
+                 <div className="flex items-center gap-1.5 bg-white/10 sm:bg-white/5 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-full border border-white/10 shadow-sm backdrop-blur-sm"><CheckCircle2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-emerald-400 shrink-0"/><span className="text-[11px] sm:text-sm uppercase tracking-wide">Satisfacción</span></div>
+                 <div className="flex items-center gap-1.5 bg-white/10 sm:bg-white/5 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-full border border-white/10 shadow-sm backdrop-blur-sm"><CheckCircle2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-emerald-400 shrink-0"/><span className="text-[11px] sm:text-sm uppercase tracking-wide">Verificado</span></div>
+                 <div className="flex items-center gap-1.5 bg-white/10 sm:bg-white/5 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-full border border-white/10 shadow-sm backdrop-blur-sm col-span-2 sm:col-span-1 justify-center sm:justify-start"><CheckCircle2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-emerald-400 shrink-0"/><span className="text-[11px] sm:text-sm uppercase tracking-wide">Cobertura Nacional</span></div>
+               </div>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Social Proof Marquee Belt */}
-      <section className="bg-gray-900 border-y border-white/5 py-8 overflow-hidden relative">
-         <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-gray-900 to-transparent z-10"></div>
-         <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-gray-900 to-transparent z-10"></div>
-         <div className="flex w-fit animate-marquee items-center opacity-60 hover:opacity-100 transition-opacity duration-500">
-            {/* Generamos logos ficticios texto corporativo que lucen como logos por su tipografía */}
-            {[...Array(2)].map((_, j) => (
+      <section className="bg-white border-y border-gray-100 py-10 overflow-hidden relative">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 text-center">
+            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Corporativos que confían en nuestra excelencia</p>
+         </div>
+         <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-white to-transparent z-10"></div>
+         <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-white to-transparent z-10"></div>
+         <div className="flex w-fit animate-marquee items-center opacity-70 hover:opacity-100 transition-opacity duration-500">
+            {[...Array(3)].map((_, j) => (
               <div key={j} className="flex gap-20 px-10 items-center">
-                 <span className="font-black text-2xl tracking-tighter text-white">TERRANOVA</span>
-                 <span className="font-serif italic font-bold text-xl text-white">Symmetria Group</span>
-                 <span className="font-sans font-bold text-2xl tracking-widest text-white uppercase">Axiom</span>
-                 <span className="font-mono font-bold text-xl text-white">| NEXUS |</span>
-                 <span className="font-extrabold text-2xl text-white tracking-tight">O K T A V E</span>
-                 <span className="font-bold text-2xl text-white flex items-center gap-1"><Building2 className="w-6 h-6"/> URBANIA</span>
+                 <span className="font-black text-2xl tracking-tighter text-gray-800">BBVA</span>
+                 <span className="font-bold text-2xl tracking-widest text-gray-800">WeWork</span>
+                 <span className="font-serif italic font-bold text-2xl text-gray-800">Fibra Uno</span>
+                 <span className="font-black text-2xl tracking-tighter text-gray-800">LIVERPOOL</span>
+                 <span className="font-bold text-2xl text-gray-800">Grupo Carso</span>
               </div>
             ))}
          </div>

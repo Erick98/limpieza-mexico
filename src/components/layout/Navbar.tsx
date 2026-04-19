@@ -10,38 +10,15 @@ import { motion, AnimatePresence } from "framer-motion";
 const menuItems = [
   { name: "Inicio", href: "/" },
   {
-    name: "Servicios Corporativos",
+    name: "Servicios",
     href: "/servicios-corporativos",
     subItems: [
-      { name: "Oficinas", href: "/servicios-corporativos#oficinas" },
-      { name: "Condominios", href: "/servicios-corporativos#condominios" },
-      { name: "Restaurantes", href: "/servicios-corporativos#restaurantes" },
-      { name: "Escuelas", href: "/servicios-corporativos#escuelas" },
-      { name: "Naves Industriales", href: "/servicios-corporativos#industriales" },
+      { name: "Corporativos (Oficinas, Condominios)", href: "/servicios-corporativos" },
+      { name: "Executive (Robots, Sanitización)", href: "/servicios-executive" },
+      { name: "Reclutamiento (Doméstico, Niñeras)", href: "/reclutamiento-domestico" },
+      { name: "Transversales (Mantenimiento)", href: "/servicios-transversales" },
     ],
   },
-  {
-    name: "Executive",
-    href: "/servicios-executive",
-    subItems: [
-      { name: "Robots Autónomos", href: "/servicios-executive#robots" },
-      { name: "Sanitización", href: "/servicios-executive#sanitizacion" },
-      { name: "Cuidado de Pisos", href: "/servicios-executive#pisos" },
-      { name: "Paneles Solares", href: "/servicios-executive#paneles" },
-    ],
-  },
-  {
-    name: "Reclutamiento",
-    href: "/reclutamiento-domestico",
-    subItems: [
-      { name: "Personal de Limpieza", href: "/reclutamiento-domestico#limpieza" },
-      { name: "Niñeras", href: "/reclutamiento-domestico#nineras" },
-      { name: "Amas de Llaves", href: "/reclutamiento-domestico#amas-de-llaves" },
-      { name: "Cocineras", href: "/reclutamiento-domestico#cocineras" },
-      { name: "Gestión de Nómina", href: "/reclutamiento-domestico#nomina" },
-    ],
-  },
-  { name: "Transversales", href: "/servicios-transversales" },
   { name: "Nosotros", href: "/nosotros" },
   { name: "Blog", href: "/blog" },
 ];
@@ -145,7 +122,11 @@ export default function Navbar() {
 
             <Link
               href="/login"
-              className="px-5 py-2.5 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition-colors shadow-md hover:shadow-lg"
+              className={`text-sm font-medium transition-colors ${
+                showLightNavbar
+                  ? "text-gray-500 hover:text-emerald-600"
+                  : "text-gray-300 hover:text-white"
+              }`}
             >
               Portal de Clientes
             </Link>
