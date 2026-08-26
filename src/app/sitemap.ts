@@ -1,26 +1,18 @@
 import { MetadataRoute } from 'next';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { absoluteUrl, STATIC_ROUTES } from '@/lib/site';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://limpiezamexico.com';
-
-  // Rutas estáticas principales
-  const routes = [
-    '',
-    '/nosotros',
-    '/contacto',
-    '/servicios/corporativos',
-    '/servicios/executive',
-    '/servicios/domestico',
-    '/servicios/transversales',
-    '/blog',
-    '/login'
-  ].map((route) => ({
-    url: `${baseUrl}${route}`,
+  // Rutas estáticas reales (verificadas 200 OK contra el sitio vivo el 2026-08-26).
+  // OJO: las antiguas /servicios/corporativos, /servicios/executive, /servicios/domestico
+  // y /servicios/transversales NO EXISTEN (404). No volver a declararlas aquí.
+  // /login y /dashboard/* quedan fuera a propósito: no aportan valor de indexación.
+  const routes = STATIC_ROUTES.map((route) => ({
+    url: absoluteUrl(route.path),
     lastModified: new Date().toISOString(),
-    changeFrequency: 'weekly' as const,
-    priority: route === '' ? 1 : 0.8,
+    changeFrequency: route.changeFrequency,
+    priority: route.priority,
   }));
 
   // Intentar obtener los artículos del blog dinámicamente
@@ -29,13 +21,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const blogRoutes = querySnapshot.docs.map((doc) => {
       const data = doc.data();
       return {
-        url: `${baseUrl}/blog/${data.slug || doc.id}`,
+        url: absoluteUrl(`/blog/${data.slug || doc.id}`),
         lastModified: data.updatedAt || data.createdAt || new Date().toISOString(),
         changeFrequency: 'monthly' as const,
         priority: 0.6,
       };
     });
-    
+
     return [...routes, ...blogRoutes];
   } catch (error) {
     console.warn('Error fetching blog posts for sitemap:', error);

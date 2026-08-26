@@ -5,6 +5,8 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Servicios Corporativos | B2B",
   description: "Planes de mantenimiento estructurado para oficinas, condominios, restaurantes y naves industriales. Personal uniformado, insumos incluidos y supervisión activa.",
+  alternates: { canonical: "/servicios-corporativos" },
+  openGraph: { url: "/servicios-corporativos" },
 };
 
 export default function ServiciosCorporativos() {

@@ -5,6 +5,8 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Aseo Industrial y Transversal | Plagas y Cisternas",
   description: "Control integral de plagas (MIP), mantenimiento de áreas verdes, limpieza de cisternas con buzos y aseo post-construcción fina y gruesa.",
+  alternates: { canonical: "/servicios-transversales" },
+  openGraph: { url: "/servicios-transversales" },
 };
 
 export default function ServiciosTransversales() {

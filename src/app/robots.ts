@@ -1,14 +1,14 @@
 import { MetadataRoute } from 'next';
+import { absoluteUrl } from '@/lib/site';
 
 export default function robots(): MetadataRoute.Robots {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://limpiezamexico.com';
-
   return {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/dashboard/', '/api/'],
+      disallow: ['/dashboard/', '/api/', '/login'],
     },
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: absoluteUrl('/sitemap.xml'),
+    host: absoluteUrl(),
   };
 }

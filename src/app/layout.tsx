@@ -5,6 +5,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { AuthProvider } from "@/components/auth/AuthContext";
 import Script from "next/script";
+import { SITE_URL } from "@/lib/site";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -12,7 +13,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://limpiezamexico.com'),
+  // Canónico único: https://www.limpiezamexico.com (ver src/lib/site.ts)
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: "/",
+  },
   title: {
     default: "Limpieza México | Servicios Integrales de Limpieza y Mantenimiento",
     template: "%s | Limpieza México"
@@ -26,7 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "es_MX",
-    url: "/",
+    url: SITE_URL,
     title: "Limpieza México | Servicios Corporativos Integrales",
     description: "Expertos en soluciones de limpieza para empresas, industrias y corporativos a nivel nacional.",
     siteName: "Limpieza México",

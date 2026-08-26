@@ -5,6 +5,8 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Reclutamiento de Personal Doméstico y Corporativo",
   description: "Selección de perfiles de alta confianza: niñeras, amas de llaves, mozos, jardineros y personal de mantenimiento. Background check y test psicológicos.",
+  alternates: { canonical: "/reclutamiento-domestico" },
+  openGraph: { url: "/reclutamiento-domestico" },
 };
 
 export default function ReclutamientoDomestico() {

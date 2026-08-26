@@ -4,6 +4,8 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Nosotros | Nuestra Historia Corporativa",
   description: "Conozca la historia, misión y certificaciones de Limpieza México. Más de una década transformando espacios de trabajo bajo estrictos estándares de calidad técnica y social.",
+  alternates: { canonical: "/nosotros" },
+  openGraph: { url: "/nosotros" },
 };
 
 export default function Nosotros() {

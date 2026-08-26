@@ -3,23 +3,62 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, Building2, ShieldCheck, Users, Droplets, CheckCircle2 } from "lucide-react";
+import { SITE_URL, absoluteUrl } from "@/lib/site";
 
 export default function Home() {
+  // JSON-LD LocalBusiness.
+  // ⚠️ REGLA: SOLO datos REALES publicados en el sitio. Prohibido inventar.
+  //  - `telephone`: OMITIDO a propósito. El repo solo tiene el placeholder
+  //    "+52 55 1234 5678" (y antes el falso "+525555555555"). Pendiente de que
+  //    Erick dé el teléfono real y verificable.
+  //  - `openingHours`: OMITIDO. No hay horarios publicados en el sitio.
+  //  - `sameAs`: OMITIDO. Los links sociales del footer son href="#" (sin URL real).
+  //  - `aggregateRating`: NO se agrega. Sin reseñas reales sería dato falso y Google penaliza.
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
+    "@id": `${SITE_URL}/#localbusiness`,
     "name": "Limpieza México",
-    "image": "https://limpiezamexico.com/images/og-image-default.jpg",
-    "url": "https://limpiezamexico.com",
-    "telephone": "+525555555555",
+    "image": absoluteUrl("/images/og-image-default.jpg"),
+    "logo": absoluteUrl("/logo.png"),
+    "url": SITE_URL,
+    "email": "contacto@limpiezamexico.com",
     "address": {
       "@type": "PostalAddress",
+      "streetAddress": "Sófocles 133, Polanco, Granada, Miguel Hidalgo",
       "addressLocality": "Ciudad de México",
       "addressRegion": "CDMX",
+      "postalCode": "11530",
       "addressCountry": "MX"
     },
+    "areaServed": [
+      { "@type": "Country", "name": "México" },
+      { "@type": "AdministrativeArea", "name": "Ciudad de México" }
+    ],
     "description": "La empresa líder en soluciones de limpieza corporativa, ejecutiva, doméstica y servicios especializados en todo México.",
-    "priceRange": "$$"
+    "priceRange": "$$",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Servicios de Limpieza México",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": { "@type": "Service", "name": "Limpieza Corporativa", "url": absoluteUrl("/servicios-corporativos") }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": { "@type": "Service", "name": "Servicios Executive", "url": absoluteUrl("/servicios-executive") }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": { "@type": "Service", "name": "Servicios Transversales", "url": absoluteUrl("/servicios-transversales") }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": { "@type": "Service", "name": "Reclutamiento Doméstico", "url": absoluteUrl("/reclutamiento-domestico") }
+        }
+      ]
+    }
   };
 
   return (
@@ -213,9 +252,17 @@ export default function Home() {
                 className="relative z-10 rounded-3xl object-cover w-full h-[600px] shadow-2xl"
               />
               <div className="absolute -bottom-8 -right-8 bg-white p-6 rounded-2xl shadow-xl z-20 flex items-center gap-4">
-                <div className="flex -space-x-4">
-                  {[1,2,3,4].map((i) => (
-                    <img key={i} className="w-12 h-12 rounded-full border-2 border-white" src={`https://i.pravatar.cc/100?img=${i+10}`} alt="Avatar" />
+                {/* Avatares: antes usaban i.pravatar.cc (caras falsas generadas).
+                    Removida la dependencia externa: baja credibilidad + penaliza LCP.
+                    Placeholder local con iniciales hasta tener clientes/logos reales. */}
+                <div className="flex -space-x-3" aria-hidden="true">
+                  {["LM", "AC", "GR", "+"].map((ini) => (
+                    <span
+                      key={ini}
+                      className="w-12 h-12 rounded-full border-2 border-white bg-emerald-600 text-white flex items-center justify-center text-xs font-bold select-none"
+                    >
+                      {ini}
+                    </span>
                   ))}
                 </div>
                 <div>

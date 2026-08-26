@@ -1,6 +1,14 @@
 import React from "react";
 import Link from "next/link";
 import { ShieldCheck, ArrowLeft } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Aviso de Privacidad",
+  description: "Aviso de privacidad de Limpieza México: qué datos personales recabamos, con qué finalidad los tratamos y cómo ejercer sus derechos ARCO.",
+  alternates: { canonical: "/privacidad" },
+  openGraph: { url: "/privacidad" },
+};
 
 export default function PrivacidadPage() {
   return (

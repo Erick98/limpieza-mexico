@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     if (!snapshot.exists()) {
       return {
         title: 'Artículo no encontrado | Limpieza México',
-        robots: 'noindex'
+        robots: 'noindex, follow'
       };
     }
 
@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     return {
       title: `${data.title} | Blog de Limpieza México`,
       description: extractContent,
+      alternates: { canonical: `/blog/${params.slug}` },
       openGraph: {
         title: data.title,
         description: extractContent,

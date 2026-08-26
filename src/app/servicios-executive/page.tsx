@@ -5,6 +5,8 @@ import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Servicios Executive | Tecnología de Mantenimiento",
   description: "Tratamientos avanzados, limpieza con robots autónomos (barredoras y restregadoras), sanitización certificada y limpieza de paneles solares.",
+  alternates: { canonical: "/servicios-executive" },
+  openGraph: { url: "/servicios-executive" },
 };
 
 export default function ServiciosExecutive() {

@@ -1,6 +1,14 @@
 import React from "react";
 import Link from "next/link";
 import { FileText, ArrowLeft } from "lucide-react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Términos y Condiciones",
+  description: "Términos y condiciones de uso de los servicios de limpieza, mantenimiento y reclutamiento de Limpieza México.",
+  alternates: { canonical: "/terminos" },
+  openGraph: { url: "/terminos" },
+};
 
 export default function TerminosPage() {
   return (
