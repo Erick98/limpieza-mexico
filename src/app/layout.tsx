@@ -1,108 +1,92 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import { AuthProvider } from "@/components/auth/AuthContext";
-import Script from "next/script";
-import { SITE_URL } from "@/lib/site";
+import type { Metadata, Viewport } from 'next';
+import { Inter, Playfair_Display } from 'next/font/google';
+import Script from 'next/script';
+import './globals.css';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
+import BarraMovil from '@/components/layout/BarraMovil';
+import JsonLd from '@/components/JsonLd';
+import { SITE_URL, SITE_NAME } from '@/lib/site';
+import { organizationLd, websiteLd, cleaningServiceLd } from '@/lib/seo';
 
+/**
+ * Fuentes con next/font: se auto-hospedan, se precargan y usan display:swap.
+ * Eso elimina la petición a fonts.googleapis.com (mejor LCP y sin CLS de fuente).
+ */
 const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+  variable: '--font-inter',
+  subsets: ['latin'],
+  display: 'swap',
 });
 
-export const metadata: Metadata = {
-  // Canónico único: https://www.limpiezamexico.com (ver src/lib/site.ts)
-  metadataBase: new URL(SITE_URL),
-  alternates: {
-    canonical: "/",
-  },
-  title: {
-    default: "Limpieza México | Servicios Integrales de Limpieza y Mantenimiento",
-    template: "%s | Limpieza México"
-  },
-  description: "La empresa líder en soluciones de limpieza corporativa, ejecutiva, doméstica y servicios especializados en todo México. Transformamos sus espacios con calidad técnica y tecnología de punta.",
-  keywords: ["limpieza corporativa", "limpieza profunda", "mantenimiento integral", "servicios executive", "limpieza doméstica", "Limpieza México", "sanitización", "jardinería empresarial"],
-  authors: [{ name: "Limpieza México" }],
-  creator: "Limpieza México",
-  publisher: "Limpieza México",
-  robots: "index, follow",
-  openGraph: {
-    type: "website",
-    locale: "es_MX",
-    url: SITE_URL,
-    title: "Limpieza México | Servicios Corporativos Integrales",
-    description: "Expertos en soluciones de limpieza para empresas, industrias y corporativos a nivel nacional.",
-    siteName: "Limpieza México",
-    images: [{
-      url: "/images/og-image-default.jpg", // Asegurarse de subir esta imagen
-      width: 1200,
-      height: 630,
-      alt: "Limpieza México - Portada Oficial"
-    }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Limpieza México | Servicios Integrales",
-    description: "Expertos en soluciones de limpieza para empresas, industrias y corporativos a nivel nacional.",
-    images: ["/images/og-image-default.jpg"],
-  },
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
-  }
+const playfair = Playfair_Display({
+  variable: '--font-playfair',
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['500', '600', '700'],
+});
+
+export const viewport: Viewport = {
+  themeColor: '#1F1F25',
+  width: 'device-width',
+  initialScale: 1,
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="es" className="scroll-smooth">
-      <head>
-        <Script id="google-tag-manager" strategy="afterInteractive">
-          {`
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-TLRW34VF');
-          `}
-        </Script>
-        {/* Google Analytics (gtag.js) */}
-        <Script 
-          src="https://www.googletagmanager.com/gtag/js?id=G-E4NQM3CMJD" 
-          strategy="afterInteractive" 
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: 'Servicio de limpieza en CDMX | Limpieza México',
+    template: `%s | ${SITE_NAME}`,
+  },
+  description:
+    'Servicio de limpieza para oficinas, hogares y espacios especializados en CDMX y Zona Metropolitana. Cotiza en línea en menos de un minuto.',
+  applicationName: SITE_NAME,
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  formatDetection: { telephone: false },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
+  },
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
+  // PENDIENTE_ERICK: pegar aquí el token de Google Search Console cuando lo entregue.
+  // verification: { google: 'TOKEN_GSC' },
+};
 
-            gtag('config', 'G-E4NQM3CMJD');
-          `}
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="es-MX" className={`${inter.variable} ${playfair.variable}`}>
+      <body className="font-sans antialiased flex flex-col min-h-screen overflow-x-hidden">
+        {/* Entidad del negocio: se declara UNA vez en el layout con @id estable.
+            Las páginas internas solo referencian ese @id, no lo duplican. */}
+        <JsonLd data={[organizationLd(), websiteLd(), cleaningServiceLd()]} />
+
+        <a href="#contenido" className="skip-link">
+          Saltar al contenido
+        </a>
+
+        <Navbar />
+        <main id="contenido" className="flex-grow">
+          {children}
+        </main>
+        <Footer />
+        <BarraMovil />
+
+        {/* GA4 existente. `afterInteractive` para no bloquear el render inicial.
+            Se dejó UN solo contenedor (antes había GTM + gtag duplicando eventos). */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-E4NQM3CMJD"
+          strategy="afterInteractive"
+        />
+        <Script id="ga4" strategy="afterInteractive">
+          {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-E4NQM3CMJD');`}
         </Script>
-      </head>
-      <body className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen overflow-x-hidden w-full`}>
-        <noscript>
-          <iframe 
-            src="https://www.googletagmanager.com/ns.html?id=GTM-TLRW34VF"
-            height="0" 
-            width="0" 
-            style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
-        </noscript>
-        <AuthProvider>
-          <Navbar />
-          <main className="flex-grow">
-            {children}
-          </main>
-          <Footer />
-        </AuthProvider>
       </body>
     </html>
   );

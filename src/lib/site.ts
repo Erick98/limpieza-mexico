@@ -1,17 +1,19 @@
 /**
- * Configuración canónica del sitio.
+ * Configuración canónica del sitio — FUENTE ÚNICA DE VERDAD.
  *
  * DECISIÓN (2026-08-26): el dominio canónico es https://www.limpiezamexico.com (CON www),
  * porque es a donde ya redirige el servidor hoy (apex -> 307 -> www).
  * Sitemap, canonical, OG url, robots y JSON-LD DEBEN usar esta constante para no
  * mandarle señales contradictorias a Google (contenido duplicado www / no-www).
  *
- * Se deja hardcodeada a propósito (no depende de NEXT_PUBLIC_SITE_URL) para que un
- * env mal configurado en Vercel no vuelva a romper la consistencia del canónico.
- * En preview/local las URLs canónicas siguen apuntando a producción, que es el
- * comportamiento correcto de SEO.
+ * REGLA DURA (2026-09-01): aquí SOLO van datos REALES y verificables.
+ * Nada de teléfonos placeholder, clientes inventados, número de proyectos ni ratings.
+ * Si un dato no está confirmado, se marca PENDIENTE_ERICK y NO se renderiza.
  */
+
 export const SITE_URL = 'https://www.limpiezamexico.com';
+
+export const SITE_NAME = 'Limpieza México';
 
 /** Ruta relativa -> URL absoluta canónica. `path` debe empezar con '/' o ser ''. */
 export function absoluteUrl(path: string = ''): string {
@@ -19,16 +21,119 @@ export function absoluteUrl(path: string = ''): string {
   return `${SITE_URL}${path.startsWith('/') ? path : `/${path}`}`;
 }
 
-/** Rutas estáticas indexables. Verificadas 200 OK contra el sitio vivo el 2026-08-26. */
-export const STATIC_ROUTES: { path: string; priority: number; changeFrequency: 'weekly' | 'monthly' | 'yearly' }[] = [
+/* ------------------------------------------------------------------ */
+/* DATOS DE CONTACTO                                                   */
+/* ------------------------------------------------------------------ */
+
+/**
+ * ⚠️ PENDIENTE_ERICK — TELÉFONO REAL.
+ *
+ * El repo traía el placeholder "+52 55 1234 5678" (falso). Publicar un teléfono
+ * inventado en un sitio de captación es peor que no publicar ninguno: rompe la
+ * confianza, ensucia el JSON-LD y puede generar reclamos.
+ *
+ * Cuando Erick entregue el número real y verificable:
+ *   1. Poner el número en `PHONE_DISPLAY` (formato humano) y `PHONE_E164` (+52...).
+ *   2. Cambiar `PHONE_CONFIRMED` a true.
+ * Con eso se activan automáticamente: el `telephone` del JSON-LD, el botón de
+ * WhatsApp de la barra móvil, y el bloque de teléfono en /contacto.
+ * Mientras esté en false, el sitio simplemente NO muestra teléfono.
+ */
+// Tipados explícitos (boolean/string, no literales): así el día que Erick ponga el
+// número real, TypeScript no marca los bloques condicionales como código muerto.
+export const PHONE_CONFIRMED: boolean = false;
+export const PHONE_DISPLAY: string = ''; // PENDIENTE_ERICK, ej. '55 1234 5678'
+export const PHONE_E164: string = ''; // PENDIENTE_ERICK, ej. '+525512345678'
+
+/** WhatsApp: se deriva del teléfono confirmado. Sin teléfono real, no hay link. */
+export function whatsappUrl(mensaje: string = 'Hola, quiero cotizar un servicio de limpieza.'): string | null {
+  if (!PHONE_CONFIRMED || !PHONE_E164) return null;
+  return `https://wa.me/${PHONE_E164.replace(/\D/g, '')}?text=${encodeURIComponent(mensaje)}`;
+}
+
+export const EMAIL_CONTACTO = 'contacto@limpiezamexico.com';
+export const EMAIL_VENTAS = 'ventas@limpiezamexico.com';
+
+/** Dirección real confirmada en el repo y en el sitio vivo. */
+export const ADDRESS = {
+  street: 'Sófocles 133, Polanco, Granada, Miguel Hidalgo',
+  locality: 'Ciudad de México',
+  region: 'CDMX',
+  postalCode: '11530',
+  country: 'MX',
+  full: 'Sófocles 133, Polanco, Granada, Miguel Hidalgo, 11530 Ciudad de México, CDMX',
+} as const;
+
+/* ------------------------------------------------------------------ */
+/* ARQUITECTURA DE URLs (una página por intención de búsqueda)          */
+/* ------------------------------------------------------------------ */
+
+export type RouteDef = {
+  path: string;
+  priority: number;
+  changeFrequency: 'daily' | 'weekly' | 'monthly' | 'yearly';
+};
+
+/**
+ * Rutas indexables. TODAS deben responder 200. Si borras una página, bórrala de aquí
+ * y agrega su 301 en next.config.ts. (Bug histórico: el sitemap declaraba 4 rutas 404.)
+ */
+export const STATIC_ROUTES: RouteDef[] = [
   { path: '', priority: 1.0, changeFrequency: 'weekly' },
-  { path: '/nosotros', priority: 0.8, changeFrequency: 'monthly' },
+  { path: '/servicio-de-limpieza-cdmx', priority: 0.95, changeFrequency: 'weekly' },
+  { path: '/limpieza-de-oficinas', priority: 0.9, changeFrequency: 'weekly' },
+  { path: '/limpieza-domestica', priority: 0.9, changeFrequency: 'weekly' },
+  { path: '/limpieza-especializada', priority: 0.85, changeFrequency: 'weekly' },
+  { path: '/zonas/polanco', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/zonas/santa-fe', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/zonas/interlomas', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/zonas/condesa-roma', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/preguntas-frecuentes', priority: 0.6, changeFrequency: 'monthly' },
+  { path: '/nosotros', priority: 0.6, changeFrequency: 'monthly' },
   { path: '/contacto', priority: 0.8, changeFrequency: 'monthly' },
-  { path: '/servicios-corporativos', priority: 0.9, changeFrequency: 'weekly' },
-  { path: '/servicios-executive', priority: 0.9, changeFrequency: 'weekly' },
-  { path: '/servicios-transversales', priority: 0.9, changeFrequency: 'weekly' },
-  { path: '/reclutamiento-domestico', priority: 0.9, changeFrequency: 'weekly' },
-  { path: '/blog', priority: 0.7, changeFrequency: 'weekly' },
   { path: '/privacidad', priority: 0.2, changeFrequency: 'yearly' },
   { path: '/terminos', priority: 0.2, changeFrequency: 'yearly' },
 ];
+
+/* ------------------------------------------------------------------ */
+/* CATÁLOGO DE SERVICIOS (usado por nav, footer, wizard y JSON-LD)      */
+/* ------------------------------------------------------------------ */
+
+export const SERVICIOS = [
+  {
+    slug: '/limpieza-de-oficinas',
+    nombre: 'Limpieza de oficinas y corporativos',
+    corto: 'Oficinas y corporativo',
+    resumen:
+      'Personal fijo o por evento para oficinas, condominios, escuelas, restaurantes y naves industriales.',
+  },
+  {
+    slug: '/limpieza-domestica',
+    nombre: 'Limpieza doméstica y personal de hogar',
+    corto: 'Hogar y personal doméstico',
+    resumen:
+      'Limpieza de casa y departamento por día o recurrente, y reclutamiento de personal doméstico con verificación.',
+  },
+  {
+    slug: '/limpieza-especializada',
+    nombre: 'Limpieza especializada y mantenimiento',
+    corto: 'Especializada',
+    resumen:
+      'Sanitización, pisos, alturas, cisternas, control de plagas y limpieza post-obra o post-evento.',
+  },
+] as const;
+
+/** Zonas con página propia. Solo las que tienen contenido real y diferenciado. */
+export const ZONAS = [
+  { slug: '/zonas/polanco', nombre: 'Polanco', alcaldia: 'Miguel Hidalgo' },
+  { slug: '/zonas/santa-fe', nombre: 'Santa Fe', alcaldia: 'Álvaro Obregón / Cuajimalpa' },
+  { slug: '/zonas/interlomas', nombre: 'Interlomas', alcaldia: 'Huixquilucan, Edomex' },
+  { slug: '/zonas/condesa-roma', nombre: 'Condesa y Roma', alcaldia: 'Cuauhtémoc' },
+] as const;
+
+/** Cobertura declarada (sin inventar municipios donde no se opera). */
+export const COBERTURA = [
+  'Ciudad de México (16 alcaldías)',
+  'Zona Metropolitana del Valle de México',
+  'Estado de México (Naucalpan, Huixquilucan, Tlalnepantla, Ecatepec, Cuautitlán)',
+] as const;

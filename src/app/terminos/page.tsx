@@ -1,94 +1,125 @@
-import React from "react";
-import Link from "next/link";
-import { FileText, ArrowLeft } from "lucide-react";
-import { Metadata } from "next";
+import type { Metadata } from 'next';
+import JsonLd from '@/components/JsonLd';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { pageMetadata, breadcrumbLd } from '@/lib/seo';
+import { EMAIL_CONTACTO } from '@/lib/site';
 
-export const metadata: Metadata = {
-  title: "Términos y Condiciones",
-  description: "Términos y condiciones de uso de los servicios de limpieza, mantenimiento y reclutamiento de Limpieza México.",
-  alternates: { canonical: "/terminos" },
-  openGraph: { url: "/terminos" },
-};
+const PATH = '/terminos';
 
+export const metadata: Metadata = pageMetadata({
+  title: 'Términos y condiciones',
+  description:
+    'Términos y condiciones de uso del sitio de Limpieza México y del formulario de solicitud de cotización de servicios de limpieza y mantenimiento.',
+  path: PATH,
+});
+
+const MIGAS = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Términos y condiciones', path: PATH },
+];
+
+/**
+ * ACTUALIZADO 2026-09-01. La versión anterior regulaba una plataforma con cuentas de
+ * usuario, checkout de Stripe, panel de cliente y política de reembolsos. Nada de eso
+ * existe hoy: el sitio es informativo y capta solicitudes de cotización. Dejar el
+ * texto viejo describiría obligaciones sobre un servicio inexistente.
+ *
+ * PENDIENTE_ERICK: revisión por el área legal antes de publicar a producción.
+ */
 export default function TerminosPage() {
   return (
-    <div className="min-h-screen bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <Link href="/" className="inline-flex items-center text-emerald-600 font-medium hover:text-emerald-700 mb-8 transition-colors">
-          <ArrowLeft className="w-4 h-4 mr-2" /> Volver al Inicio
-        </Link>
-        
-        <div className="bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-gray-100">
-          <div className="w-16 h-16 bg-emerald-100 rounded-2xl flex items-center justify-center mb-6 text-emerald-600">
-             <FileText className="w-8 h-8"/>
-          </div>
-          
-          <h1 className="text-4xl font-black text-gray-900 mb-8 tracking-tight">Términos y Condiciones</h1>
-          
-          <div className="prose prose-emerald max-w-none text-gray-700 space-y-6">
-            <p className="font-medium text-lg text-gray-900">Fecha de vigencia: <strong>28 de Marzo, 2026</strong></p>
-            
-            <p>
-              Bienvenido a la plataforma en línea de <strong>Limpieza México</strong>. Al acceder, registrarse o utilizar cualquiera 
-              de los servicios proporcionados dentro de este sitio web, usted comprende, acepta y se compromete íntegramente a 
-              cumplir y a obligarse mediante los siguientes Términos y Condiciones Generales.
-            </p>
+    <>
+      <JsonLd data={breadcrumbLd(MIGAS)} />
 
-            <h3 className="text-xl font-bold text-gray-900 mt-8 mb-4">1. Objeto de los Servicios Comerciales</h3>
-            <p>
-              Limpieza México, a través de su infraestructura digital y de terceros, provee servicios de cotización automatizada, 
-              venta de paquetes de servicios correctivos de limpieza, y gestión y firma de contratos B2B 
-              orientados a empresas en todo el territorio mexicano y que incluye provisión y logística de personal, consumibles
-              y equipos especializados de mantenimiento corporativo.
-            </p>
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-8 pb-16">
+        <Breadcrumbs items={MIGAS} />
 
-            <h3 className="text-xl font-bold text-gray-900 mt-8 mb-4">2. De las Obligaciones del Usuario (Contratante)</h3>
-            <ul className="list-disc pl-5 space-y-2">
-              <li>El Usuario se compromete a que la información proporcionada a través de formularios es, en su totalidad, verídica y vigente.</li>
-              <li>En caso de fungir como representante legal, cuenta con la total autorización administrativa de su empresa u organización para emitir y aceptar las solicitudes de contratación vía plataforma.</li>
-              <li>Abonar puntualmente la contraprestación calculada en su Cotización de Servicio recurrente o único, mediante la plataforma habilitada.</li>
-            </ul>
+        <h1 className="font-display text-[32px] leading-tight sm:text-5xl mb-6">
+          Términos y condiciones
+        </h1>
 
-            <h3 className="text-xl font-bold text-gray-900 mt-8 mb-4">3. Cotizaciones, Plataformas de Pago y Reembolsos</h3>
-            <p>
-              <strong>Emisión de Presupuesto Técnico:</strong> Limpieza México provee un estimado y no garantiza disponibilidad
-              geográfica hasta que el área comercial emita y autorice una Cotización Oficial vía panel administrativo para que sea 
-              aprobada en el Panel del Cliente.
-            </p>
-            <p>
-              <strong>Procesamiento:</strong> Todas las liquidaciones económicas realizadas de manera transaccional y electrónica 
-              en nuestra infraestructura son administradas mediante sistemas financieros de terceros de máxima seguridad mundial 
-               (procesadores homologados para PCI DSS, ej. Stripe). Limpieza México nunca almacenará localmente números de tarjeta 
-              de crédito/CVVs de los Usuarios.
-            </p>
-            <p>
-              <strong>Políticas de Cancelación o Retorno:</strong> Los Contratos Recurrentes operan bajo los lineamientos jurídicos 
-              plasmados en el contrato escrito físico/digital subyacente. Los Servicios por Evento pagados mediante checkout solo
-              podrán ser reembolsados con deducciones operativas si la cancelación se solicita 48 horas o más previas a la hora programada del evento.
-            </p>
+        <div className="space-y-4 text-[16px] leading-[1.75] text-[#1F1F25]/85">
+          <p className="text-[#9B9BA3]">Vigentes desde el 1 de septiembre de 2026.</p>
 
-            <h3 className="text-xl font-bold text-gray-900 mt-8 mb-4">4. Restricciones a Múltiples Solicitudes y Prevención de SPAM</h3>
-            <p>
-              Garantizamos la correcta navegación siempre que el tráfico no incurra en prácticas negligentes, 
-              uso de software fraudulento para generar requerimientos falsos ("Bots"), scraping u omisiones mal intencionadas que 
-              saturen la base de datos empresarial. Nos reservamos de manera permanente el inobjetable derecho a vetar IP, 
-              denegar la prestación del servicio a discreción e indexar usuarios maliciosos.
-            </p>
+          <p>
+            Estos términos regulan el uso de este sitio web y el envío de solicitudes de
+            cotización a Limpieza México. Al utilizar el sitio, aceptas lo aquí descrito.
+          </p>
 
-            <h3 className="text-xl font-bold text-gray-900 mt-8 mb-4">5. Propiedad Intelectual Digital</h3>
-            <p>
-              Queda reservada la totalidad de la marca, los logotipos "Limpieza México", el código de esta app ("App Landing y UI"), 
-              y toda la estructura comercial.
-            </p>
+          <h2 className="font-display text-2xl pt-6 text-[#1F1F25]">
+            1. Naturaleza del sitio
+          </h2>
+          <p>
+            Este sitio es informativo y sirve para solicitar cotizaciones de servicios de
+            limpieza y mantenimiento. No es una tienda en línea: no se realizan pagos ni se
+            formalizan contrataciones a través de él, y no requiere registro de cuenta.
+          </p>
 
-            <h3 className="text-xl font-bold text-gray-900 mt-8 mb-4">6. Jurisdicción de Conformidad</h3>
-            <p>
-              Para cualquier asunto legal, el cliente y la empresa expresamente aceptan someterse a la competencia de los tribunales 
-              establecidos y designados en Ciudad de México para la resolución jurisdiccional, renunciando así a otros marcos o instancias geográficas.
-            </p>
-          </div>
+          <h2 className="font-display text-2xl pt-6 text-[#1F1F25]">
+            2. Sobre las cotizaciones
+          </h2>
+          <p>
+            La información que envías por el formulario nos permite preparar una propuesta.
+            Toda cotización que emitimos es un presupuesto estimado, sujeto a confirmación
+            tras verificar las condiciones reales del inmueble, la disponibilidad de
+            personal y la cobertura geográfica. Una cotización no constituye por sí misma
+            un contrato ni obliga a ninguna de las partes hasta que exista un acuerdo
+            firmado.
+          </p>
+          <p>
+            La prestación efectiva del servicio, su alcance, precio, vigencia y condiciones
+            de cancelación se rigen exclusivamente por el contrato de prestación de
+            servicios que ambas partes suscriban, no por este sitio.
+          </p>
+
+          <h2 className="font-display text-2xl pt-6 text-[#1F1F25]">
+            3. Obligaciones de quien usa el sitio
+          </h2>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>Proporcionar información veraz en el formulario de cotización.</li>
+            <li>
+              Contar con facultades suficientes para solicitar la cotización cuando se haga
+              a nombre de una empresa u organización.
+            </li>
+            <li>
+              No utilizar el formulario para enviar solicitudes falsas, masivas o
+              automatizadas.
+            </li>
+          </ul>
+
+          <h2 className="font-display text-2xl pt-6 text-[#1F1F25]">
+            4. Uso indebido del formulario
+          </h2>
+          <p>
+            Aplicamos medidas técnicas para evitar el envío automatizado de solicitudes,
+            incluidos límites de frecuencia por dirección IP. Nos reservamos el derecho de
+            bloquear el acceso a quien intente saturar el formulario, enviar contenido
+            malicioso o vulnerar la seguridad del sitio.
+          </p>
+
+          <h2 className="font-display text-2xl pt-6 text-[#1F1F25]">
+            5. Propiedad intelectual
+          </h2>
+          <p>
+            La marca, el logotipo, los textos, las imágenes y el código de este sitio son
+            propiedad de Limpieza México y están protegidos por la legislación aplicable.
+            Su reproducción total o parcial requiere autorización previa por escrito.
+          </p>
+
+          <h2 className="font-display text-2xl pt-6 text-[#1F1F25]">
+            6. Contacto y jurisdicción
+          </h2>
+          <p>
+            Para cualquier duda sobre estos términos, escríbenos a{' '}
+            <a href={`mailto:${EMAIL_CONTACTO}`} className="underline underline-offset-4">
+              {EMAIL_CONTACTO}
+            </a>
+            . Para la interpretación y cumplimiento de estos términos, las partes se
+            someten a la jurisdicción de los tribunales competentes de la Ciudad de México,
+            renunciando a cualquier otro fuero que pudiera corresponderles.
+          </p>
         </div>
       </div>
-    </div>
+    </>
   );
 }

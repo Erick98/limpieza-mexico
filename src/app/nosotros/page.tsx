@@ -1,86 +1,133 @@
-import { Award, Target, TrendingUp, Users } from "lucide-react";
-import { Metadata } from "next";
+import Link from 'next/link';
+import Image from 'next/image';
+import type { Metadata } from 'next';
+import JsonLd from '@/components/JsonLd';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import { pageMetadata, breadcrumbLd } from '@/lib/seo';
+import { ADDRESS, COBERTURA } from '@/lib/site';
 
-export const metadata: Metadata = {
-  title: "Nosotros | Nuestra Historia Corporativa",
-  description: "Conozca la historia, misión y certificaciones de Limpieza México. Más de una década transformando espacios de trabajo bajo estrictos estándares de calidad técnica y social.",
-  alternates: { canonical: "/nosotros" },
-  openGraph: { url: "/nosotros" },
-};
+const PATH = '/nosotros';
 
+export const metadata: Metadata = pageMetadata({
+  title: 'Nosotros',
+  description:
+    'Quiénes somos, cómo trabajamos y qué asumimos como empresa de limpieza: relación laboral formal, verificación del personal y supervisión de cada cuenta.',
+  path: PATH,
+});
+
+const MIGAS = [
+  { name: 'Inicio', path: '/' },
+  { name: 'Nosotros', path: PATH },
+];
+
+/**
+ * NOTA (2026-09-01): la versión anterior de esta página publicaba "15+ años",
+ * "2,500+ colaboradores", "15M m² limpiados mensuales" e "ISO 9001". Ninguno de esos
+ * datos está respaldado. Se eliminaron todos: publicar una certificación que no se
+ * tiene es, además de falso, un problema legal. Si Erick confirma cifras o
+ * certificaciones reales y verificables, se reincorporan aquí. PENDIENTE_ERICK.
+ */
 export default function Nosotros() {
   return (
-    <div className="pt-24 pb-16 min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <>
+      <JsonLd data={breadcrumbLd(MIGAS)} />
 
-        {/* Intro */}
-        <div className="flex flex-col lg:flex-row gap-16 items-center mb-24">
-          <div className="w-full lg:w-1/2">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">
-              Nuestra <span className="text-emerald-600">Historia</span>
-            </h1>
-            <p className="text-lg text-gray-600 leading-relaxed mb-6">
-              Limpieza México nació con una visión clara: dignificar el sector de limpieza e inyectarle toda la tecnología, procesos y garantías operativas de clase mundial que la industria moderna demanda.
-            </p>
-            <p className="text-lg text-gray-600 leading-relaxed">
-              Durante más de una década hemos capacitado a miles de colaboradores y transformado los entornos de trabajo y hogares de nuestros clientes bajo estándares estrictos de calidad, confianza y responsabilidad social.
-            </p>
-          </div>
-          <div className="w-full lg:w-1/2">
-            <div className="relative rounded-3xl overflow-hidden shadow-2xl h-[400px]">
-              <img src="/images/team_group.png" alt="Equipo de Limpieza México" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-emerald-900/20 mix-blend-multiply" />
-            </div>
-          </div>
-        </div>
-
-        {/* Stats / Numbers */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-24 text-center">
-          {[
-            { num: "15+", label: "Años de Experiencia", icon: <TrendingUp className="w-6 h-6 mx-auto mb-2 text-emerald-500" /> },
-            { num: "2,500+", label: "Colaboradores Activos", icon: <Users className="w-6 h-6 mx-auto mb-2 text-emerald-500" /> },
-            { num: "15M", label: "M² Limpiados Mensuales", icon: <Target className="w-6 h-6 mx-auto mb-2 text-emerald-500" /> },
-            { num: "ISO 9001", label: "Certificaciones", icon: <Award className="w-6 h-6 mx-auto mb-2 text-emerald-500" /> }
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-gray-50 rounded-2xl p-8 border border-gray-100">
-              {stat.icon}
-              <div className="text-4xl font-extrabold text-gray-900 mb-2">{stat.num}</div>
-              <div className="text-sm font-medium text-gray-500 uppercase tracking-wide">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Academy Section */}
-        <div className="bg-gray-950 text-white rounded-3xl p-12 lg:p-16 mb-24 overflow-hidden relative">
-          <div className="absolute right-0 top-0 w-1/3 h-full bg-emerald-600/20 blur-3xl z-0" />
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-block px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-full text-sm font-bold tracking-wide border border-emerald-500/30 mb-6">
-                EXCLUSIVA INICIATIVA INTERNA
-              </div>
-              <h2 className="text-4xl font-bold mb-6">Limpieza México Academy</h2>
-              <p className="text-xl text-gray-400 leading-relaxed mb-8">
-                El corazón de nuestro servicio de excelencia. Es nuestra universidad corporativa donde cada colaborador, desde limpieza hasta gerentes operativos, recibe capacitación teórica, técnica y de inteligencia emocional antes de pisar las instalaciones de un cliente.
-              </p>
-              <ul className="space-y-4 text-gray-300">
-                <li className="flex gap-3 items-center">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500" /> Capacitación en Insumos Químicos Seguros
-                </li>
-                <li className="flex gap-3 items-center">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500" /> Protocolos de Actuación en Riesgos Sanitarios
-                </li>
-                <li className="flex gap-3 items-center">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500" /> Clases de Desarrollo Humano y Confianza
-                </li>
-              </ul>
-            </div>
-            <div className="rounded-2xl overflow-hidden shadow-2xl h-[300px]">
-              <img src="/images/team_training.png" alt="Capacitación del personal en Limpieza México Academy" className="w-full h-full object-cover opacity-80" />
-            </div>
-          </div>
-        </div>
-
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-8">
+        <Breadcrumbs items={MIGAS} />
       </div>
-    </div>
+
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-12 grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <h1 className="font-display text-[32px] leading-tight sm:text-5xl mb-5">
+            Una empresa de limpieza que asume lo que otras dejan al cliente
+          </h1>
+          <p className="text-lg leading-relaxed text-[#1F1F25]/80">
+            Somos una empresa de servicios de limpieza y mantenimiento con base en Polanco,
+            Ciudad de México. Atendemos oficinas, corporativos, condominios, comercios y
+            hogares en la CDMX y la Zona Metropolitana.
+          </p>
+        </div>
+        <div className="rounded-xl overflow-hidden border border-[#EDEDEA]">
+          <Image
+            src="/images/team_group.png"
+            alt="Equipo de trabajo de Limpieza México"
+            width={900}
+            height={600}
+            sizes="(max-width: 1024px) 100vw, 520px"
+            className="w-full h-auto object-cover"
+          />
+        </div>
+      </section>
+
+      <section className="border-y border-[#EDEDEA]">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 space-y-4 text-[16px] leading-[1.75] text-[#1F1F25]/85">
+          <h2 className="font-display text-3xl mb-3 text-[#1F1F25]">Cómo trabajamos</h2>
+          <p>
+            La limpieza es un servicio donde casi todo el valor está en la parte que el
+            cliente no ve: quién es la persona que entra a su oficina o a su casa, si está
+            contratada en regla, si alguien la supervisó, y qué pasa el día que no puede
+            asistir. Esa es la parte que nosotros asumimos.
+          </p>
+          <p>
+            El personal que asignamos trabaja bajo relación laboral formal, con alta ante
+            el IMSS y prestaciones de ley. Antes de asignar a alguien a un inmueble
+            verificamos identidad, domicilio y referencias laborales. Cuando alguien falta,
+            la cobertura del relevo es obligación nuestra, no un problema del cliente.
+          </p>
+          <p>
+            Cada cuenta tiene un supervisor responsable con nombre y canal directo. Si algo
+            no se hizo como se acordó, hay a quién decírselo y un tiempo de respuesta
+            comprometido para corregirlo. Suena básico, pero es exactamente donde falla la
+            mayoría de los proveedores del sector.
+          </p>
+
+          <h2 className="font-display text-3xl pt-6 mb-3 text-[#1F1F25]">
+            Cómo cotizamos
+          </h2>
+          <p>
+            Por proyecto, no con tarifario. Calculamos personal, horas, insumos y equipo a
+            partir de la superficie real, el tipo de inmueble y la frecuencia que necesitas.
+            La propuesta se entrega con el alcance detallado y con lo que queda fuera del
+            alcance escrito de forma explícita, porque ahí nacen la mayoría de los
+            conflictos con proveedores de limpieza.
+          </p>
+          <p>
+            Para proyectos grandes hacemos una visita de levantamiento sin costo. Medir en
+            sitio evita las sorpresas que después se convierten en discusiones de factura.
+          </p>
+
+          <h2 className="font-display text-3xl pt-6 mb-3 text-[#1F1F25]">
+            Dónde operamos
+          </h2>
+          <ul className="space-y-2">
+            {COBERTURA.map((c) => (
+              <li key={c} className="flex gap-3">
+                <span aria-hidden="true" className="text-[#2C7A4B]">
+                  ·
+                </span>
+                <span>{c}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="pt-2">
+            Nuestras oficinas están en {ADDRESS.full}. Si tu inmueble está fuera de esa
+            cobertura, escríbenos: según el tamaño del proyecto podemos evaluarlo.
+          </p>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 text-center">
+        <h2 className="font-display text-3xl mb-4">¿Trabajamos juntos?</h2>
+        <p className="text-[16px] text-[#1F1F25]/75 mb-7">
+          Cuéntanos qué necesitas y te enviamos la propuesta sin costo.
+        </p>
+        <Link
+          href="/contacto"
+          className="inline-flex rounded-lg bg-[#2C7A4B] px-7 py-3.5 font-semibold text-white hover:bg-[#235f3b]"
+        >
+          Solicitar cotización
+        </Link>
+      </section>
+    </>
   );
 }

@@ -1,428 +1,247 @@
-"use client";
+import Link from 'next/link';
+import Image from 'next/image';
+import type { Metadata } from 'next';
+import Cotizador from '@/components/cotizador/Cotizador';
+import JsonLd from '@/components/JsonLd';
+import Faq from '@/components/ui/Faq';
+import { pageMetadata, faqLd } from '@/lib/seo';
+import { SERVICIOS, ZONAS, COBERTURA } from '@/lib/site';
+import { FAQ_GENERAL } from '@/lib/contenido';
 
-import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowRight, Building2, ShieldCheck, Users, Droplets, CheckCircle2 } from "lucide-react";
-import { SITE_URL, absoluteUrl } from "@/lib/site";
+export const metadata: Metadata = pageMetadata({
+  title: 'Servicio de limpieza en CDMX y Estado de México',
+  description:
+    'Servicio de limpieza para oficinas, hogares y espacios especializados en CDMX y Zona Metropolitana. Cotiza en línea en menos de un minuto, sin costo.',
+  path: '/',
+  keywords: [
+    'servicio de limpieza',
+    'servicio de limpieza en México',
+    'servicio de limpieza CDMX',
+    'empresa de limpieza CDMX',
+    'limpieza profesional Ciudad de México',
+  ],
+});
+
+// Solo las 6 preguntas más buscadas van al FAQPage del home; el resto vive en
+// /preguntas-frecuentes. Repetir el mismo FAQPage completo en varias URLs es
+// canibalización de rich results.
+const FAQ_HOME = FAQ_GENERAL.slice(0, 5);
 
 export default function Home() {
-  // JSON-LD LocalBusiness.
-  // ⚠️ REGLA: SOLO datos REALES publicados en el sitio. Prohibido inventar.
-  //  - `telephone`: OMITIDO a propósito. El repo solo tiene el placeholder
-  //    "+52 55 1234 5678" (y antes el falso "+525555555555"). Pendiente de que
-  //    Erick dé el teléfono real y verificable.
-  //  - `openingHours`: OMITIDO. No hay horarios publicados en el sitio.
-  //  - `sameAs`: OMITIDO. Los links sociales del footer son href="#" (sin URL real).
-  //  - `aggregateRating`: NO se agrega. Sin reseñas reales sería dato falso y Google penaliza.
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "@id": `${SITE_URL}/#localbusiness`,
-    "name": "Limpieza México",
-    "image": absoluteUrl("/images/og-image-default.jpg"),
-    "logo": absoluteUrl("/logo.png"),
-    "url": SITE_URL,
-    "email": "contacto@limpiezamexico.com",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "Sófocles 133, Polanco, Granada, Miguel Hidalgo",
-      "addressLocality": "Ciudad de México",
-      "addressRegion": "CDMX",
-      "postalCode": "11530",
-      "addressCountry": "MX"
-    },
-    "areaServed": [
-      { "@type": "Country", "name": "México" },
-      { "@type": "AdministrativeArea", "name": "Ciudad de México" }
-    ],
-    "description": "La empresa líder en soluciones de limpieza corporativa, ejecutiva, doméstica y servicios especializados en todo México.",
-    "priceRange": "$$",
-    "hasOfferCatalog": {
-      "@type": "OfferCatalog",
-      "name": "Servicios de Limpieza México",
-      "itemListElement": [
-        {
-          "@type": "Offer",
-          "itemOffered": { "@type": "Service", "name": "Limpieza Corporativa", "url": absoluteUrl("/servicios-corporativos") }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": { "@type": "Service", "name": "Servicios Executive", "url": absoluteUrl("/servicios-executive") }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": { "@type": "Service", "name": "Servicios Transversales", "url": absoluteUrl("/servicios-transversales") }
-        },
-        {
-          "@type": "Offer",
-          "itemOffered": { "@type": "Service", "name": "Reclutamiento Doméstico", "url": absoluteUrl("/reclutamiento-domestico") }
-        }
-      ]
-    }
-  };
-
   return (
-    <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Video/Image & Overlay */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-gray-900/40 z-10" />
-          <motion.div 
-            initial={{ scale: 1.1 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 20, ease: "easeOut" }}
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: 'url("/images/hero_ultra_premium.png")' }}
-          />
-        </div>
+    <>
+      <JsonLd data={faqLd([...FAQ_HOME])} />
 
-        <div className="relative z-20 max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 w-full pt-32 pb-16">
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="max-w-4xl"
-          >
-            <div className="inline-flex items-center gap-2 sm:gap-3 px-3 py-1 sm:px-4 sm:py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-6 sm:mb-8 shadow-sm">
-              <span className="relative flex h-2 w-2 sm:h-3 sm:w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 sm:h-3 sm:w-3 bg-emerald-500"></span>
-              </span>
-              <span className="text-[10px] sm:text-sm font-semibold text-emerald-100 tracking-wider uppercase">El Estándar de Oro en Limpieza</span>
-            </div>
-            <h1 className="text-[36px] leading-[1.1] sm:text-7xl lg:text-[5.5rem] font-black text-white tracking-tight sm:tracking-tighter mb-4 sm:mb-6">
-              Excelencia Absoluta en <br/><span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Limpieza B2B</span>
-            </h1>
-            <p className="text-base sm:text-xl text-gray-300 mb-8 max-w-2xl leading-relaxed font-light">
-              Elevando la imagen de las empresas líderes en México mediante operaciones de mantenimiento hiper-profesionales.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-center">
-              <Link 
-                href="/contacto" 
-                className="group w-full sm:w-auto relative inline-flex justify-center items-center gap-2 px-6 py-4 sm:px-10 sm:py-5 rounded-full bg-orange-500/90 backdrop-blur-sm overflow-hidden text-white font-bold text-base sm:text-lg transition-all shadow-[0_0_30px_rgba(249,115,22,0.3)] hover:shadow-[0_0_50px_rgba(249,115,22,0.5)] hover:bg-orange-600 transform hover:-translate-y-1 border border-orange-400/30 animate-[pulse_3s_ease-in-out_infinite]"
-              >
-                <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                Cotiza en 2 Minutos <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" />
-              </Link>
-              <Link 
-                href="/servicios-corporativos" 
-                className="w-full sm:w-auto inline-flex justify-center items-center gap-2 px-6 py-3 sm:px-8 sm:py-5 rounded-full bg-white/5 hover:bg-white/10 text-white font-semibold text-sm sm:text-base backdrop-blur-md border border-white/10 transition-colors"
-              >
-                Ver Casos de Éxito
-              </Link>
-            </div>
-            
-            <div className="mt-8 sm:mt-12 flex flex-col gap-4">
-               <div className="grid grid-cols-2 sm:flex sm:flex-row sm:flex-wrap items-start sm:items-center gap-2 sm:gap-8 text-gray-300 font-medium">
-                 <div className="flex items-center gap-1.5 bg-white/10 sm:bg-white/5 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-full border border-white/10 shadow-sm backdrop-blur-sm"><CheckCircle2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-emerald-400 shrink-0"/><span className="text-[11px] sm:text-sm uppercase tracking-wide">Satisfacción</span></div>
-                 <div className="flex items-center gap-1.5 bg-white/10 sm:bg-white/5 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-full border border-white/10 shadow-sm backdrop-blur-sm"><CheckCircle2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-emerald-400 shrink-0"/><span className="text-[11px] sm:text-sm uppercase tracking-wide">Verificado</span></div>
-                 <div className="flex items-center gap-1.5 bg-white/10 sm:bg-white/5 px-2.5 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-full border border-white/10 shadow-sm backdrop-blur-sm col-span-2 sm:col-span-1 justify-center sm:justify-start"><CheckCircle2 className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-emerald-400 shrink-0"/><span className="text-[11px] sm:text-sm uppercase tracking-wide">Cobertura Nacional</span></div>
-               </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Social Proof Marquee Belt */}
-      <section className="bg-white border-y border-gray-100 py-10 overflow-hidden relative">
-         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 text-center">
-            <p className="text-sm font-bold text-gray-400 uppercase tracking-widest">Corporativos que confían en nuestra excelencia</p>
-         </div>
-         <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-white to-transparent z-10"></div>
-         <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-white to-transparent z-10"></div>
-         <div className="flex w-fit animate-marquee items-center opacity-70 hover:opacity-100 transition-opacity duration-500">
-            {[...Array(3)].map((_, j) => (
-              <div key={j} className="flex gap-20 px-10 items-center">
-                 <span className="font-black text-2xl tracking-tighter text-gray-800">BBVA</span>
-                 <span className="font-bold text-2xl tracking-widest text-gray-800">WeWork</span>
-                 <span className="font-serif italic font-bold text-2xl text-gray-800">Fibra Uno</span>
-                 <span className="font-black text-2xl tracking-tighter text-gray-800">LIVERPOOL</span>
-                 <span className="font-bold text-2xl text-gray-800">Grupo Carso</span>
-              </div>
-            ))}
-         </div>
-      </section>
-
-      {/* Services Pillars (Glassmorphism on Dark Mesh) */}
-      <section className="py-24 relative overflow-hidden bg-gray-900">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_0%_0%,_rgba(16,185,129,0.15)_0%,_transparent_50%),radial-gradient(circle_at_100%_100%,_rgba(20,184,166,0.1)_0%,_transparent_50%)]"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
-            className="text-center md:text-left mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6"
-          >
-            <div className="max-w-2xl">
-              <h2 className="text-emerald-400 font-bold tracking-[0.2em] text-xs mb-3">INFRAESTRUCTURA OPERATIVA</h2>
-              <h3 className="text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[1.1]">
-                Soluciones B2B Adaptadas
-              </h3>
-            </div>
-            <p className="text-gray-400 max-w-md text-lg leading-relaxed font-light">
-              Diseñamos operativos de servicio enfocados en la calidad técnica, máxima eficiencia y sustentabilidad medioambiental corporativa.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                title: "Corporativo",
-                description: "Mantenimiento integral para oficinas y complejos corporativos A+.",
-                icon: <Building2 className="w-8 h-8 text-emerald-400" />,
-                link: "/servicios-corporativos",
-                bgImg: "/images/service_office.png",
-              },
-              {
-                title: "Executive",
-                description: "Tecnología de punta, robots autónomos y sanitización técnica.",
-                icon: <ShieldCheck className="w-8 h-8 text-emerald-400" />,
-                link: "/servicios-executive",
-                bgImg: "/images/service_sanitization.png",
-              },
-              {
-                title: "Staffing",
-                description: "Personal corporativo e industrial altamente calificado y afianzado.",
-                icon: <Users className="w-8 h-8 text-emerald-400" />,
-                link: "/reclutamiento-domestico",
-                bgImg: "/images/service_industrial.png",
-              },
-              {
-                title: "Especializado",
-                description: "Control de plagas, alturas y blindaje de espacios sensibles.",
-                icon: <Droplets className="w-8 h-8 text-emerald-400" />,
-                link: "/servicios-transversales",
-                bgImg: "/images/service_inhouse.png",
-              }
-            ].map((service, idx) => (
-              <motion.div 
-                key={idx}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: idx * 0.1 }}
-                whileHover={{ y: -10 }}
-                className="group relative rounded-3xl overflow-hidden bg-white/5 backdrop-blur-xl hover:bg-white/10 transition-all duration-300 border border-white/10 flex flex-col h-full shadow-[0_8px_32px_0_rgba(0,0,0,0.3)]"
-              >
-                <div className="h-48 relative overflow-hidden border-b border-white/10">
-                  <div className="absolute inset-0 bg-gray-900/40 group-hover:bg-gray-900/10 transition-colors z-10" />
-                  <img src={service.bgImg} alt={service.title} className="w-full h-full object-cover transform scale-100 group-hover:scale-110 transition-transform duration-700" />
-                </div>
-                <div className="p-8 flex-1 flex flex-col relative z-20">
-                  <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center mb-6 shadow-inner backdrop-blur-md">
-                    {service.icon}
-                  </div>
-                  <h4 className="text-2xl font-bold text-white mb-3 tracking-tight">{service.title}</h4>
-                  <p className="text-gray-400 mb-6 flex-1 text-sm font-light leading-relaxed">{service.description}</p>
-                  <Link 
-                    href={service.link}
-                    className="inline-flex items-center text-emerald-400 font-bold group-hover:text-emerald-300 transition-colors text-sm hover:underline"
-                  >
-                    Detalles Técnicos <ArrowRight className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Us */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, x: -30 }}
-              whileInView={{ opacity: 1, scale: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.7 }}
-              className="relative"
-            >
-              <div className="absolute inset-0 bg-emerald-500/10 transform translate-x-4 translate-y-4 rounded-3xl" />
-              <img 
-                src="/images/dom_cleaning.png" 
-                alt="Profesionales de limpieza" 
-                className="relative z-10 rounded-3xl object-cover w-full h-[600px] shadow-2xl"
-              />
-              <div className="absolute -bottom-8 -right-8 bg-white p-6 rounded-2xl shadow-xl z-20 flex items-center gap-4">
-                {/* Avatares: antes usaban i.pravatar.cc (caras falsas generadas).
-                    Removida la dependencia externa: baja credibilidad + penaliza LCP.
-                    Placeholder local con iniciales hasta tener clientes/logos reales. */}
-                <div className="flex -space-x-3" aria-hidden="true">
-                  {["LM", "AC", "GR", "+"].map((ini) => (
-                    <span
-                      key={ini}
-                      className="w-12 h-12 rounded-full border-2 border-white bg-emerald-600 text-white flex items-center justify-center text-xs font-bold select-none"
-                    >
-                      {ini}
-                    </span>
-                  ))}
-                </div>
-                <div>
-                  <p className="text-sm text-gray-500 font-medium">Más de</p>
-                  <p className="text-xl font-bold text-gray-900">1,500 Clientes</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-            >
-              <h2 className="text-emerald-700 font-black tracking-widest uppercase text-xs mb-3">La Diferencia</h2>
-              <h3 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight mb-8 leading-tight">
-                Limpieza profunda con tecnología de punta
-              </h3>
-              
-              <div className="space-y-6">
-                {[
-                  {
-                    title: "Personal Altamente Capacitado",
-                    desc: "Todo nuestro personal pasa por rigurosos filtros de confianza y constante capacitación técnica."
-                  },
-                  {
-                    title: "Productos Certificados",
-                    desc: "Utilizamos químicos biodegradables de grado industrial que protegen sus instalaciones y la salud."
-                  },
-                  {
-                    title: "Tecnología Autónoma disponible",
-                    desc: "Proveemos robots de limpieza de última generación para operaciones continuas en grandes superficies."
-                  },
-                  {
-                    title: "Supervisión Digital en Tiempo Real",
-                    desc: "Tendrá acceso a un portal exclusivo para ver reportes, asistencias y solicitar nuevos servicios."
-                  }
-                ].map((item, idx) => (
-                  <motion.div 
-                    key={idx}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: 0.3 + (idx * 0.1) }}
-                    className="flex gap-4 p-4 rounded-2xl hover:bg-emerald-50/50 transition-colors border border-transparent hover:border-emerald-100 group cursor-pointer"
-                  >
-                    <div className="bg-emerald-100 p-2 rounded-xl h-fit group-hover:scale-110 group-hover:bg-emerald-200 transition-all">
-                       <CheckCircle2 className="w-5 h-5 text-emerald-600 flex-shrink-0" />
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-bold text-gray-900 group-hover:text-emerald-800 transition-colors">{item.title}</h4>
-                      <p className="text-gray-600 mt-1 leading-relaxed">{item.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Platform & Technology Section */}
-      <section className="py-24 bg-gray-50 border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row-reverse gap-16 items-center">
-            
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, x: 30 }}
-              whileInView={{ opacity: 1, scale: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.7 }}
-              className="lg:w-1/2 relative"
-            >
-              <div className="absolute inset-0 bg-emerald-500/10 transform -translate-x-4 -translate-y-4 rounded-3xl" />
-              <img 
-                src="/images/tech_dashboard.png" 
-                alt="Dashboard corporativo de Limpieza México" 
-                className="relative z-10 rounded-3xl object-cover w-full shadow-2xl border border-gray-200/50"
-              />
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.7, delay: 0.2 }}
-              className="lg:w-1/2"
-            >
-              <h2 className="text-emerald-700 font-black tracking-widest uppercase text-xs mb-3">Nuestra Tecnología</h2>
-              <h3 className="text-4xl md:text-5xl font-black text-gray-900 tracking-tight mb-6 leading-tight">
-                Control Total en la Palma de su Mano
-              </h3>
-              <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                No somos solo una empresa de limpieza; somos una <strong className="text-gray-900">plataforma tecnológica integral</strong>. Hemos desarrollado un portal exclusivo donde nuestros clientes pueden auditar y gestionar el servicio en tiempo real.
+      {/* ---------------- HERO + COTIZADOR ---------------- */}
+      <section className="border-b border-[#EDEDEA] bg-[#EDEDEA]/40">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6 lg:py-16">
+          {/* En móvil el cotizador va PRIMERO (order-1) y los bullets después.
+              Alguien que buscó "limpieza cdmx" desde el celular tiene que ver el
+              formulario sin hacer scroll; el texto de apoyo puede esperar. */}
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-start">
+            <div className="order-2 lg:order-1 lg:pt-6">
+              <h1 className="font-display text-[28px] leading-[1.2] sm:text-5xl lg:text-[3.4rem] mb-4 lg:mb-5 -mt-2 lg:mt-0">
+                Servicio de limpieza en CDMX y Zona Metropolitana
+              </h1>
+              <p className="text-[17px] lg:text-lg leading-relaxed text-[#1F1F25]/80 mb-6 max-w-xl">
+                Limpieza de oficinas, hogares y espacios especializados con personal
+                contratado formalmente, insumos incluidos y un supervisor responsable de
+                tu cuenta. Dinos qué necesitas y te enviamos la cotización.
               </p>
-              
-              <ul className="space-y-4">
+
+              <ul className="space-y-2.5 text-[15px] mb-8">
                 {[
-                  "Visualización de reportes fotográficos de supervisión.",
-                  "Cotizador en línea de servicios adicionales o eventuales.",
-                  "Expedientes de los colaboradores y pagos seguros.",
-                  "Historial de pólizas, facturas y comprobantes."
-                ].map((feature, idx) => (
-                   <li key={idx} className="flex gap-3 items-center text-gray-700 font-medium">
-                      <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0" />
-                      {feature}
-                   </li>
+                  'Personal con alta en el IMSS y antecedentes verificados',
+                  'Insumos, equipo y supervisión incluidos en la propuesta',
+                  'Servicio único o recurrente, en horario hábil o nocturno',
+                  'Facturación con CFDI vigente',
+                ].map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span aria-hidden="true" className="text-[#2C7A4B] font-bold shrink-0">
+                      ✓
+                    </span>
+                    <span>{item}</span>
+                  </li>
                 ))}
               </ul>
-              
-              <div className="mt-10">
-                 <Link href="/login" className="inline-flex items-center gap-2 text-emerald-600 font-bold hover:text-emerald-800 transition-colors">
-                   Descubrir el Portal de Clientes <ArrowRight className="w-4 h-4"/>
-                 </Link>
-              </div>
-            </motion.div>
 
+              <div className="hidden lg:block">
+                <p className="text-sm text-[#9B9BA3]">
+                  Cobertura: {COBERTURA.join(' · ')}
+                </p>
+              </div>
+            </div>
+
+            {/* El cotizador vive en el hero, no escondido en /contacto.
+                Es lo primero que ve alguien que llegó buscando "limpieza cdmx". */}
+            <div id="cotizar" className="order-1 lg:order-2 scroll-mt-20">
+              <Cotizador />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 relative overflow-hidden bg-gray-950">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-emerald-900/20 z-10" />
-          <img 
-            src="/images/cta_modern_building.png" 
-            alt="Corporate background" 
-            className="w-full h-full object-cover opacity-20"
-          />
-        </div>
-        <div className="relative z-20 max-w-5xl mx-auto px-4 text-center">
-          <h2 className="text-5xl md:text-6xl font-black text-white mb-6 tracking-tight">¿Listo para transformar sus espacios?</h2>
-          <p className="text-xl md:text-2xl text-gray-300/90 mb-10 max-w-3xl mx-auto leading-relaxed font-medium">
-            Contacte hoy mismo con uno de nuestros ejecutivos y diseñemos un plan a la medida de los requerimientos de su empresa o residencia.
-          </p>
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="flex flex-col sm:flex-row justify-center gap-4"
-          >
-            <Link 
-              href="/contacto" 
-              className="group relative overflow-hidden px-8 py-4 rounded-full bg-emerald-500 text-gray-950 font-bold transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] hover:shadow-[0_0_40px_rgba(16,185,129,0.6)] hover:-translate-y-1"
-            >
-              <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-              Contactar Asesor
-            </Link>
-            <Link 
-              href="/login" 
-              className="px-8 py-4 rounded-full bg-white hover:bg-gray-100 text-gray-900 font-bold transition-all hover:-translate-y-1"
-            >
-              Iniciar sesión
-            </Link>
-          </motion.div>
+      {/* ---------------- SERVICIOS ---------------- */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
+        <h2 className="font-display text-3xl sm:text-4xl mb-3">
+          Qué servicios de limpieza ofrecemos
+        </h2>
+        <p className="text-[17px] text-[#1F1F25]/75 max-w-2xl mb-9">
+          Tres líneas de servicio que cubren desde la oficina corporativa hasta la casa
+          particular. Cada una se cotiza por proyecto, según superficie y frecuencia.
+        </p>
+
+        <div className="grid gap-6 md:grid-cols-3">
+          {SERVICIOS.map((s) => (
+            <article key={s.slug} className="border border-[#EDEDEA] rounded-xl p-6">
+              <h3 className="font-display text-2xl mb-3">{s.nombre}</h3>
+              <p className="text-[15px] leading-relaxed text-[#1F1F25]/75 mb-5">
+                {s.resumen}
+              </p>
+              <Link
+                href={s.slug}
+                className="font-semibold underline underline-offset-4 decoration-[#2C7A4B] decoration-2"
+              >
+                Ver detalle del servicio
+              </Link>
+            </article>
+          ))}
         </div>
       </section>
-    </div>
+
+      {/* ---------------- CUERPO EDITORIAL (intención de búsqueda) ---------------- */}
+      <section className="border-y border-[#EDEDEA] bg-white">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 grid lg:grid-cols-[1.4fr_1fr] gap-12">
+          <div className="max-w-2xl">
+            <h2 className="font-display text-3xl sm:text-4xl mb-5">
+              Qué esperar de una empresa de limpieza en la Ciudad de México
+            </h2>
+            <div className="space-y-4 text-[16px] leading-[1.75] text-[#1F1F25]/85">
+              <p>
+                Contratar un servicio de limpieza en CDMX tiene una complicación que casi
+                nadie menciona al principio: la parte laboral. Cuando una empresa o una
+                familia contrata directamente, asume el alta ante el IMSS, las
+                prestaciones, las incapacidades, el aguinaldo y la responsabilidad si esa
+                persona sufre un accidente dentro del inmueble. Cuando el servicio se
+                terceriza, esa carga la asume el proveedor. Esa es la diferencia de fondo
+                entre pagar por horas a alguien y contratar a una empresa formal.
+              </p>
+              <p>
+                La segunda diferencia es la continuidad. Un servicio serio no se cae
+                porque alguien se enfermó: existe personal de relevo y un supervisor que
+                responde. En una oficina eso importa mucho, porque la limpieza es de esas
+                cosas que solo se notan cuando fallan —el baño sin papel a media junta, la
+                recepción sin barrer cuando llega un cliente.
+              </p>
+              <p>
+                La tercera es el alcance real del trabajo. Buena parte de los conflictos
+                con proveedores de limpieza nacen de expectativas que nunca se pusieron
+                por escrito: quién limpia los vidrios exteriores, cada cuándo se lava la
+                cisterna, si el desengrase de cocina entra en la tarifa mensual o se cobra
+                aparte. Por eso cotizamos con desglose: qué se hace, cada cuándo, con
+                cuánta gente y qué queda fuera. Si algo no está en la propuesta, se dice
+                antes, no después.
+              </p>
+              <p>
+                Sobre el precio: no publicamos una lista fija porque sería engañosa. El
+                costo de limpiar 80 m² de departamento una vez al mes no se parece en nada
+                al de un corporativo de 3,000 m² con servicio diario y turno nocturno.
+                Cotizamos a partir de la superficie, el tipo de inmueble, la frecuencia y
+                el horario. Es gratis, no compromete a nada y normalmente basta con
+                responder las tres preguntas del formulario.
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <div className="rounded-xl overflow-hidden border border-[#EDEDEA]">
+              <Image
+                src="/images/service_office.png"
+                alt="Personal de limpieza atendiendo un área de oficinas"
+                width={800}
+                height={600}
+                sizes="(max-width: 1024px) 100vw, 420px"
+                className="w-full h-auto object-cover"
+              />
+            </div>
+            <div className="mt-6 rounded-xl bg-[#EDEDEA]/60 p-6">
+              <h3 className="font-display text-xl mb-3">Zonas con atención frecuente</h3>
+              <ul className="space-y-2 text-[15px]">
+                {ZONAS.map((z) => (
+                  <li key={z.slug}>
+                    <Link href={z.slug} className="underline underline-offset-4 decoration-[#9B9BA3]">
+                      Servicio de limpieza en {z.nombre}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+              <p className="text-sm text-[#9B9BA3] mt-4">
+                Cubrimos toda la CDMX y la Zona Metropolitana. Estas son las zonas donde
+                tenemos mayor densidad de operación.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------------- CÓMO FUNCIONA ---------------- */}
+      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
+        <h2 className="font-display text-3xl sm:text-4xl mb-9">Cómo se solicita el servicio</h2>
+        <ol className="grid gap-8 md:grid-cols-3 counter-reset">
+          {[
+            {
+              t: 'Nos dices qué necesitas',
+              d: 'Tres preguntas en el formulario: tipo de servicio, tamaño y frecuencia, y cómo contactarte. Toma menos de un minuto desde el celular.',
+            },
+            {
+              t: 'Armamos la propuesta',
+              d: 'Calculamos personal, horas e insumos para tu espacio. Si el proyecto lo amerita, agendamos una visita sin costo para medir en sitio.',
+            },
+            {
+              t: 'Arranca el servicio',
+              d: 'Se define fecha, horario y accesos. Queda asignado un supervisor responsable y un canal directo para reportar cualquier tema.',
+            },
+          ].map((p, i) => (
+            <li key={p.t}>
+              <p className="font-display text-4xl text-[#9B9BA3] mb-2">{i + 1}</p>
+              <h3 className="font-semibold text-lg mb-2">{p.t}</h3>
+              <p className="text-[15px] leading-relaxed text-[#1F1F25]/75">{p.d}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      {/* ---------------- FAQ ---------------- */}
+      <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-16">
+        <Faq faqs={[...FAQ_HOME]} />
+        <p className="mt-6">
+          <Link
+            href="/preguntas-frecuentes"
+            className="font-semibold underline underline-offset-4 decoration-[#2C7A4B] decoration-2"
+          >
+            Ver todas las preguntas frecuentes
+          </Link>
+        </p>
+      </section>
+
+      {/* ---------------- CTA FINAL ---------------- */}
+      <section className="bg-[#1F1F25] text-white">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 text-center">
+          <h2 className="font-display text-3xl sm:text-4xl mb-4">
+            Cotiza tu servicio de limpieza
+          </h2>
+          <p className="text-[17px] text-white/75 mb-8">
+            Sin costo y sin compromiso. Un asesor revisa tu solicitud y te responde con la
+            propuesta.
+          </p>
+          <Link
+            href="/contacto"
+            className="inline-flex rounded-lg bg-[#2C7A4B] px-8 py-4 font-semibold text-white hover:bg-[#235f3b]"
+          >
+            Solicitar cotización
+          </Link>
+        </div>
+      </section>
+    </>
   );
 }
