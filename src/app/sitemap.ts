@@ -1,45 +1,24 @@
-import { MetadataRoute } from 'next';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
+import type { MetadataRoute } from 'next';
+import { absoluteUrl, STATIC_ROUTES } from '@/lib/site';
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://limpiezamexico.com';
+/**
+ * Sitemap 100% estático y verificado.
+ *
+ * BUG HISTÓRICO QUE NO SE DEBE REPETIR: el sitemap vivo declaraba 4 rutas que
+ * respondían 404, y además leía el blog de Firestore en build time (si Firestore
+ * fallaba, el sitemap salía incompleto de forma silenciosa).
+ *
+ * Ahora la única fuente es STATIC_ROUTES en src/lib/site.ts. Cada ruta de esa lista
+ * corresponde a un archivo page.tsx real. Regla: si borras una página, bórrala de
+ * STATIC_ROUTES y agrega su redirect 301 en next.config.ts.
+ */
+export default function sitemap(): MetadataRoute.Sitemap {
+  const lastModified = new Date();
 
-  // Rutas estáticas principales
-  const routes = [
-    '',
-    '/nosotros',
-    '/contacto',
-    '/servicios/corporativos',
-    '/servicios/executive',
-    '/servicios/domestico',
-    '/servicios/transversales',
-    '/blog',
-    '/login'
-  ].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date().toISOString(),
-    changeFrequency: 'weekly' as const,
-    priority: route === '' ? 1 : 0.8,
+  return STATIC_ROUTES.map((route) => ({
+    url: absoluteUrl(route.path),
+    lastModified,
+    changeFrequency: route.changeFrequency,
+    priority: route.priority,
   }));
-
-  // Intentar obtener los artículos del blog dinámicamente
-  try {
-    const querySnapshot = await getDocs(collection(db, 'blog_posts'));
-    const blogRoutes = querySnapshot.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        url: `${baseUrl}/blog/${data.slug || doc.id}`,
-        lastModified: data.updatedAt || data.createdAt || new Date().toISOString(),
-        changeFrequency: 'monthly' as const,
-        priority: 0.6,
-      };
-    });
-    
-    return [...routes, ...blogRoutes];
-  } catch (error) {
-    console.warn('Error fetching blog posts for sitemap:', error);
-    // Si falla (ej. por permisos o build time), retornamos al menos las estáticas
-    return routes;
-  }
 }

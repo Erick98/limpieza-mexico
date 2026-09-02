@@ -1,200 +1,109 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import Image from "next/image";
-import { Menu, X, ChevronDown } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+/**
+ * Navbar. Cliente solo por el toggle del menú móvil (<details> nativo evitaría el JS,
+ * pero necesitamos cerrar al navegar). Sin framer-motion, sin dropdown en hover:
+ * los servicios se listan planos, que además reparte mejor el enlazado interno.
+ */
 
-const menuItems = [
-  { name: "Inicio", href: "/" },
-  {
-    name: "Servicios",
-    href: "/servicios-corporativos",
-    subItems: [
-      { name: "Corporativos (Oficinas, Condominios)", href: "/servicios-corporativos" },
-      { name: "Executive (Robots, Sanitización)", href: "/servicios-executive" },
-      { name: "Reclutamiento (Doméstico, Niñeras)", href: "/reclutamiento-domestico" },
-      { name: "Transversales (Mantenimiento)", href: "/servicios-transversales" },
-    ],
-  },
-  { name: "Nosotros", href: "/nosotros" },
-  { name: "Blog", href: "/blog" },
+import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { SERVICIOS } from '@/lib/site';
+
+const ENLACES = [
+  ...SERVICIOS.map((s) => ({ href: s.slug, label: s.corto })),
+  { href: '/servicio-de-limpieza-cdmx', label: 'CDMX' },
+  { href: '/preguntas-frecuentes', label: 'Preguntas' },
+  { href: '/nosotros', label: 'Nosotros' },
 ];
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [abierto, setAbierto] = useState(false);
   const pathname = usePathname();
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  // const { user } = useAuth(); // Uncomment if useAuth is needed
-
-  // Páginas con fondo oscuro en el hero que requieren menú con texto blanco inicialmente
-  const isDarkHeroPage = pathname === "/" || pathname === "/servicios-executive";
-  // Mostrar la versión "clara" (fondo, texto oscuro) si el usuario hizo scroll o si NO estamos en una página de fondo oscuro
-  const showLightNavbar = scrolled || !isDarkHeroPage;
-
-  // Transparencia en Home pre-scroll, solido en las demás
-  const isHome = pathname === '/'; // This variable was added in the instruction's code edit
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
-    <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 print:hidden ${pathname.startsWith('/landing') ? 'hidden' : ''} ${showLightNavbar ? "bg-white/80 backdrop-blur-md shadow-sm py-3" : "bg-transparent py-5"
-        }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2">
-            <div className="transition-transform hover:scale-105">
-              <Image
-                src="/logo.png"
-                alt="Limpieza México"
-                width={250}
-                height={80}
-                className={`w-auto h-14 lg:h-16 object-contain transition-all duration-300 drop-shadow-md`}
-                priority
-              />
-            </div>
+    <header className="sticky top-0 z-50 bg-white border-b border-[#EDEDEA]">
+      <nav
+        aria-label="Navegación principal"
+        className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8"
+      >
+        <div className="flex h-16 items-center justify-between gap-4">
+          <Link href="/" className="flex items-center shrink-0" aria-label="Limpieza México, inicio">
+            <Image
+              src="/logo_dark.png"
+              alt="Limpieza México"
+              width={200}
+              height={64}
+              priority
+              className="h-11 lg:h-12 w-auto object-contain"
+            />
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-8">
-            {menuItems.map((item) => (
-              <div
-                key={item.name}
-                className="relative group"
-                onMouseEnter={() => setActiveDropdown(item.name)}
-                onMouseLeave={() => setActiveDropdown(null)}
-              >
-                <Link
-                  href={item.href}
-                  className={`flex items-center gap-1 text-sm font-medium transition-colors ${pathname === item.href
-                      ? "text-emerald-500"
-                      : showLightNavbar
-                        ? "text-gray-700 hover:text-emerald-500"
-                        : "text-gray-100 hover:text-white"
-                    }`}
-                >
-                  {item.name}
-                  {item.subItems && (
-                    <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
-                  )}
-                </Link>
-
-                {/* Dropdown Menu */}
-                {item.subItems && (
-                  <AnimatePresence>
-                    {activeDropdown === item.name && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute left-0 top-full pt-4 w-56"
-                      >
-                        <div className="bg-white rounded-xl shadow-xl overflow-hidden py-2 border border-gray-100">
-                          {item.subItems.map((subItem) => (
-                            <Link
-                              key={subItem.name}
-                              href={subItem.href}
-                              className="block px-4 py-2 text-sm text-gray-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
-                            >
-                              {subItem.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                )}
-              </div>
-            ))}
-
-            <Link
-              href="/login"
-              className={`text-sm font-medium transition-colors ${
-                showLightNavbar
-                  ? "text-gray-500 hover:text-emerald-600"
-                  : "text-gray-300 hover:text-white"
-              }`}
-            >
-              Portal de Clientes
-            </Link>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="lg:hidden flex items-center">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className={`p-2 rounded-md ${showLightNavbar ? "text-gray-900" : "text-white"}`}
-            >
-              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white border-t border-gray-100 shadow-xl overflow-y-auto max-h-[calc(100vh-5rem)]"
-          >
-            <div className="px-4 pt-2 pb-6 space-y-1">
-              {menuItems.map((item) => (
-                <div key={item.name}>
+          <ul className="hidden lg:flex items-center gap-6 text-[15px]">
+            {ENLACES.map((e) => {
+              const activo = pathname === e.href;
+              return (
+                <li key={e.href}>
                   <Link
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className={`block px-3 py-3 rounded-md text-base font-medium ${pathname === item.href
-                        ? "text-emerald-600 bg-emerald-50"
-                        : "text-gray-900 hover:bg-gray-50"
-                      }`}
+                    href={e.href}
+                    aria-current={activo ? 'page' : undefined}
+                    className={`hover:underline underline-offset-4 decoration-2 ${
+                      activo ? 'font-semibold underline decoration-[#2C7A4B]' : ''
+                    }`}
                   >
-                    {item.name}
+                    {e.label}
                   </Link>
-                  {item.subItems && (
-                    <div className="pl-6 pb-2 space-y-1">
-                      {item.subItems.map((subItem) => (
-                        <Link
-                          key={subItem.name}
-                          href={subItem.href}
-                          onClick={() => setIsOpen(false)}
-                          className="block px-3 py-2 rounded-md text-sm text-gray-600 hover:text-emerald-600 hover:bg-gray-50"
-                        >
-                          {subItem.name}
-                        </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-              <div className="pt-4 pb-2">
+                </li>
+              );
+            })}
+            <li>
+              <Link
+                href="/contacto"
+                className="rounded-lg bg-[#2C7A4B] px-4 py-2.5 font-semibold text-white hover:bg-[#235f3b]"
+              >
+                Cotizar
+              </Link>
+            </li>
+          </ul>
+
+          <button
+            type="button"
+            onClick={() => setAbierto((v) => !v)}
+            aria-expanded={abierto}
+            aria-controls="menu-movil"
+            className="lg:hidden rounded-lg border-2 border-[#EDEDEA] px-3 py-2 font-medium"
+          >
+            {abierto ? 'Cerrar' : 'Menú'}
+          </button>
+        </div>
+
+        {abierto && (
+          <ul id="menu-movil" className="lg:hidden pb-4 space-y-1 border-t border-[#EDEDEA] pt-3">
+            {ENLACES.map((e) => (
+              <li key={e.href}>
                 <Link
-                  href="/login"
-                  onClick={() => setIsOpen(false)}
-                  className="block w-full text-center px-4 py-3 rounded-md border border-transparent text-base font-medium text-white bg-emerald-600 hover:bg-emerald-700 shadow-sm"
+                  href={e.href}
+                  onClick={() => setAbierto(false)}
+                  className="block rounded-lg px-3 py-3 hover:bg-[#EDEDEA]"
                 >
-                  Portal de Clientes
+                  {e.label}
                 </Link>
-              </div>
-            </div>
-          </motion.div>
+              </li>
+            ))}
+            <li>
+              <Link
+                href="/contacto"
+                onClick={() => setAbierto(false)}
+                className="block rounded-lg bg-[#2C7A4B] px-3 py-3 text-center font-semibold text-white"
+              >
+                Cotizar ahora
+              </Link>
+            </li>
+          </ul>
         )}
-      </AnimatePresence>
-    </nav>
+      </nav>
+    </header>
   );
 }

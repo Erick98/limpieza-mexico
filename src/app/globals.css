@@ -1,12 +1,65 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/**
+ * Tokens de marca — Manual de Marca Bernav Capital v1.
+ * Playfair Display (títulos institucionales) + Inter (cuerpo y operativo).
+ * Grises: 10 #EDEDEA · 40 #9B9BA3 · 80 #1F1F25.
+ * Funcionales: éxito #2C7A4B · alerta #C97A1E · error #A93226.
+ */
 @theme {
   --font-sans: var(--font-inter);
+  --font-display: var(--font-playfair);
+
+  --color-tinta: #1F1F25;
+  --color-gris-40: #9B9BA3;
+  --color-gris-10: #EDEDEA;
+  --color-marca: #2C7A4B;
+  --color-marca-oscuro: #235f3b;
+  --color-alerta: #C97A1E;
+  --color-error: #A93226;
 }
 
 @layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    @apply antialiased text-gray-900 bg-gray-50;
+    @apply antialiased bg-white;
+    color: var(--color-tinta);
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display), Georgia, serif;
+    letter-spacing: -0.01em;
+  }
+
+  /* Accesibilidad: foco visible y consistente en todo el sitio. */
+  :focus-visible {
+    outline: 3px solid var(--color-marca);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* Respeta a quien pidió menos movimiento. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer components {
+  /* Enlace para saltar al contenido (teclado / lectores de pantalla). */
+  .skip-link {
+    @apply sr-only;
+  }
+  .skip-link:focus {
+    @apply not-sr-only fixed top-2 left-2 z-[100] bg-white px-4 py-2 font-semibold shadow;
+    color: var(--color-tinta);
   }
 }

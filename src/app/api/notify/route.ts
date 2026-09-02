@@ -1,165 +1,261 @@
 import { NextResponse } from 'next/server';
 import { sendEmail } from '@/lib/mailer';
-import { db } from '@/lib/firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { rateLimit, ipDeRequest } from '@/lib/rate-limit';
+import { OPCIONES_VALIDAS, etiqueta } from '@/lib/cotizacion';
+import { ADDRESS } from '@/lib/site';
 
-// Correo principal de los administradores donde recibirán los avisos
-const ADMIN_EMAILS = process.env.ADMIN_EMAILS || process.env.SMTP_USER || "erick@limpiezamexico.com";
+/**
+ * Endpoint público de captación de cotizaciones.
+ *
+ * Es el único endpoint del sitio y es el vector obvio de spam, por eso:
+ *  1. Rate limit por IP (3 envíos / 10 min) y tope de tamaño de cuerpo.
+ *  2. Validación estricta: campos permitidos, longitudes máximas y listas blancas
+ *     para todo lo que es opción cerrada. Lo que no está en la lista, se rechaza.
+ *  3. Escapado HTML de TODO lo que viene del usuario antes de meterlo al correo
+ *     (prevención de inyección HTML en el mail del equipo).
+ *  4. Saneo de encabezados en el asunto (sin \r\n) para evitar header injection SMTP.
+ *  5. Honeypot: si viene lleno, respondemos 200 y tiramos el mensaje a la basura,
+ *     así el bot cree que funcionó y no reintenta.
+ *
+ * Se eliminó la dependencia de Firestore (leía settings/admins_cache) y las acciones
+ * new_user / new_contract / new_newsletter, que pertenecían a la plataforma SaaS
+ * dada de baja el 2026-09-01.
+ */
+
+export const runtime = 'nodejs';
+
+/**
+ * Dos niveles a propósito:
+ *  - FLOOD: tope duro de peticiones por IP. Frena el martilleo automatizado.
+ *  - ENVIOS: tope de correos realmente enviados. Es el recurso caro que hay que proteger.
+ * Se separan porque contar los intentos fallidos contra el límite de envíos castigaba
+ * al usuario legítimo que se equivoca al escribir su correo: tres errores de dedo y
+ * quedaba bloqueado diez minutos. El bloqueo debe caer sobre el abuso, no sobre el
+ * cliente que quiere cotizar.
+ */
+const LIMITE_FLOOD = { limite: 20, ventanaMs: 10 * 60 * 1000 };
+const LIMITE_ENVIOS = { limite: 3, ventanaMs: 10 * 60 * 1000 };
+const MAX_BODY_BYTES = 8 * 1024;
+
+const DESTINATARIOS = (process.env.ADMIN_EMAILS ?? 'contacto@limpiezamexico.com,ventas@limpiezamexico.com')
+  .split(',')
+  .map((e) => e.trim())
+  .filter(Boolean);
+
+const LIMITES_TEXTO = {
+  nombre: 80,
+  contacto: 120,
+  detalle: 1500,
+} as const;
+
+/** Escapa HTML. Todo dato de usuario pasa por aquí antes de tocar la plantilla. */
+function esc(valor: unknown): string {
+  return String(valor ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/** Quita saltos de línea y recorta: evita inyección de encabezados SMTP en el asunto. */
+function limpiarLinea(valor: string, max: number): string {
+  return valor.replace(/[\r\n\t]+/g, ' ').trim().slice(0, max);
+}
+
+function esContactoValido(valor: string): boolean {
+  const email = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
+  const digitos = valor.replace(/\D/g, '');
+  return email.test(valor) || (digitos.length >= 10 && digitos.length <= 15);
+}
+
+function json(status: number, body: Record<string, unknown>) {
+  return NextResponse.json(body, {
+    status,
+    headers: { 'Cache-Control': 'no-store' },
+  });
+}
 
 export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    const { action, data } = body;
-
-    let subject = "Nueva Notificación de Plataforma";
-    let htmlContent = "";
-
-    switch (action) {
-      case "new_user":
-        subject = `🎉 Nuevo prospecto/cliente registrado: ${data.email}`;
-        htmlContent = `
-          <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-            <h2 style="color: #059669;">¡Nuevo Usuario Registrado!</h2>
-            <p>Se ha registrado una nueva cuenta en la plataforma de Limpieza México.</p>
-            <table style="width: 100%; max-width: 600px; border-collapse: collapse; margin-top: 20px;">
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Email:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.email}</td></tr>
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>WhatsApp:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.whatsapp || "No proporcionado"}</td></tr>
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>UID:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.uid}</td></tr>
-            </table>
-            <p style="margin-top: 30px; font-size: 12px; color: #888;">Este es un mensaje automático del sistema.</p>
-          </div>
-        `;
-        break;
-
-      case "new_contract":
-        subject = `💰 ¡Nuevo Servicio Contratado! (${data.type === 'evento' ? 'Evento Único' : 'Recurrente'})`;
-        htmlContent = `
-          <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-            <h2 style="color: #059669;">Nuevo Contrato / Pago Exitoso</h2>
-            <p>El sistema ha procesado exitosamente la contratación de un nuevo servicio.</p>
-            <table style="width: 100%; max-width: 600px; border-collapse: collapse; margin-top: 20px;">
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Cliente ID:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.userId}</td></tr>
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Tipo de Servicio:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.type} a la medida</td></tr>
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Personal Solicitado:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.staffCount} elementos</td></tr>
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Dirección Operativa:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.address || 'N/A'}</td></tr>
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Monto Autorizado:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">$${data.total} USD/MXN</td></tr>
-            </table>
-            <div style="margin-top: 20px;">
-              <a href="https://limpiezamexico.com/dashboard/admin" style="display: inline-block; padding: 10px 20px; background-color: #059669; color: white; text-decoration: none; border-radius: 5px;">Ver en el Panel de Administrador</a>
-            </div>
-          </div>
-        `;
-        break;
-
-      case "new_contact":
-        subject = `📞 NUEVO MENSAJE DE CONTACTO: ${data.name}`;
-        htmlContent = `
-          <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-            <h2 style="color: #0284c7;">Nueva Solicitud desde Formulario Web</h2>
-            <p>Un cliente potencial ha completado el formulario en la página de contacto.</p>
-            <table style="width: 100%; max-width: 600px; border-collapse: collapse; margin-top: 20px; font-size: 14px;">
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee; width: 150px;"><strong>Nombre:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.name}</td></tr>
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Empresa:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.company || "No especificada"}</td></tr>
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Email:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;"><a href="mailto:${data.email}">${data.email}</a></td></tr>
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Teléfono:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.phone}</td></tr>
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Servicio:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${data.service || "No especificado"}</td></tr>
-            </table>
-            <div style="margin-top: 20px; padding: 15px; background-color: #f8fafc; border-left: 4px solid #0284c7;">
-               <h4 style="margin-top: 0; color: #0f172a;">Detalles del proyecto:</h4>
-               <p style="white-space: pre-line;">${data.message || "Sin detalles adicionales."}</p>
-            </div>
-            <p style="margin-top: 30px; font-size: 12px; color: #888;">Responder a este correo no contactará directamente al usuario. Use la información de contacto provista arriba.</p>
-          </div>
-        `;
-        break;
-
-      case "new_newsletter":
-        subject = `📬 ¡Nuevo Suscriptor al Boletín Informativo!`;
-        htmlContent = `
-          <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
-            <h2 style="color: #059669;">Nuevo Registro en el Boletín</h2>
-            <p>Se ha registrado un nuevo correo electrónico interesado en recibir contenido y noticias.</p>
-            <table style="width: 100%; max-width: 600px; border-collapse: collapse; margin-top: 20px;">
-               <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Email Suscrito:</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;"><a href="mailto:${data.email}">${data.email}</a></td></tr>
-            </table>
-          </div>
-        `;
-        break;
-
-      default:
-        subject = "Aviso del Sistema";
-        htmlContent = `<p>Ha ocurrido una acción no clasificada en el sistema: ${JSON.stringify(data)}</p>`;
-    }
-
-    // Leer la Caché de Múltiples Administradores para el Enrutamiento (Multiplexación)
-    let destinationEmails = ADMIN_EMAILS as string;
-    try {
-      const cacheSnap = await getDoc(doc(db, "settings", "admins_cache"));
-      if (cacheSnap.exists()) {
-        const cacheData = cacheSnap.data();
-        if (cacheData.emails && Array.isArray(cacheData.emails) && cacheData.emails.length > 0) {
-            destinationEmails = cacheData.emails.join(", "); 
-        }
-      }
-    } catch (cacheError) {
-      console.error("No se pudo leer la caché de admins, usando default:", cacheError);
-    }
-
-    // Asegurar que siempre se envíe copia a los correos directivos fijos
-    const FIXED_MAILS = [
-      "admin@bernavcapital.com", 
-      "contacto@limpiezamexico.com", 
-      "ventas@limpiezamexico.com"
-    ];
-    
-    let finalRecipients = destinationEmails.split(',').map(e => e.trim()).filter(Boolean);
-    FIXED_MAILS.forEach(email => {
-      if (!finalRecipients.includes(email)) {
-        finalRecipients.push(email);
-      }
-    });
-
-    const success = await sendEmail(finalRecipients.join(", "), subject, htmlContent);
-
-    // Enviar correo de bienvenida al cliente si es un nuevo usuario
-    if (action === "new_user" && data.email) {
-      const welcomeSubject = "¡Bienvenido a Limpieza México!";
-      const welcomeHtml = `
-        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 10px;">
-          <h2 style="color: #059669; text-align: center;">¡Bienvenido a Limpieza México!</h2>
-          <p style="font-size: 16px; line-height: 1.5;">Hola,</p>
-          <p style="font-size: 16px; line-height: 1.5;">Gracias por registrarte en nuestra plataforma. Estamos muy felices de tenerte con nosotros.</p>
-          <p style="font-size: 16px; line-height: 1.5;">A través de tu cuenta podrás gestionar y contratar servicios de limpieza a la medida, solicitar cotizaciones y administrar tu personal.</p>
-          <hr style="border: none; border-top: 1px solid #eaeaea; margin: 20px 0;" />
-          <p style="font-size: 14px; color: #666; text-align: center;">Si tienes alguna pregunta, responde a este correo y te atenderemos con gusto.</p>
-          <p style="font-size: 14px; text-align: center;"><strong>El equipo de Limpieza México</strong></p>
-        </div>
-      `;
-      // No bloqueamos la respuesta principal si falla el correo de bienvenida
-      await sendEmail(data.email, welcomeSubject, welcomeHtml).catch(err => console.error("Error al enviar bienvenida:", err));
-    } else if (action === "new_newsletter" && data.email) {
-      const newsSubject = "¡Gracias por suscribirte al boletín de Limpieza México!";
-      const newsHtml = `
-        <div style="font-family: Arial, sans-serif; padding: 20px; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #eaeaea; border-radius: 10px;">
-          <h2 style="color: #059669; text-align: center;">¡Suscripción Confirmada!</h2>
-          <p style="font-size: 16px; line-height: 1.5;">Hola,</p>
-          <p style="font-size: 16px; line-height: 1.5;">Tu correo electrónico (<strong>${data.email}</strong>) ha sido registrado exitosamente en nuestro boletín informativo.</p>
-          <p style="font-size: 16px; line-height: 1.5;">A partir de ahora recibirás consejos sobre limpieza corporativa, noticias y promociones exclusivas de Limpieza México.</p>
-          <hr style="border: none; border-top: 1px solid #eaeaea; margin: 20px 0;" />
-          <p style="font-size: 14px; text-align: center;"><strong>El equipo de Limpieza México</strong></p>
-        </div>
-      `;
-      await sendEmail(data.email, newsSubject, newsHtml).catch(err => console.error("Error al enviar confirmación de newsletter:", err));
-    }
-
-    if (success) {
-      return NextResponse.json({ success: true, message: "Notificación enviada" });
-    } else {
-      return NextResponse.json({ success: false, message: "Fallo en el servicio de correo (Revisar SMTP_USER/PASS)" }, { status: 500 });
-    }
-
-  } catch (error) {
-    console.error("Error procesando notificacion en el webhook:", error);
-    return NextResponse.json({ error: "Server Error" }, { status: 500 });
+  // 1) Rate limit anti-flood (cuenta TODAS las peticiones) ---------------
+  const ip = ipDeRequest(req);
+  const flood = rateLimit(`flood:${ip}`, LIMITE_FLOOD);
+  if (!flood.permitido) {
+    return NextResponse.json(
+      { success: false, message: 'Demasiadas solicitudes. Intenta de nuevo en unos minutos.' },
+      { status: 429, headers: { 'Retry-After': String(flood.reintentarEnSegundos) } }
+    );
   }
+
+  // 2) Content-Type: lista blanca explícita ------------------------------
+  // Sin esto, cualquier tipo (text/plain incluido) caía al parser de formulario.
+  const contentType = (req.headers.get('content-type') ?? '').toLowerCase();
+  const esJson = contentType.includes('application/json');
+  const esForm = contentType.includes('application/x-www-form-urlencoded');
+  if (!esJson && !esForm) {
+    return json(415, { success: false, message: 'Tipo de contenido no soportado.' });
+  }
+
+  // 3) Cuerpo: corte duro por BYTES mientras se lee -----------------------
+  // El header Content-Length es opcional y falsificable, así que no basta con
+  // confiar en él: se lee por chunks y se aborta en cuanto se pasa del tope,
+  // sin acumular el resto en memoria.
+  const contentLength = Number(req.headers.get('content-length') ?? 0);
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY_BYTES) {
+    return json(413, { success: false, message: 'Solicitud demasiado grande.' });
+  }
+
+  let raw: string;
+  try {
+    if (!req.body) {
+      raw = '';
+    } else {
+      const reader = req.body.getReader();
+      const trozos: Uint8Array[] = [];
+      let bytes = 0;
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        bytes += value.byteLength;
+        if (bytes > MAX_BODY_BYTES) {
+          await reader.cancel();
+          return json(413, { success: false, message: 'Solicitud demasiado grande.' });
+        }
+        trozos.push(value);
+      }
+      const buffer = new Uint8Array(bytes);
+      let offset = 0;
+      for (const t of trozos) {
+        buffer.set(t, offset);
+        offset += t.byteLength;
+      }
+      raw = new TextDecoder('utf-8').decode(buffer);
+    }
+  } catch {
+    return json(400, { success: false, message: 'No se pudo leer la solicitud.' });
+  }
+
+  // 4) Parseo: JSON (wizard con JS) o form-urlencoded --------------------
+  let data: Record<string, unknown>;
+  try {
+    if (esJson) {
+      const parsed = JSON.parse(raw) as Record<string, unknown>;
+      const inner = parsed.data;
+      data = (inner && typeof inner === 'object' ? inner : parsed) as Record<string, unknown>;
+    } else {
+      data = Object.fromEntries(new URLSearchParams(raw));
+    }
+  } catch {
+    return json(400, { success: false, message: 'Formato de solicitud inválido.' });
+  }
+
+  // 5) Honeypot --------------------------------------------------------
+  if (typeof data.website === 'string' && data.website.trim() !== '') {
+    // Respuesta 200 deliberada: el bot no aprende que fue detectado.
+    return json(200, { success: true, message: 'Recibido' });
+  }
+
+  // 6) Validación estricta --------------------------------------------
+  const errores: string[] = [];
+
+  const str = (v: unknown) => (typeof v === 'string' ? v : '');
+
+  const nombre = limpiarLinea(str(data.nombre), LIMITES_TEXTO.nombre);
+  const contacto = limpiarLinea(str(data.contacto), LIMITES_TEXTO.contacto);
+  const detalle = str(data.detalle).slice(0, LIMITES_TEXTO.detalle).trim();
+
+  if (nombre.length < 2) errores.push('nombre');
+  if (!esContactoValido(contacto)) errores.push('contacto');
+
+  const enum_ = (campo: keyof typeof OPCIONES_VALIDAS, obligatorio: boolean) => {
+    const v = limpiarLinea(str(data[campo]), 40);
+    if (!v) {
+      if (obligatorio) errores.push(campo);
+      return '';
+    }
+    if (!(OPCIONES_VALIDAS[campo] as readonly string[]).includes(v)) {
+      errores.push(campo);
+      return '';
+    }
+    return v;
+  };
+
+  const tipo = enum_('tipo', true);
+  const tamano = enum_('tamano', false);
+  const frecuencia = enum_('frecuencia', false);
+  const zona = enum_('zona', false);
+
+  if (errores.length > 0) {
+    return json(400, {
+      success: false,
+      message: 'Revisa los datos del formulario.',
+      campos: errores,
+    });
+  }
+
+  // 7) Rate limit de envíos: sólo aquí, cuando la solicitud ya es válida ---
+  const envios = rateLimit(`envio:${ip}`, LIMITE_ENVIOS);
+  if (!envios.permitido) {
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          'Ya recibimos tu solicitud. Si necesitas corregir algo, escríbenos a ventas@limpiezamexico.com.',
+      },
+      { status: 429, headers: { 'Retry-After': String(envios.reintentarEnSegundos) } }
+    );
+  }
+
+  // 8) Correo ----------------------------------------------------------
+  const subject = limpiarLinea(
+    `Nueva cotización · ${etiqueta('tipo', tipo)} · ${nombre}`,
+    140
+  );
+
+  const fila = (k: string, v: string) =>
+    `<tr><td style="padding:8px 12px;border-bottom:1px solid #EDEDEA;color:#9B9BA3;">${esc(k)}</td>` +
+    `<td style="padding:8px 12px;border-bottom:1px solid #EDEDEA;color:#1F1F25;"><strong>${esc(v)}</strong></td></tr>`;
+
+  const htmlContent = `
+    <div style="font-family:Inter,Arial,sans-serif;color:#1F1F25;max-width:620px;">
+      <h2 style="color:#2C7A4B;margin:0 0 4px;">Nueva solicitud de cotización</h2>
+      <p style="color:#9B9BA3;margin:0 0 20px;font-size:14px;">Enviada desde el formulario de limpiezamexico.com</p>
+      <table style="width:100%;border-collapse:collapse;font-size:14px;">
+        ${fila('Nombre', nombre)}
+        ${fila('Contacto', contacto)}
+        ${fila('Servicio', etiqueta('tipo', tipo))}
+        ${tamano ? fila('Superficie', etiqueta('tamano', tamano)) : ''}
+        ${frecuencia ? fila('Frecuencia', etiqueta('frecuencia', frecuencia)) : ''}
+        ${zona ? fila('Zona', etiqueta('zona', zona)) : ''}
+      </table>
+      ${
+        detalle
+          ? `<div style="margin-top:20px;padding:14px 16px;background:#EDEDEA;border-left:4px solid #2C7A4B;">
+               <p style="margin:0 0 6px;font-weight:600;">Detalles del cliente</p>
+               <p style="margin:0;white-space:pre-line;">${esc(detalle)}</p>
+             </div>`
+          : ''
+      }
+      <p style="margin-top:26px;font-size:12px;color:#9B9BA3;">
+        ${esc(ADDRESS.full)} · Mensaje automático, responder al contacto indicado arriba.
+      </p>
+    </div>`;
+
+  const enviado = await sendEmail(DESTINATARIOS.join(', '), subject, htmlContent);
+
+  if (!enviado) {
+    // No exponemos detalles de infraestructura al cliente.
+    console.error('[notify] Fallo al enviar la cotización. Revisar SMTP_USER / SMTP_PASS.');
+    return json(502, {
+      success: false,
+      message: 'No pudimos enviar tu solicitud. Escríbenos a ventas@limpiezamexico.com.',
+    });
+  }
+
+  return json(200, { success: true, message: 'Recibido' });
+}
+
+/** Cualquier otro método: 405 explícito en vez de comportamiento raro. */
+export async function GET() {
+  return json(405, { success: false, message: 'Método no permitido.' });
 }
