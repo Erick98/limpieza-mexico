@@ -1,22 +1,52 @@
 {
-  "name": "Limpieza México",
-  "url": "https://www.limpiezamexico.com",
-  "description": "Servicio de limpieza profesional en CDMX y Zona Metropolitana para oficinas, hogares, condominios y trabajos especializados.",
-  "contact": {
-    "phone": "+525539643612",
-    "whatsapp": "https://wa.me/525539643612?text=Hola%2C%20quiero%20cotizar%20un%20servicio%20de%20limpieza%20en%20CDMX.",
-    "email": "ventas@limpiezamexico.com",
-    "address": "Sófocles 133, Polanco, Granada, Miguel Hidalgo, 11530 Ciudad de México, CDMX"
+  "specVersion": "1.0",
+  "host": {
+    "name": "Limpieza México",
+    "url": "https://www.limpiezamexico.com",
+    "description": "Servicio de limpieza profesional en CDMX y Zona Metropolitana para oficinas, hogares, condominios y trabajos especializados. Cotización por proyecto; sin API pública para terceros.",
+    "contact": {
+      "phone": "+525539643612",
+      "whatsapp": "https://wa.me/525539643612?text=Hola%2C%20quiero%20cotizar%20un%20servicio%20de%20limpieza%20en%20CDMX.",
+      "email": "ventas@limpiezamexico.com",
+      "address": "Sófocles 133, Polanco, Granada, Miguel Hidalgo, 11530 Ciudad de México, CDMX"
+    }
   },
-  "services": [
-    { "name": "Limpieza de oficinas y corporativos", "url": "https://www.limpiezamexico.com/limpieza-de-oficinas" },
-    { "name": "Limpieza doméstica y personal de hogar", "url": "https://www.limpiezamexico.com/limpieza-domestica" },
-    { "name": "Limpieza especializada y mantenimiento", "url": "https://www.limpiezamexico.com/limpieza-especializada" },
-    { "name": "Servicio de limpieza en CDMX", "url": "https://www.limpiezamexico.com/servicio-de-limpieza-cdmx" }
-  ],
-  "agent_ready": {
-    "llms_txt": "https://www.limpiezamexico.com/llms.txt",
-    "markdown_accept": "Send Accept: text/markdown to pages for agent-readable summaries.",
-    "training_policy": "ai-train=no; search=yes; ai-input=yes"
-  }
+  "entries": [
+    {
+      "id": "urn:air:www.limpiezamexico.com:docs:llms",
+      "displayName": "Guía para agentes (llms.txt)",
+      "description": "Resumen citable de servicios, zonas de cobertura, cómo cotizar y datos de contacto verificados de Limpieza México.",
+      "type": "text/markdown",
+      "url": "https://www.limpiezamexico.com/llms.txt",
+      "representativeQueries": [
+        "¿Qué servicios de limpieza ofrece Limpieza México en CDMX?",
+        "¿Cómo cotizo un servicio de limpieza de oficinas en Ciudad de México?",
+        "¿Qué zonas de CDMX cubre Limpieza México?",
+        "¿Cuál es el WhatsApp de Limpieza México?"
+      ]
+    },
+    {
+      "id": "urn:air:www.limpiezamexico.com:docs:llms-full",
+      "displayName": "Contenido completo del sitio en Markdown",
+      "description": "Versión extendida en Markdown de las páginas de servicio, zonas y preguntas frecuentes.",
+      "type": "text/markdown",
+      "url": "https://www.limpiezamexico.com/llms-full.txt",
+      "representativeQueries": [
+        "¿Qué incluye el servicio de limpieza doméstica de Limpieza México?",
+        "¿Limpieza México da factura?",
+        "¿El personal de Limpieza México está asegurado?"
+      ]
+    },
+    {
+      "id": "urn:air:www.limpiezamexico.com:skills:cotizar",
+      "displayName": "Skill: cotizar un servicio de limpieza en CDMX",
+      "description": "Procedimiento paso a paso para que un agente ayude a un usuario a solicitar cotización vía WhatsApp, formulario o email.",
+      "type": "text/markdown",
+      "url": "https://www.limpiezamexico.com/.well-known/agent-skills/SKILL.md",
+      "representativeQueries": [
+        "Ayúdame a pedir una cotización de limpieza para mi oficina en Santa Fe",
+        "Quiero contratar limpieza para mi departamento en Polanco"
+      ]
+    }
+  ]
 }

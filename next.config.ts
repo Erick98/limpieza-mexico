@@ -52,6 +52,24 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        source: '/.well-known/api-catalog',
+        headers: [
+          { key: 'Content-Type', value: 'application/linkset+json; charset=utf-8' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+        ],
+      },
+      {
+        source: '/.well-known/ai-catalog.json',
+        headers: [
+          { key: 'Content-Type', value: 'application/json; charset=utf-8' },
+          { key: 'Access-Control-Allow-Origin', value: '*' },
+        ],
+      },
+      {
+        source: '/.well-known/agent-skills/:path*',
+        headers: [{ key: 'Access-Control-Allow-Origin', value: '*' }],
+      },
+      {
         source: '/:path*',
         headers: [
           { key: 'X-Content-Type-Options', value: 'nosniff' },

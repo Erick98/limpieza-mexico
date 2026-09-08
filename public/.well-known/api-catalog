@@ -1,8 +1,14 @@
-# Limpieza México API Catalog
-
-No public API is offered for third-party agents at this time.
-
-Available public interaction channels:
-- Quote form: https://www.limpiezamexico.com/contacto
-- WhatsApp: https://wa.me/525539643612?text=Hola%2C%20quiero%20cotizar%20un%20servicio%20de%20limpieza%20en%20CDMX.
-- Email: ventas@limpiezamexico.com
+{
+  "linkset": [
+    {
+      "anchor": "https://www.limpiezamexico.com/",
+      "service-doc": [
+        { "href": "https://www.limpiezamexico.com/llms.txt", "type": "text/markdown", "title": "Limpieza México — guía para agentes (llms.txt)" },
+        { "href": "https://www.limpiezamexico.com/.well-known/agent-skills/SKILL.md", "type": "text/markdown", "title": "Cómo cotizar un servicio de limpieza en CDMX" }
+      ],
+      "describedby": [
+        { "href": "https://www.limpiezamexico.com/.well-known/ai-catalog.json", "type": "application/json", "title": "ARD capability manifest" }
+      ]
+    }
+  ]
+}
