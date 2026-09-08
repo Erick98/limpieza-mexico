@@ -1,7 +1,6 @@
 {
   "specVersion": "1.0",
   "host": {
-    "name": "Limpieza México",
     "url": "https://www.limpiezamexico.com",
     "description": "Servicio de limpieza profesional en CDMX y Zona Metropolitana para oficinas, hogares, condominios y trabajos especializados. Cotización por proyecto; sin API pública para terceros.",
     "contact": {
@@ -9,11 +8,13 @@
       "whatsapp": "https://wa.me/525539643612?text=Hola%2C%20quiero%20cotizar%20un%20servicio%20de%20limpieza%20en%20CDMX.",
       "email": "ventas@limpiezamexico.com",
       "address": "Sófocles 133, Polanco, Granada, Miguel Hidalgo, 11530 Ciudad de México, CDMX"
-    }
+    },
+    "identifier": "did:web:www.limpiezamexico.com",
+    "displayName": "Limpieza México"
   },
   "entries": [
     {
-      "id": "urn:air:www.limpiezamexico.com:docs:llms",
+      "identifier": "urn:air:www.limpiezamexico.com:docs:llms",
       "displayName": "Guía para agentes (llms.txt)",
       "description": "Resumen citable de servicios, zonas de cobertura, cómo cotizar y datos de contacto verificados de Limpieza México.",
       "type": "text/markdown",
@@ -26,7 +27,7 @@
       ]
     },
     {
-      "id": "urn:air:www.limpiezamexico.com:docs:llms-full",
+      "identifier": "urn:air:www.limpiezamexico.com:docs:llms-full",
       "displayName": "Contenido completo del sitio en Markdown",
       "description": "Versión extendida en Markdown de las páginas de servicio, zonas y preguntas frecuentes.",
       "type": "text/markdown",
@@ -38,7 +39,7 @@
       ]
     },
     {
-      "id": "urn:air:www.limpiezamexico.com:skills:cotizar",
+      "identifier": "urn:air:www.limpiezamexico.com:skills:cotizar",
       "displayName": "Skill: cotizar un servicio de limpieza en CDMX",
       "description": "Procedimiento paso a paso para que un agente ayude a un usuario a solicitar cotización vía WhatsApp, formulario o email.",
       "type": "text/markdown",
