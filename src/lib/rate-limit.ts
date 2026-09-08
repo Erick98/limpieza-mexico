@@ -10,7 +10,7 @@
  * que nadie asuma una protección que no existe.
  */
 
-type Registro = { hits: number[] };
+type Registro = { hits: number[]; ventanaMs: number };
 
 const almacen = new Map<string, Registro>();
 const LIMPIEZA_CADA = 5 * 60 * 1000;
@@ -31,19 +31,19 @@ export function rateLimit(
   // Barrido periódico para que el Map no crezca sin control.
   if (ahora - ultimaLimpieza > LIMPIEZA_CADA) {
     for (const [k, v] of almacen) {
-      const vivos = v.hits.filter((t) => ahora - t < opciones.ventanaMs);
+      const vivos = v.hits.filter((t) => ahora - t < v.ventanaMs);
       if (vivos.length === 0) almacen.delete(k);
       else v.hits = vivos;
     }
     ultimaLimpieza = ahora;
   }
 
-  const registro = almacen.get(clave) ?? { hits: [] };
+  const registro = almacen.get(clave) ?? { hits: [], ventanaMs: opciones.ventanaMs };
   const vigentes = registro.hits.filter((t) => ahora - t < opciones.ventanaMs);
 
   if (vigentes.length >= opciones.limite) {
     const masViejo = Math.min(...vigentes);
-    almacen.set(clave, { hits: vigentes });
+    almacen.set(clave, { hits: vigentes, ventanaMs: opciones.ventanaMs });
     return {
       permitido: false,
       restantes: 0,
@@ -55,7 +55,7 @@ export function rateLimit(
   }
 
   vigentes.push(ahora);
-  almacen.set(clave, { hits: vigentes });
+  almacen.set(clave, { hits: vigentes, ventanaMs: opciones.ventanaMs });
   return {
     permitido: true,
     restantes: opciones.limite - vigentes.length,
@@ -63,9 +63,15 @@ export function rateLimit(
   };
 }
 
-/** IP del cliente detrás del proxy de Vercel. */
+/** IP del cliente detrás del proxy de Vercel. Acota formato para no crear claves arbitrarias. */
 export function ipDeRequest(req: Request): string {
-  const fwd = req.headers.get('x-forwarded-for');
-  if (fwd) return fwd.split(',')[0].trim();
-  return req.headers.get('x-real-ip') ?? 'desconocida';
+  const normalizar = (valor: string | null): string | null => {
+    const ip = valor?.split(',')[0]?.trim().slice(0, 64);
+    if (!ip) return null;
+    const ipv4 = /^(?:\d{1,3}\.){3}\d{1,3}$/.test(ip);
+    const ipv6 = /^[0-9a-f:.]{2,64}$/i.test(ip) && ip.includes(':');
+    return ipv4 || ipv6 ? ip : null;
+  };
+
+  return normalizar(req.headers.get('x-forwarded-for')) ?? normalizar(req.headers.get('x-real-ip')) ?? 'desconocida';
 }

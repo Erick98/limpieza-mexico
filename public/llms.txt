@@ -15,7 +15,36 @@
 - Condesa y Roma, Cuauhtémoc: https://www.limpiezamexico.com/zonas/condesa-roma
 - Cobertura general: Ciudad de México (16 alcaldías), Zona Metropolitana del Valle de México y Estado de México en Naucalpan, Huixquilucan, Tlalnepantla, Ecatepec y Cuautitlán.
 
-## Cómo cotizar
+## Cómo cotizar con agentes
+
+### Opción recomendada: MCP real
+- Server card: https://www.limpiezamexico.com/.well-known/mcp/server-card.json
+- Endpoint MCP Streamable HTTP: https://www.limpiezamexico.com/api/mcp
+- Tools reales: `consultar_servicios`, `consultar_zonas`, `solicitar_cotizacion`.
+- Sin OAuth ni tokens; público, con validación estricta, honeypot y rate-limit en memoria por instancia de Vercel.
+
+### Opción HTTP: POST /api/cotizacion
+- OpenAPI: https://www.limpiezamexico.com/api/openapi.json
+- Endpoint: https://www.limpiezamexico.com/api/cotizacion
+- Método: POST JSON con `User-Agent` obligatorio y máximo 16KB.
+- Servicios válidos: `/limpieza-de-oficinas`, `/limpieza-domestica`, `/limpieza-especializada`.
+
+Ejemplo real:
+
+```bash
+curl -sS https://www.limpiezamexico.com/api/cotizacion \
+  -H 'Content-Type: application/json' \
+  -H 'User-Agent: agente-cotizador/1.0' \
+  -d '{"nombre":"María López","telefono":"+525512345678","email":"maria@example.com","servicio":"/limpieza-de-oficinas","zona":"Polanco, Miguel Hidalgo","detalles":"Oficina de 250 m², limpieza lunes a viernes por la mañana."}'
+```
+
+Respuesta esperada:
+
+```json
+{"ok":true,"id":"LMX-...","mensaje":"Solicitud de cotización recibida. El equipo de Limpieza México dará seguimiento.","siguiente_paso":{"whatsapp":"https://wa.me/525539643612?...","telefono":"+525539643612","email":"ventas@limpiezamexico.com"}}
+```
+
+## Canales humanos
 - WhatsApp: https://wa.me/525539643612?text=Hola%2C%20quiero%20cotizar%20un%20servicio%20de%20limpieza%20en%20CDMX.
 - Formulario: https://www.limpiezamexico.com/contacto
 - Email comercial: ventas@limpiezamexico.com
@@ -28,19 +57,3 @@
 - Dirección: Sófocles 133, Polanco, Granada, Miguel Hidalgo, 11530 Ciudad de México, CDMX
 - Facebook: https://www.facebook.com/profile.php?id=61593697214950
 - Instagram: https://www.instagram.com/limpieza_mexico1/
-
-## Enlaces a las 14 páginas indexables
-- Home: https://www.limpiezamexico.com
-- Servicio de limpieza CDMX: https://www.limpiezamexico.com/servicio-de-limpieza-cdmx
-- Limpieza de oficinas: https://www.limpiezamexico.com/limpieza-de-oficinas
-- Limpieza doméstica: https://www.limpiezamexico.com/limpieza-domestica
-- Limpieza especializada: https://www.limpiezamexico.com/limpieza-especializada
-- Polanco: https://www.limpiezamexico.com/zonas/polanco
-- Santa Fe: https://www.limpiezamexico.com/zonas/santa-fe
-- Interlomas: https://www.limpiezamexico.com/zonas/interlomas
-- Condesa y Roma: https://www.limpiezamexico.com/zonas/condesa-roma
-- Preguntas frecuentes: https://www.limpiezamexico.com/preguntas-frecuentes
-- Nosotros: https://www.limpiezamexico.com/nosotros
-- Contacto: https://www.limpiezamexico.com/contacto
-- Aviso de privacidad: https://www.limpiezamexico.com/privacidad
-- Términos: https://www.limpiezamexico.com/terminos

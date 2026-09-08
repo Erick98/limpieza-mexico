@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { routeMarkdown } from '@/lib/agent-content';
 
-// Solo recursos que EXISTEN en public/.well-known. Anunciar MCP/OAuth/OpenAPI
-// inexistentes infla el score de escáneres pero le miente al agente que lo lea.
+// Solo recursos que EXISTEN y funcionan. OAuth/WebMCP/commerce se omiten porque no aplican.
 const LINK_HEADER = [
   '</.well-known/agent-skills/index.json>; rel="agent-skills"',
   '</.well-known/ai-catalog.json>; rel="ard"',
   '</.well-known/api-catalog>; rel="api-catalog"',
+  '</api/openapi.json>; rel="service-desc"',
+  '</.well-known/mcp/server-card.json>; rel="mcp"',
 ].join(', ');
 
 export function middleware(request: NextRequest) {

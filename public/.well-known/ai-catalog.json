@@ -2,7 +2,7 @@
   "specVersion": "1.0",
   "host": {
     "url": "https://www.limpiezamexico.com",
-    "description": "Servicio de limpieza profesional en CDMX y Zona Metropolitana para oficinas, hogares, condominios y trabajos especializados. Cotización por proyecto; sin API pública para terceros.",
+    "description": "Servicio de limpieza profesional en CDMX y Zona Metropolitana para oficinas, hogares, condominios y trabajos especializados. Cotización por proyecto; API pública real para agentes sin autenticación.",
     "contact": {
       "phone": "+525539643612",
       "whatsapp": "https://wa.me/525539643612?text=Hola%2C%20quiero%20cotizar%20un%20servicio%20de%20limpieza%20en%20CDMX.",
@@ -41,12 +41,36 @@
     {
       "identifier": "urn:air:www.limpiezamexico.com:skills:cotizar",
       "displayName": "Skill: cotizar un servicio de limpieza en CDMX",
-      "description": "Procedimiento paso a paso para que un agente ayude a un usuario a solicitar cotización vía WhatsApp, formulario o email.",
+      "description": "Procedimiento paso a paso para que un agente solicite cotización vía MCP, API HTTP, WhatsApp, formulario o email.",
       "type": "text/markdown",
       "url": "https://www.limpiezamexico.com/.well-known/agent-skills/SKILL.md",
       "representativeQueries": [
         "Ayúdame a pedir una cotización de limpieza para mi oficina en Santa Fe",
         "Quiero contratar limpieza para mi departamento en Polanco"
+      ]
+    },
+    {
+      "identifier": "urn:air:www.limpiezamexico.com:mcp:cotizacion",
+      "displayName": "Servidor MCP real de Limpieza México",
+      "description": "MCP Streamable HTTP público con tools consultar_servicios, consultar_zonas y solicitar_cotizacion.",
+      "type": "application/json",
+      "url": "https://www.limpiezamexico.com/.well-known/mcp/server-card.json",
+      "representativeQueries": [
+        "Usa MCP para consultar qué servicios de limpieza ofrece Limpieza México",
+        "Solicita una cotización de limpieza vía MCP para una oficina en Polanco",
+        "Consulta las zonas de cobertura de Limpieza México con la tool consultar_zonas"
+      ]
+    },
+    {
+      "identifier": "urn:air:www.limpiezamexico.com:openapi:cotizacion",
+      "displayName": "OpenAPI de cotización para agentes",
+      "description": "OpenAPI 3.1 real que documenta POST /api/cotizacion, endpoint público sin autenticación con rate-limit, honeypot y validación estricta.",
+      "type": "application/vnd.oai.openapi+json;version=3.1",
+      "url": "https://www.limpiezamexico.com/api/openapi.json",
+      "representativeQueries": [
+        "¿Cuál es el schema para pedir cotización en Limpieza México?",
+        "Integra POST /api/cotizacion para mandar un lead de limpieza de oficinas",
+        "Muéstrame un ejemplo de curl para solicitar cotización a Limpieza México"
       ]
     }
   ]
