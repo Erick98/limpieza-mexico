@@ -8,12 +8,14 @@ import {
   PHONE_CONFIRMED,
   PHONE_DISPLAY,
   PHONE_E164,
+  SOCIAL,
+  whatsappUrl,
 } from '@/lib/site';
 
 /**
  * Footer. Server Component (antes era cliente por Firestore + newsletter).
- * Se eliminaron los enlaces sociales href="#": un enlace que no lleva a ningún lado
- * es ruido para el usuario y para el crawler.
+ * Enlaces sociales: solo perfiles reales (site.ts SOCIAL). Antes había href="#",
+ * que es ruido para el usuario y para el crawler.
  * El bloque de enlaces por zona reparte autoridad hacia las páginas locales.
  */
 export default function Footer() {
@@ -91,9 +93,36 @@ export default function Footer() {
                   <a href={`tel:${PHONE_E164}`} className="hover:text-white hover:underline">
                     {PHONE_DISPLAY}
                   </a>
+                  {whatsappUrl() && (
+                    <>
+                      {' · '}
+                      <a
+                        href={whatsappUrl()!}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-white hover:underline"
+                      >
+                        WhatsApp
+                      </a>
+                    </>
+                  )}
                 </p>
               )}
             </address>
+            <ul className="mt-5 flex gap-4 text-sm" aria-label="Redes sociales">
+              {SOCIAL.map((r) => (
+                <li key={r.url}>
+                  <a
+                    href={r.url}
+                    target="_blank"
+                    rel="noopener noreferrer me"
+                    className="text-[#9B9BA3] hover:text-white hover:underline"
+                  >
+                    {r.nombre}
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
