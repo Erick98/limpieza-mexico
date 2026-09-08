@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "limpieza-mexico": {
+      "url": "https://www.limpiezamexico.com/api/notify"
+    }
+  }
+}

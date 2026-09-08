@@ -2,9 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import { routeMarkdown } from '@/lib/agent-content';
 
 const LINK_HEADER = [
+  '</.well-known/mcp/server-card.json>; rel="mcp"',
   '</.well-known/agent-skills/index.json>; rel="agent-skills"',
   '</.well-known/ai-catalog.json>; rel="ard"',
   '</.well-known/api-catalog>; rel="api-catalog"',
+  '</.well-known/webmcp>; rel="webmcp"',
+  '</.well-known/oauth-authorization-server>; rel="oauth-authorization-server"',
+  '</.well-known/oauth-protected-resource>; rel="oauth-protected-resource"',
+  '</api/openapi.json>; rel="service-desc"',
 ].join(', ');
 
 export function middleware(request: NextRequest) {

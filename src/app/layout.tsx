@@ -78,13 +78,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Footer />
         <BarraMovil />
 
-        {/* GA4 existente. `afterInteractive` para no bloquear el render inicial.
+        {/* GA4 existente. `lazyOnload` para no competir con el primer render móvil.
             Se dejó UN solo contenedor (antes había GTM + gtag duplicando eventos). */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-E4NQM3CMJD"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
-        <Script id="ga4" strategy="afterInteractive">
+        <Script id="ga4" strategy="lazyOnload">
           {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-E4NQM3CMJD');`}
         </Script>
       </body>
