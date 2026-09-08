@@ -26,24 +26,13 @@ export function absoluteUrl(path: string = ''): string {
 /* ------------------------------------------------------------------ */
 
 /**
- * ⚠️ PENDIENTE_ERICK — TELÉFONO REAL.
- *
- * El repo traía el placeholder "+52 55 1234 5678" (falso). Publicar un teléfono
- * inventado en un sitio de captación es peor que no publicar ninguno: rompe la
- * confianza, ensucia el JSON-LD y puede generar reclamos.
- *
- * Cuando Erick entregue el número real y verificable:
- *   1. Poner el número en `PHONE_DISPLAY` (formato humano) y `PHONE_E164` (+52...).
- *   2. Cambiar `PHONE_CONFIRMED` a true.
- * Con eso se activan automáticamente: el `telephone` del JSON-LD, el botón de
- * WhatsApp de la barra móvil, y el bloque de teléfono en /contacto.
- * Mientras esté en false, el sitio simplemente NO muestra teléfono.
+ * TELÉFONO / WHATSAPP REAL — confirmado por Erick el 2026-09-07 (Discord #limpieza).
+ * Es la única fuente: JSON-LD `telephone`, botón de WhatsApp (barra móvil y cotizador),
+ * footer y /contacto se alimentan de aquí. Si cambia el número, se cambia SOLO aquí.
  */
-// Tipados explícitos (boolean/string, no literales): así el día que Erick ponga el
-// número real, TypeScript no marca los bloques condicionales como código muerto.
-export const PHONE_CONFIRMED: boolean = false;
-export const PHONE_DISPLAY: string = ''; // PENDIENTE_ERICK, ej. '55 1234 5678'
-export const PHONE_E164: string = ''; // PENDIENTE_ERICK, ej. '+525512345678'
+export const PHONE_CONFIRMED: boolean = true;
+export const PHONE_DISPLAY: string = '55 3964 3612';
+export const PHONE_E164: string = '+525539643612';
 
 /** WhatsApp: se deriva del teléfono confirmado. Sin teléfono real, no hay link. */
 export function whatsappUrl(mensaje: string = 'Hola, quiero cotizar un servicio de limpieza.'): string | null {
@@ -53,6 +42,16 @@ export function whatsappUrl(mensaje: string = 'Hola, quiero cotizar un servicio 
 
 export const EMAIL_CONTACTO = 'contacto@limpiezamexico.com';
 export const EMAIL_VENTAS = 'ventas@limpiezamexico.com';
+
+/**
+ * REDES SOCIALES — perfiles reales confirmados por Erick el 2026-09-07.
+ * URLs limpias (sin parámetros de tracking fbclid / edit_entry_point).
+ * Se usan en el footer y en `sameAs` del JSON-LD (Organization + CleaningService).
+ */
+export const SOCIAL = [
+  { nombre: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61593697214950' },
+  { nombre: 'Instagram', url: 'https://www.instagram.com/limpieza_mexico1/' },
+] as const;
 
 /** Dirección real confirmada en el repo y en el sitio vivo. */
 export const ADDRESS = {

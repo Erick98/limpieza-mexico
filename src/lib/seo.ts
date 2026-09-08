@@ -14,6 +14,7 @@ import {
   ADDRESS,
   EMAIL_CONTACTO,
   PHONE_CONFIRMED,
+  SOCIAL,
   PHONE_E164,
   SERVICIOS,
 } from './site';
@@ -127,6 +128,7 @@ export function cleaningServiceLd() {
       })),
     },
     parentOrganization: { '@id': ORG_ID },
+    sameAs: SOCIAL.map((r) => r.url),
   };
   // telephone: solo con dato real confirmado (ver PHONE_CONFIRMED en site.ts).
   if (PHONE_CONFIRMED && PHONE_E164) ld.telephone = PHONE_E164;
@@ -143,8 +145,7 @@ export function organizationLd() {
     logo: { '@type': 'ImageObject', url: absoluteUrl('/logo.png') },
     email: EMAIL_CONTACTO,
     address: postalAddress,
-    // sameAs: OMITIDO a propósito. Los enlaces sociales del sitio no apuntan a
-    // perfiles reales verificados. Cuando existan URLs reales, agregarlas aquí.
+    sameAs: SOCIAL.map((r) => r.url),
   };
 }
 

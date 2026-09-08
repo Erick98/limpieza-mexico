@@ -11,6 +11,7 @@ import {
   PHONE_CONFIRMED,
   PHONE_DISPLAY,
   PHONE_E164,
+  whatsappUrl,
 } from '@/lib/site';
 
 const PATH = '/contacto';
@@ -70,11 +71,24 @@ export default function Contacto() {
             {/* Teléfono: solo se muestra con dato real confirmado (site.ts). */}
             {PHONE_CONFIRMED && PHONE_DISPLAY && (
               <div>
-                <h2 className="font-semibold text-lg mb-2">Teléfono</h2>
+                <h2 className="font-semibold text-lg mb-2">Teléfono y WhatsApp</h2>
                 <p className="text-[16px]">
                   <a href={`tel:${PHONE_E164}`} className="underline underline-offset-4">
                     {PHONE_DISPLAY}
                   </a>
+                  {whatsappUrl() && (
+                    <>
+                      <br />
+                      <a
+                        href={whatsappUrl()!}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-4"
+                      >
+                        Escríbenos por WhatsApp
+                      </a>
+                    </>
+                  )}
                 </p>
               </div>
             )}
