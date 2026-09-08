@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
-import Cotizador from '@/components/cotizador/Cotizador';
+import LazyCotizador from '@/components/cotizador/LazyCotizador';
 import JsonLd from '@/components/JsonLd';
 import Faq from '@/components/ui/Faq';
 import SectionIntro from '@/components/marketing/SectionIntro';
@@ -92,7 +92,7 @@ export default function Home() {
             </p>
             <p className="mt-4 text-sm text-[#1F1F25]/55">También puedes escribir a WhatsApp si tu servicio es urgente.</p>
           </div>
-          <Cotizador />
+          <LazyCotizador />
         </div>
       </section>
 

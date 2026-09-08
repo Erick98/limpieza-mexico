@@ -40,7 +40,7 @@ export default function PrivacidadPage() {
         </h1>
 
         <div className="space-y-4 text-[16px] leading-[1.75] text-[#1F1F25]/85">
-          <p className="text-[#9B9BA3]">Última actualización: 1 de septiembre de 2026.</p>
+          <p className="text-[#62626B]">Última actualización: 1 de septiembre de 2026.</p>
 
           <p>
             Limpieza México, con domicilio en {ADDRESS.full}, es responsable del

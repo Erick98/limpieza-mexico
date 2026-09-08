@@ -37,6 +37,25 @@ const LIMITE_FLOOD = { limite: 20, ventanaMs: 10 * 60 * 1000 };
 const LIMITE_ENVIOS = { limite: 3, ventanaMs: 10 * 60 * 1000 };
 const MAX_BODY_BYTES = 8 * 1024;
 
+const ORIGENES_PERMITIDOS = new Set([
+  'https://www.limpiezamexico.com',
+  'https://limpiezamexico.com',
+]);
+
+function origenPermitido(req: Request): boolean {
+  const origin = req.headers.get('origin');
+  if (origin) return ORIGENES_PERMITIDOS.has(origin);
+
+  const referer = req.headers.get('referer');
+  if (!referer) return true;
+  try {
+    return ORIGENES_PERMITIDOS.has(new URL(referer).origin);
+  } catch {
+    return false;
+  }
+}
+
+
 const DESTINATARIOS = (process.env.ADMIN_EMAILS ?? 'contacto@limpiezamexico.com,ventas@limpiezamexico.com')
   .split(',')
   .map((e) => e.trim())
@@ -77,6 +96,10 @@ function json(status: number, body: Record<string, unknown>) {
 }
 
 export async function POST(req: Request) {
+  if (!origenPermitido(req)) {
+    return json(403, { success: false, message: 'Origen no permitido.' });
+  }
+
   // 1) Rate limit anti-flood (cuenta TODAS las peticiones) ---------------
   const ip = ipDeRequest(req);
   const flood = rateLimit(`flood:${ip}`, LIMITE_FLOOD);
@@ -213,13 +236,13 @@ export async function POST(req: Request) {
   );
 
   const fila = (k: string, v: string) =>
-    `<tr><td style="padding:8px 12px;border-bottom:1px solid #EDEDEA;color:#9B9BA3;">${esc(k)}</td>` +
+    `<tr><td style="padding:8px 12px;border-bottom:1px solid #EDEDEA;color:#62626B;">${esc(k)}</td>` +
     `<td style="padding:8px 12px;border-bottom:1px solid #EDEDEA;color:#1F1F25;"><strong>${esc(v)}</strong></td></tr>`;
 
   const htmlContent = `
     <div style="font-family:Inter,Arial,sans-serif;color:#1F1F25;max-width:620px;">
       <h2 style="color:#2C7A4B;margin:0 0 4px;">Nueva solicitud de cotización</h2>
-      <p style="color:#9B9BA3;margin:0 0 20px;font-size:14px;">Enviada desde el formulario de limpiezamexico.com</p>
+      <p style="color:#62626B;margin:0 0 20px;font-size:14px;">Enviada desde el formulario de limpiezamexico.com</p>
       <table style="width:100%;border-collapse:collapse;font-size:14px;">
         ${fila('Nombre', nombre)}
         ${fila('Contacto', contacto)}
@@ -236,7 +259,7 @@ export async function POST(req: Request) {
              </div>`
           : ''
       }
-      <p style="margin-top:26px;font-size:12px;color:#9B9BA3;">
+      <p style="margin-top:26px;font-size:12px;color:#62626B;">
         ${esc(ADDRESS.full)} · Mensaje automático, responder al contacto indicado arriba.
       </p>
     </div>`;

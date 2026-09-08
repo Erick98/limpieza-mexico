@@ -165,7 +165,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
         <fieldset>
           <legend className="text-[15px] text-[#1F1F25] mb-3">
             ¿Qué necesitas limpiar?{' '}
-            <span className="text-[#9B9BA3]">Gratis y sin compromiso.</span>
+            <span className="text-[#62626B]">Gratis y sin compromiso.</span>
           </legend>
           <div className="grid gap-2.5">
             {TIPOS_SERVICIO.map((t) => (
@@ -177,7 +177,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
                 className={`${CARD} ${tipo === t.id ? CARD_ON : CARD_OFF}`}
               >
                 <span className="block font-bold">{t.label}</span>
-                <span className="block text-sm text-[#9B9BA3] mt-0.5">{t.ayuda}</span>
+                <span className="block text-sm text-[#62626B] mt-0.5">{t.ayuda}</span>
               </button>
             ))}
           </div>
@@ -305,13 +305,13 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
               className="w-full rounded-2xl border border-black/10 bg-[#FAFAF7] px-3 py-3"
               placeholder="55 0000 0000 o tu@correo.com"
             />
-            <p id={`${baseId}-contacto-ayuda`} className="text-sm text-[#9B9BA3] mt-1.5">
+            <p id={`${baseId}-contacto-ayuda`} className="text-sm text-[#62626B] mt-1.5">
               Solo lo usamos para enviarte la cotización.
             </p>
           </div>
           <div>
             <label htmlFor={`${baseId}-detalle`} className="block text-[15px] mb-2">
-              ¿Algo que debamos saber? <span className="text-[#9B9BA3]">(opcional)</span>
+              ¿Algo que debamos saber? <span className="text-[#62626B]">(opcional)</span>
             </label>
             <textarea
               id={`${baseId}-detalle`}
@@ -354,7 +354,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
               {estado === 'enviando' ? 'Enviando…' : 'Solicitar cotización'}
             </button>
           </div>
-          <p className="text-sm text-[#9B9BA3]">
+          <p className="text-sm text-[#62626B]">
             Al enviar aceptas nuestro{' '}
             <a href="/privacidad" className="underline">
               aviso de privacidad
