@@ -1,0 +1,22 @@
+{
+  "name": "Limpieza México",
+  "url": "https://www.limpiezamexico.com",
+  "description": "Servicio de limpieza profesional en CDMX y Zona Metropolitana para oficinas, hogares, condominios y trabajos especializados.",
+  "contact": {
+    "phone": "+525539643612",
+    "whatsapp": "https://wa.me/525539643612?text=Hola%2C%20quiero%20cotizar%20un%20servicio%20de%20limpieza%20en%20CDMX.",
+    "email": "ventas@limpiezamexico.com",
+    "address": "Sófocles 133, Polanco, Granada, Miguel Hidalgo, 11530 Ciudad de México, CDMX"
+  },
+  "services": [
+    { "name": "Limpieza de oficinas y corporativos", "url": "https://www.limpiezamexico.com/limpieza-de-oficinas" },
+    { "name": "Limpieza doméstica y personal de hogar", "url": "https://www.limpiezamexico.com/limpieza-domestica" },
+    { "name": "Limpieza especializada y mantenimiento", "url": "https://www.limpiezamexico.com/limpieza-especializada" },
+    { "name": "Servicio de limpieza en CDMX", "url": "https://www.limpiezamexico.com/servicio-de-limpieza-cdmx" }
+  ],
+  "agent_ready": {
+    "llms_txt": "https://www.limpiezamexico.com/llms.txt",
+    "markdown_accept": "Send Accept: text/markdown to pages for agent-readable summaries.",
+    "training_policy": "ai-train=no; search=yes; ai-input=yes"
+  }
+}

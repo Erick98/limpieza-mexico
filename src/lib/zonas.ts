@@ -29,7 +29,7 @@ export const ZONAS_CONTENIDO: Record<string, Zona> = {
     alcaldia: 'Miguel Hidalgo',
     titulo: 'Servicio de limpieza en Polanco',
     descripcion:
-      'Servicio de limpieza en Polanco para oficinas corporativas, residencias y locales. Personal formal, horario nocturno y gestión de accesos. Cotiza sin costo.',
+      'Servicio de limpieza en Polanco para oficinas, residencias y locales. Personal formal, horario nocturno y gestión de accesos. Cotiza sin costo.',
     intro:
       'Nuestras oficinas están en Sófocles 133, en Polanco. Es la zona que atendemos con mayor densidad y donde tenemos el tiempo de respuesta más corto de toda la ciudad.',
     parrafos: [

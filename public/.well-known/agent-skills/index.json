@@ -1,0 +1,14 @@
+{
+  "$schema": "https://agentskills.io/schemas/skill-index.json",
+  "name": "Limpieza México agent skills",
+  "description": "Habilidades públicas para cotizar servicios de limpieza profesional en CDMX con Limpieza México.",
+  "skills": [
+    {
+      "name": "cotizar-servicio-limpieza-cdmx",
+      "description": "Cómo cotizar un servicio de limpieza en CDMX con Limpieza México por WhatsApp, formulario o email.",
+      "url": "https://www.limpiezamexico.com/.well-known/agent-skills/SKILL.md",
+      "input_modes": ["text"],
+      "output_modes": ["text"]
+    }
+  ]
+}

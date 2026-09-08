@@ -5,33 +5,21 @@ import Cotizador from '@/components/cotizador/Cotizador';
 import JsonLd from '@/components/JsonLd';
 import Faq from '@/components/ui/Faq';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
+import TrustPanel from '@/components/marketing/TrustPanel';
 import { pageMetadata, faqLd, breadcrumbLd, serviceLd } from '@/lib/seo';
 import { ZONAS_CONTENIDO, ZONA_SLUGS } from '@/lib/zonas';
 import { SERVICIOS, ZONAS } from '@/lib/site';
 
 type Props = { params: Promise<{ slug: string }> };
 
-/** Sólo estas rutas existen; cualquier otra da 404 real (no una página vacía). */
-export function generateStaticParams() {
-  return ZONA_SLUGS.map((slug) => ({ slug }));
-}
-
+export function generateStaticParams() { return ZONA_SLUGS.map((slug) => ({ slug })); }
 export const dynamicParams = false;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const zona = ZONAS_CONTENIDO[slug];
   if (!zona) return {};
-  return pageMetadata({
-    title: zona.titulo,
-    description: zona.descripcion,
-    path: `/zonas/${zona.slug}`,
-    keywords: [
-      `servicio de limpieza ${zona.nombre}`,
-      `limpieza ${zona.nombre}`,
-      `empresa de limpieza ${zona.nombre}`,
-    ],
-  });
+  return pageMetadata({ title: zona.titulo, description: zona.descripcion, path: `/zonas/${zona.slug}`, keywords: [`servicio de limpieza ${zona.nombre}`, `limpieza ${zona.nombre}`, `empresa de limpieza ${zona.nombre}`] });
 }
 
 export default async function PaginaZona({ params }: Props) {
@@ -40,112 +28,32 @@ export default async function PaginaZona({ params }: Props) {
   if (!zona) notFound();
 
   const path = `/zonas/${zona.slug}`;
-  const migas = [
-    { name: 'Inicio', path: '/' },
-    { name: 'Servicio de limpieza en CDMX', path: '/servicio-de-limpieza-cdmx' },
-    { name: zona.nombre, path },
-  ];
+  const migas = [{ name: 'Inicio', path: '/' }, { name: 'Servicio de limpieza en CDMX', path: '/servicio-de-limpieza-cdmx' }, { name: zona.nombre, path }];
   const otras = ZONAS.filter((z) => !z.slug.endsWith(zona.slug));
 
   return (
     <>
-      <JsonLd
-        data={[
-          breadcrumbLd(migas),
-          faqLd(zona.faqs),
-          serviceLd({
-            name: `Servicio de limpieza en ${zona.nombre}`,
-            description: zona.descripcion,
-            path,
-            areaServed: [zona.nombre, zona.alcaldia],
-          }),
-        ]}
-      />
+      <JsonLd data={[breadcrumbLd(migas), faqLd(zona.faqs), serviceLd({ name: `Servicio de limpieza en ${zona.nombre}`, description: zona.descripcion, path, areaServed: [zona.nombre, zona.alcaldia] })]} />
+      <div className="lm-container pt-8"><Breadcrumbs items={migas} /></div>
 
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-8">
-        <Breadcrumbs items={migas} />
-      </div>
-
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-12 grid lg:grid-cols-[1.3fr_1fr] gap-12 items-start">
+      <section className="lm-container grid gap-10 pb-14 lg:grid-cols-[1fr_0.95fr] lg:items-start">
         <div>
-          <h1 className="font-display text-[32px] leading-tight sm:text-5xl mb-4">
-            Servicio de limpieza en {zona.nombre}
-          </h1>
-          <p className="text-sm text-[#9B9BA3] mb-5">{zona.alcaldia}</p>
-          <p className="text-lg leading-relaxed text-[#1F1F25]/80">{zona.intro}</p>
+          <p className="lm-chip">Zona de servicio · {zona.alcaldia}</p>
+          <h1 className="mt-5 font-display text-[3rem] leading-[0.98] tracking-[-0.045em] text-[#101014] sm:text-6xl">Servicio de limpieza en {zona.nombre}</h1>
+          <p className="mt-6 max-w-2xl text-lg leading-8 text-[#1F1F25]/78">{zona.intro}</p>
+          <p className="mt-4 max-w-2xl rounded-2xl border border-black/10 bg-white p-5 text-[15px] leading-7 text-[#1F1F25]/72">Resumen citable: Limpieza México atiende {zona.nombre} con servicio de limpieza profesional para oficinas, hogares, condominios y trabajos especializados. Para cotizar, comparte tipo de inmueble, superficie, frecuencia y horario.</p>
         </div>
-        <div className="scroll-mt-20">
-          <Cotizador />
-        </div>
+        <div className="scroll-mt-24"><Cotizador /></div>
       </section>
 
-      <section className="border-y border-[#EDEDEA]">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-14 space-y-8">
-          {zona.parrafos.map((bloque) => (
-            <div key={bloque.h}>
-              <h2 className="font-display text-3xl mb-3">{bloque.h}</h2>
-              <div className="space-y-4 text-[16px] leading-[1.75] text-[#1F1F25]/85">
-                {bloque.p.map((texto, i) => (
-                  <p key={i}>{texto}</p>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+      <section className="border-y border-black/10 bg-white"><div className="lm-container grid gap-12 py-16 lg:grid-cols-[1fr_0.82fr]"><article className="lm-prose max-w-3xl">{zona.parrafos.map((bloque) => <section key={bloque.h}><h2>{bloque.h}</h2>{bloque.p.map((texto, i) => <p key={i}>{texto}</p>)}</section>)}</article><div className="space-y-5 lg:sticky lg:top-28"><TrustPanel compact /><div className="lm-card p-6"><h2 className="font-display text-3xl">Colonias que atendemos</h2><ul className="mt-5 space-y-2 text-[15px] text-[#1F1F25]/75">{zona.colonias.map((c) => <li key={c} className="flex gap-3"><span aria-hidden="true" className="mt-2 size-1.5 rounded-full bg-[#C9A24A]" />{c}</li>)}</ul></div></div></div></section>
+
+      <section className="lm-container grid gap-10 py-16 lg:grid-cols-2">
+        <div className="lm-card p-7"><h2 className="font-display text-3xl">Servicios disponibles en {zona.nombre}</h2><ul className="mt-5 space-y-3">{SERVICIOS.map((s) => <li key={s.slug}><Link href={s.slug} className="block rounded-2xl border border-black/10 p-4 hover:border-[#2F5D50]/50"><span className="block font-bold">{s.nombre}</span><span className="mt-1 block text-sm leading-6 text-[#1F1F25]/65">{s.resumen}</span></Link></li>)}</ul></div>
+        <div className="lm-card p-7"><h2 className="font-display text-3xl">Otras zonas</h2><ul className="mt-5 flex flex-wrap gap-3">{otras.map((z) => <li key={z.slug}><Link href={z.slug} className="inline-block rounded-full border border-black/10 bg-white px-4 py-2.5 text-sm font-bold hover:border-[#2F5D50]/50">Limpieza en {z.nombre}</Link></li>)}</ul></div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-14 grid lg:grid-cols-2 gap-12">
-        <div>
-          <h2 className="font-display text-3xl mb-5">Colonias que atendemos</h2>
-          <ul className="space-y-2 text-[16px]">
-            {zona.colonias.map((c) => (
-              <li key={c} className="flex gap-3">
-                <span aria-hidden="true" className="text-[#2C7A4B]">
-                  ·
-                </span>
-                <span>{c}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h2 className="font-display text-3xl mb-5">Servicios disponibles</h2>
-          <ul className="space-y-3">
-            {SERVICIOS.map((s) => (
-              <li key={s.slug}>
-                <Link
-                  href={s.slug}
-                  className="block border border-[#EDEDEA] rounded-lg px-4 py-3.5 hover:border-[#9B9BA3]"
-                >
-                  <span className="font-semibold block">{s.nombre}</span>
-                  <span className="text-sm text-[#9B9BA3]">{s.resumen}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-8">
-        <Faq faqs={zona.faqs} titulo={`Preguntas sobre el servicio en ${zona.nombre}`} />
-      </section>
-
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pb-16">
-        <h2 className="font-display text-2xl mb-4">Otras zonas</h2>
-        <ul className="flex flex-wrap gap-3">
-          {otras.map((z) => (
-            <li key={z.slug}>
-              <Link
-                href={z.slug}
-                className="inline-block border border-[#EDEDEA] rounded-lg px-4 py-2.5 hover:border-[#9B9BA3]"
-              >
-                Limpieza en {z.nombre}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+      <section className="lm-container max-w-4xl pb-16"><Faq faqs={zona.faqs} titulo={`Preguntas sobre el servicio en ${zona.nombre}`} /></section>
     </>
   );
 }
