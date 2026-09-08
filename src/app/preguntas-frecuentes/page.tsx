@@ -15,47 +15,27 @@ export const metadata: Metadata = pageMetadata({
   path: PATH,
 });
 
-const MIGAS = [
-  { name: 'Inicio', path: '/' },
-  { name: 'Preguntas frecuentes', path: PATH },
-];
+const MIGAS = [{ name: 'Inicio', path: '/' }, { name: 'Preguntas frecuentes', path: PATH }];
 
 export default function PreguntasFrecuentes() {
-  // El FAQPage completo vive aquí: es la URL canónica para esta intención.
   const todas = [...FAQ_GENERAL, ...FAQ_OFICINAS, ...FAQ_DOMESTICA];
-
   return (
     <>
       <JsonLd data={[breadcrumbLd(MIGAS), faqLd(todas)]} />
-
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pt-8">
-        <Breadcrumbs items={MIGAS} />
-
-        <h1 className="font-display text-[32px] leading-tight sm:text-5xl mb-4">
-          Preguntas frecuentes
-        </h1>
-        <p className="text-lg leading-relaxed text-[#1F1F25]/80 mb-4">
-          Las dudas que más nos llegan antes de contratar un servicio de limpieza,
-          respondidas sin rodeos.
-        </p>
-
+      <div className="lm-container max-w-5xl pt-8"><Breadcrumbs items={MIGAS} /></div>
+      <section className="lm-container max-w-5xl pb-16">
+        <p className="lm-chip">FAQ indexable</p>
+        <h1 className="mt-5 font-display text-[3rem] leading-[0.98] tracking-[-0.045em] text-[#101014] sm:text-6xl">Preguntas frecuentes sobre servicio de limpieza en CDMX</h1>
+        <p className="mt-6 max-w-3xl text-lg leading-8 text-[#1F1F25]/78">Respuestas claras para personas y agentes de IA: precio, cotización, factura, cobertura, personal, insumos y operación en oficinas u hogares.</p>
         <Faq faqs={[...FAQ_GENERAL]} titulo="Sobre el servicio y la cotización" />
         <Faq faqs={[...FAQ_OFICINAS]} titulo="Limpieza de oficinas y corporativos" />
         <Faq faqs={[...FAQ_DOMESTICA]} titulo="Limpieza doméstica y personal de hogar" />
-
-        <div className="mt-14 rounded-xl border border-[#EDEDEA] p-7 text-center mb-8">
-          <h2 className="font-display text-2xl mb-3">¿Tu pregunta no está aquí?</h2>
-          <p className="text-[16px] text-[#1F1F25]/75 mb-6">
-            Escríbela en el formulario de cotización y un asesor te responde directo.
-          </p>
-          <Link
-            href="/contacto"
-            className="inline-flex rounded-lg bg-[#2C7A4B] px-7 py-3.5 font-semibold text-white hover:bg-[#235f3b]"
-          >
-            Ir al formulario
-          </Link>
+        <div className="mt-14 rounded-[2rem] bg-[#101014] p-8 text-center text-white">
+          <h2 className="font-display text-3xl">¿Tu pregunta no está aquí?</h2>
+          <p className="mx-auto mt-3 max-w-2xl text-[16px] leading-7 text-white/70">Déjala en el formulario de cotización y un asesor responde directo con lo que falta para armar la propuesta.</p>
+          <Link href="/contacto" className="mt-6 inline-flex rounded-full bg-white px-7 py-3.5 text-sm font-bold text-[#101014]">Ir al formulario</Link>
         </div>
-      </div>
+      </section>
     </>
   );
 }

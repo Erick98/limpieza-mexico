@@ -1,11 +1,6 @@
 /**
- * Bloque de preguntas frecuentes. Usa <details>/<summary> nativo: accesible,
- * funciona sin JavaScript y el texto queda en el HTML para que Google lo indexe
- * (un acordeón con JS que oculta el contenido es peor para SEO).
+ * FAQ accesible con <details>/<summary>: indexable, sin JavaScript extra.
  */
-/** Slug estable a partir del título: evita ids duplicados cuando hay varios
- *  bloques Faq en la misma página (/preguntas-frecuentes monta tres).
- *  Un id repetido produce HTML inválido y un aria-labelledby ambiguo. */
 function aId(texto: string): string {
   return (
     'faq-' +
@@ -28,19 +23,19 @@ export default function Faq({
   const id = aId(titulo);
   return (
     <section aria-labelledby={id} className="mt-16">
-      <h2 id={id} className="font-display text-3xl mb-6">
+      <h2 id={id} className="font-display text-4xl leading-tight text-[#101014]">
         {titulo}
       </h2>
-      <div className="divide-y divide-[#EDEDEA] border-y border-[#EDEDEA]">
+      <div className="mt-7 overflow-hidden rounded-[1.75rem] border border-black/10 bg-white shadow-[0_18px_55px_rgba(31,31,37,0.06)]">
         {faqs.map((f) => (
-          <details key={f.q} className="group py-4">
-            <summary className="cursor-pointer list-none font-semibold text-[17px] flex justify-between gap-4">
+          <details key={f.q} className="group border-b border-black/10 p-5 last:border-b-0 sm:p-6">
+            <summary className="flex cursor-pointer list-none justify-between gap-4 text-[17px] font-bold text-[#101014]">
               <span>{f.q}</span>
-              <span aria-hidden="true" className="text-[#9B9BA3] group-open:rotate-45 transition-transform">
+              <span aria-hidden="true" className="text-[#2F5D50] transition-transform group-open:rotate-45">
                 +
               </span>
             </summary>
-            <p className="mt-3 text-[15px] leading-relaxed text-[#1F1F25]/80">{f.a}</p>
+            <p className="mt-4 text-[15px] leading-7 text-[#1F1F25]/75">{f.a}</p>
           </details>
         ))}
       </div>

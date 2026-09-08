@@ -11,7 +11,7 @@ const PATH = '/limpieza-especializada';
 export const metadata: Metadata = pageMetadata({
   title: 'Limpieza especializada CDMX',
   description:
-    'Limpieza especializada en CDMX: post-obra, post-evento, sanitización, pulido de pisos, trabajo en alturas, cisternas y control de plagas. Cotiza sin costo.',
+    'Limpieza especializada en CDMX: post-obra, post-evento, sanitización, pisos, alturas, cisternas y control de plagas. Cotiza sin costo.',
   path: PATH,
   keywords: [
     'limpieza post obra cdmx',

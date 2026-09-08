@@ -12,7 +12,7 @@ const PATH = '/limpieza-domestica';
 export const metadata: Metadata = pageMetadata({
   title: 'Limpieza doméstica CDMX',
   description:
-    'Servicio de limpieza doméstica en CDMX para casas y departamentos, por visita o recurrente, y reclutamiento de personal de hogar verificado. Cotiza sin costo.',
+    'Limpieza doméstica en CDMX para casas y departamentos, por visita o recurrente, y reclutamiento de personal de hogar verificado.',
   path: PATH,
   keywords: [
     'limpieza doméstica cdmx',

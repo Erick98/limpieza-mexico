@@ -2,48 +2,49 @@
 @plugin "@tailwindcss/typography";
 
 /**
- * Tokens de marca — Manual de Marca Bernav Capital v1.
- * Playfair Display (títulos institucionales) + Inter (cuerpo y operativo).
- * Grises: 10 #EDEDEA · 40 #9B9BA3 · 80 #1F1F25.
- * Funcionales: éxito #2C7A4B · alerta #C97A1E · error #A93226.
+ * Limpieza México v2 — base Bernav + acento propio.
+ * Playfair Display para titulares, Inter para cuerpo.
+ * Acento: Verde Inmueble #2F5D50. Se siente limpio y premium sin caer en verde neón.
  */
 @theme {
   --font-sans: var(--font-inter);
   --font-display: var(--font-playfair);
 
   --color-tinta: #1F1F25;
+  --color-carbon: #101014;
+  --color-mate: #FAFAF7;
   --color-gris-40: #9B9BA3;
   --color-gris-10: #EDEDEA;
-  --color-marca: #2C7A4B;
-  --color-marca-oscuro: #235f3b;
+  --color-marca: #2F5D50;
+  --color-marca-oscuro: #24483F;
+  --color-oro: #C9A24A;
   --color-alerta: #C97A1E;
   --color-error: #A93226;
 }
 
 @layer base {
-  html {
-    -webkit-text-size-adjust: 100%;
-  }
+  html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 
   body {
-    @apply antialiased bg-white;
+    @apply antialiased bg-[#FAFAF7];
     color: var(--color-tinta);
+    text-rendering: optimizeLegibility;
   }
 
-  h1, h2, h3 {
-    font-family: var(--font-display), Georgia, serif;
-    letter-spacing: -0.01em;
-  }
+  h1, h2, h3 { font-family: var(--font-display), Georgia, serif; letter-spacing: -0.025em; }
 
-  /* Accesibilidad: foco visible y consistente en todo el sitio. */
+  p { text-wrap: pretty; }
+
+  ::selection { background: #2F5D50; color: white; }
+
   :focus-visible {
-    outline: 3px solid var(--color-marca);
-    outline-offset: 2px;
-    border-radius: 2px;
+    outline: 3px solid var(--color-oro);
+    outline-offset: 3px;
+    border-radius: 8px;
   }
 
-  /* Respeta a quien pidió menos movimiento. */
   @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
@@ -54,12 +55,16 @@
 }
 
 @layer components {
-  /* Enlace para saltar al contenido (teclado / lectores de pantalla). */
-  .skip-link {
-    @apply sr-only;
-  }
-  .skip-link:focus {
-    @apply not-sr-only fixed top-2 left-2 z-[100] bg-white px-4 py-2 font-semibold shadow;
-    color: var(--color-tinta);
-  }
+  .skip-link { @apply sr-only; }
+  .skip-link:focus { @apply not-sr-only fixed top-3 left-3 z-[100] bg-white px-4 py-2 font-semibold shadow-xl; color: var(--color-tinta); }
+
+  .lm-container { @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8; }
+  .lm-card { @apply rounded-[1.75rem] border border-black/10 bg-white shadow-[0_24px_70px_rgba(31,31,37,0.08)]; }
+  .lm-chip { @apply inline-flex items-center rounded-full border border-black/10 bg-white/80 px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-[#2F5D50]; }
+  .lm-button-primary { @apply inline-flex items-center justify-center rounded-full bg-[#2F5D50] px-6 py-3.5 text-sm font-bold text-white shadow-[0_14px_34px_rgba(47,93,80,0.24)] hover:bg-[#24483F]; }
+  .lm-button-secondary { @apply inline-flex items-center justify-center rounded-full border border-[#1F1F25]/20 bg-white/80 px-6 py-3.5 text-sm font-bold text-[#1F1F25] hover:bg-white; }
+  .lm-prose { @apply text-[17px] leading-8 text-[#1F1F25]/82; }
+  .lm-prose p { @apply mb-5; }
+  .lm-prose h2 { @apply mt-12 mb-4 font-display text-3xl leading-tight text-[#101014] sm:text-4xl; }
+  .lm-prose h3 { @apply mt-8 mb-3 font-display text-2xl leading-tight text-[#101014]; }
 }

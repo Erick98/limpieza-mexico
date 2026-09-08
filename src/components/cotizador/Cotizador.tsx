@@ -31,9 +31,9 @@ import { whatsappUrl } from '@/lib/site';
 type Estado = 'idle' | 'enviando' | 'ok' | 'error';
 
 const CARD =
-  'w-full text-left rounded-lg border-2 px-4 py-3 transition-colors cursor-pointer';
-const CARD_OFF = 'border-[#EDEDEA] bg-white hover:border-[#9B9BA3]';
-const CARD_ON = 'border-[#2C7A4B] bg-[#2C7A4B]/5';
+  'w-full text-left rounded-2xl border px-4 py-3.5 transition-colors cursor-pointer';
+const CARD_OFF = 'border-black/10 bg-white hover:border-[#2F5D50]/50 hover:bg-[#FAFAF7]';
+const CARD_ON = 'border-[#2F5D50] bg-[#2F5D50]/7';
 
 export default function Cotizador({ compacto = false }: { compacto?: boolean }) {
   const baseId = useId();
@@ -100,7 +100,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
   if (estado === 'ok') {
     return (
       <div
-        className="rounded-xl border border-[#2C7A4B]/30 bg-[#2C7A4B]/5 p-6"
+        className="rounded-[2rem] border border-[#2F5D50]/30 bg-[#2F5D50]/7 p-6 shadow-[0_24px_70px_rgba(31,31,37,0.08)]"
         role="status"
         aria-live="polite"
       >
@@ -113,14 +113,14 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
           {wa && (
             <a
               href={wa}
-              className="inline-flex justify-center items-center rounded-lg bg-[#2C7A4B] px-5 py-3 font-semibold text-white hover:bg-[#235f3b]"
+              className="inline-flex justify-center items-center rounded-full bg-[#2F5D50] px-5 py-3 font-bold text-white hover:bg-[#24483F]"
             >
               Escribir por WhatsApp
             </a>
           )}
           <a
             href="mailto:ventas@limpiezamexico.com"
-            className="inline-flex justify-center items-center rounded-lg border-2 border-[#1F1F25] px-5 py-3 font-semibold hover:bg-[#EDEDEA]"
+            className="inline-flex justify-center items-center rounded-full border border-[#1F1F25]/20 px-5 py-3 font-bold hover:bg-[#EDEDEA]"
           >
             ventas@limpiezamexico.com
           </a>
@@ -134,7 +134,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
       onSubmit={onSubmit}
       action="/api/notify"
       method="post"
-      className={`rounded-xl border border-[#EDEDEA] bg-white p-5 sm:p-6 shadow-sm ${
+      className={`rounded-[2rem] border border-black/10 bg-white p-5 shadow-[0_24px_70px_rgba(31,31,37,0.10)] sm:p-6 ${
         compacto ? '' : 'sm:p-7'
       }`}
       noValidate
@@ -149,13 +149,13 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
           {paso === 2 && '¿De qué tamaño y con qué frecuencia?'}
           {paso === 3 && '¿A dónde te enviamos la cotización?'}
         </p>
-        <span className="text-sm text-[#9B9BA3] shrink-0 ml-3">Paso {paso} de 3</span>
+        <span className="rounded-full bg-[#FAFAF7] px-3 py-1 text-xs font-bold text-[#2F5D50] shrink-0 ml-3">Paso {paso} de 3</span>
       </div>
 
       {/* Barra de progreso: decorativa, el dato real lo da el texto de arriba. */}
-      <div className="h-1 w-full bg-[#EDEDEA] rounded mb-5 mt-3" aria-hidden="true">
+      <div className="h-1.5 w-full bg-[#EDEDEA] rounded-full mb-5 mt-3" aria-hidden="true">
         <div
-          className="h-1 bg-[#2C7A4B] rounded transition-[width] duration-200"
+          className="h-1.5 bg-[#2F5D50] rounded-full transition-[width] duration-200"
           style={{ width: `${(paso / 3) * 100}%` }}
         />
       </div>
@@ -176,7 +176,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
                 aria-pressed={tipo === t.id}
                 className={`${CARD} ${tipo === t.id ? CARD_ON : CARD_OFF}`}
               >
-                <span className="block font-semibold">{t.label}</span>
+                <span className="block font-bold">{t.label}</span>
                 <span className="block text-sm text-[#9B9BA3] mt-0.5">{t.ayuda}</span>
               </button>
             ))}
@@ -219,7 +219,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
                 name="frecuencia"
                 value={frecuencia}
                 onChange={(e) => setFrecuencia(e.target.value)}
-                className="w-full rounded-lg border-2 border-[#EDEDEA] bg-white px-3 py-3"
+                className="w-full rounded-2xl border border-black/10 bg-[#FAFAF7] px-3 py-3"
               >
                 <option value="">Selecciona</option>
                 {FRECUENCIAS.map((f) => (
@@ -238,7 +238,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
                 name="zona"
                 value={zona}
                 onChange={(e) => setZona(e.target.value)}
-                className="w-full rounded-lg border-2 border-[#EDEDEA] bg-white px-3 py-3"
+                className="w-full rounded-2xl border border-black/10 bg-[#FAFAF7] px-3 py-3"
               >
                 <option value="">Selecciona</option>
                 {ZONAS_COTIZACION.map((z) => (
@@ -254,14 +254,14 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
             <button
               type="button"
               onClick={() => irA(1)}
-              className="rounded-lg border-2 border-[#EDEDEA] px-4 py-3 font-semibold hover:bg-[#EDEDEA]"
+              className="rounded-full border border-[#1F1F25]/15 px-4 py-3 font-bold hover:bg-[#FAFAF7]"
             >
               Atrás
             </button>
             <button
               type="button"
               onClick={() => irA(3)}
-              className="flex-1 rounded-lg bg-[#1F1F25] px-4 py-3 font-semibold text-white hover:bg-black"
+              className="flex-1 rounded-full bg-[#1F1F25] px-4 py-3 font-bold text-white hover:bg-black"
             >
               Continuar
             </button>
@@ -284,7 +284,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
               required
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              className="w-full rounded-lg border-2 border-[#EDEDEA] px-3 py-3"
+              className="w-full rounded-2xl border border-black/10 bg-[#FAFAF7] px-3 py-3"
               placeholder="Tu nombre"
             />
           </div>
@@ -302,7 +302,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
               value={contacto}
               onChange={(e) => setContacto(e.target.value)}
               aria-describedby={`${baseId}-contacto-ayuda`}
-              className="w-full rounded-lg border-2 border-[#EDEDEA] px-3 py-3"
+              className="w-full rounded-2xl border border-black/10 bg-[#FAFAF7] px-3 py-3"
               placeholder="55 0000 0000 o tu@correo.com"
             />
             <p id={`${baseId}-contacto-ayuda`} className="text-sm text-[#9B9BA3] mt-1.5">
@@ -319,7 +319,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
               rows={3}
               value={detalle}
               onChange={(e) => setDetalle(e.target.value)}
-              className="w-full rounded-lg border-2 border-[#EDEDEA] px-3 py-3 resize-y"
+              className="w-full rounded-2xl border border-black/10 bg-[#FAFAF7] px-3 py-3 resize-y"
               placeholder="Horarios, número de baños, si hay estacionamiento, fecha deseada…"
             />
           </div>
@@ -342,14 +342,14 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
             <button
               type="button"
               onClick={() => irA(2)}
-              className="rounded-lg border-2 border-[#EDEDEA] px-4 py-3 font-semibold hover:bg-[#EDEDEA]"
+              className="rounded-full border border-[#1F1F25]/15 px-4 py-3 font-bold hover:bg-[#FAFAF7]"
             >
               Atrás
             </button>
             <button
               type="submit"
               disabled={estado === 'enviando'}
-              className="flex-1 rounded-lg bg-[#2C7A4B] px-4 py-3.5 font-semibold text-white hover:bg-[#235f3b] disabled:opacity-60"
+              className="flex-1 rounded-full bg-[#2F5D50] px-4 py-3.5 font-bold text-white hover:bg-[#24483F] disabled:opacity-60"
             >
               {estado === 'enviando' ? 'Enviando…' : 'Solicitar cotización'}
             </button>

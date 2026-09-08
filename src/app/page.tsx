@@ -4,14 +4,15 @@ import type { Metadata } from 'next';
 import Cotizador from '@/components/cotizador/Cotizador';
 import JsonLd from '@/components/JsonLd';
 import Faq from '@/components/ui/Faq';
+import SectionIntro from '@/components/marketing/SectionIntro';
 import { pageMetadata, faqLd } from '@/lib/seo';
-import { SERVICIOS, ZONAS, COBERTURA } from '@/lib/site';
+import { SERVICIOS, ZONAS, COBERTURA, whatsappUrl } from '@/lib/site';
 import { FAQ_GENERAL } from '@/lib/contenido';
 
 export const metadata: Metadata = pageMetadata({
-  title: 'Servicio de limpieza en CDMX y Estado de México',
+  title: 'Empresa de limpieza CDMX',
   description:
-    'Servicio de limpieza para oficinas, hogares y espacios especializados en CDMX y Zona Metropolitana. Cotiza en línea en menos de un minuto, sin costo.',
+    'Empresa de limpieza en CDMX para oficinas, hogares y trabajos especializados. Personal formal, supervisión e insumos. Cotiza por WhatsApp.',
   path: '/',
   keywords: [
     'servicio de limpieza',
@@ -22,224 +23,167 @@ export const metadata: Metadata = pageMetadata({
   ],
 });
 
-// Solo las 6 preguntas más buscadas van al FAQPage del home; el resto vive en
-// /preguntas-frecuentes. Repetir el mismo FAQPage completo en varias URLs es
-// canibalización de rich results.
 const FAQ_HOME = FAQ_GENERAL.slice(0, 5);
+const wa = whatsappUrl('Hola, quiero cotizar un servicio de limpieza en CDMX.');
 
 export default function Home() {
   return (
     <>
       <JsonLd data={faqLd([...FAQ_HOME])} />
 
-      {/* ---------------- HERO + COTIZADOR ---------------- */}
-      <section className="border-b border-[#EDEDEA] bg-[#EDEDEA]/40">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6 lg:py-16">
-          {/* En móvil el cotizador va PRIMERO (order-1) y los bullets después.
-              Alguien que buscó "limpieza cdmx" desde el celular tiene que ver el
-              formulario sin hacer scroll; el texto de apoyo puede esperar. */}
-          <div className="grid lg:grid-cols-2 gap-8 lg:gap-14 items-start">
-            <div className="order-2 lg:order-1 lg:pt-6">
-              <h1 className="font-display text-[28px] leading-[1.2] sm:text-5xl lg:text-[3.4rem] mb-4 lg:mb-5 -mt-2 lg:mt-0">
-                Servicio de limpieza en CDMX y Zona Metropolitana
-              </h1>
-              <p className="text-[17px] lg:text-lg leading-relaxed text-[#1F1F25]/80 mb-6 max-w-xl">
-                Limpieza de oficinas, hogares y espacios especializados con personal
-                contratado formalmente, insumos incluidos y un supervisor responsable de
-                tu cuenta. Dinos qué necesitas y te enviamos la cotización.
-              </p>
-
-              <ul className="space-y-2.5 text-[15px] mb-8">
-                {[
-                  'Personal con alta en el IMSS y antecedentes verificados',
-                  'Insumos, equipo y supervisión incluidos en la propuesta',
-                  'Servicio único o recurrente, en horario hábil o nocturno',
-                  'Facturación con CFDI vigente',
-                ].map((item) => (
-                  <li key={item} className="flex gap-3">
-                    <span aria-hidden="true" className="text-[#2C7A4B] font-bold shrink-0">
-                      ✓
-                    </span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <div className="hidden lg:block">
-                <p className="text-sm text-[#9B9BA3]">
-                  Cobertura: {COBERTURA.join(' · ')}
-                </p>
-              </div>
+      <section className="relative overflow-hidden border-b border-black/10 bg-[#FAFAF7]">
+        <div className="absolute inset-x-0 top-0 h-40 bg-[linear-gradient(180deg,rgba(47,93,80,0.12),rgba(250,250,247,0))]" aria-hidden="true" />
+        <div className="lm-container relative grid gap-10 py-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:py-16">
+          <div className="max-w-3xl">
+            <p className="lm-chip">Limpieza profesional · CDMX y Zona Metropolitana</p>
+            <h1 className="mt-6 font-display text-[3.25rem] leading-[0.95] tracking-[-0.05em] text-[#101014] sm:text-6xl lg:text-7xl">
+              Servicio de limpieza en CDMX para espacios que no pueden fallar.
+            </h1>
+            <p className="mt-6 max-w-2xl text-lg leading-8 text-[#1F1F25]/78 lg:text-xl">
+              Limpieza de oficinas, hogares y servicios especializados con personal formal,
+              insumos definidos y un supervisor responsable. Cotizamos por proyecto, sin cifras
+              genéricas ni promesas imposibles.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              {wa && <a href={wa} className="lm-button-primary">Cotizar por WhatsApp</a>}
+              <Link href="#cotizar" className="lm-button-secondary">Usar formulario de 3 pasos</Link>
             </div>
-
-            {/* El cotizador vive en el hero, no escondido en /contacto.
-                Es lo primero que ve alguien que llegó buscando "limpieza cdmx". */}
-            <div id="cotizar" className="order-1 lg:order-2 scroll-mt-20">
-              <Cotizador />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ---------------- SERVICIOS ---------------- */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="font-display text-3xl sm:text-4xl mb-3">
-          Qué servicios de limpieza ofrecemos
-        </h2>
-        <p className="text-[17px] text-[#1F1F25]/75 max-w-2xl mb-9">
-          Tres líneas de servicio que cubren desde la oficina corporativa hasta la casa
-          particular. Cada una se cotiza por proyecto, según superficie y frecuencia.
-        </p>
-
-        <div className="grid gap-6 md:grid-cols-3">
-          {SERVICIOS.map((s) => (
-            <article key={s.slug} className="border border-[#EDEDEA] rounded-xl p-6">
-              <h3 className="font-display text-2xl mb-3">{s.nombre}</h3>
-              <p className="text-[15px] leading-relaxed text-[#1F1F25]/75 mb-5">
-                {s.resumen}
-              </p>
-              <Link
-                href={s.slug}
-                className="font-semibold underline underline-offset-4 decoration-[#2C7A4B] decoration-2"
-              >
-                Ver detalle del servicio
-              </Link>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* ---------------- CUERPO EDITORIAL (intención de búsqueda) ---------------- */}
-      <section className="border-y border-[#EDEDEA] bg-white">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 grid lg:grid-cols-[1.4fr_1fr] gap-12">
-          <div className="max-w-2xl">
-            <h2 className="font-display text-3xl sm:text-4xl mb-5">
-              Qué esperar de una empresa de limpieza en la Ciudad de México
-            </h2>
-            <div className="space-y-4 text-[16px] leading-[1.75] text-[#1F1F25]/85">
-              <p>
-                Contratar un servicio de limpieza en CDMX tiene una complicación que casi
-                nadie menciona al principio: la parte laboral. Cuando una empresa o una
-                familia contrata directamente, asume el alta ante el IMSS, las
-                prestaciones, las incapacidades, el aguinaldo y la responsabilidad si esa
-                persona sufre un accidente dentro del inmueble. Cuando el servicio se
-                terceriza, esa carga la asume el proveedor. Esa es la diferencia de fondo
-                entre pagar por horas a alguien y contratar a una empresa formal.
-              </p>
-              <p>
-                La segunda diferencia es la continuidad. Un servicio serio no se cae
-                porque alguien se enfermó: existe personal de relevo y un supervisor que
-                responde. En una oficina eso importa mucho, porque la limpieza es de esas
-                cosas que solo se notan cuando fallan —el baño sin papel a media junta, la
-                recepción sin barrer cuando llega un cliente.
-              </p>
-              <p>
-                La tercera es el alcance real del trabajo. Buena parte de los conflictos
-                con proveedores de limpieza nacen de expectativas que nunca se pusieron
-                por escrito: quién limpia los vidrios exteriores, cada cuándo se lava la
-                cisterna, si el desengrase de cocina entra en la tarifa mensual o se cobra
-                aparte. Por eso cotizamos con desglose: qué se hace, cada cuándo, con
-                cuánta gente y qué queda fuera. Si algo no está en la propuesta, se dice
-                antes, no después.
-              </p>
-              <p>
-                Sobre el precio: no publicamos una lista fija porque sería engañosa. El
-                costo de limpiar 80 m² de departamento una vez al mes no se parece en nada
-                al de un corporativo de 3,000 m² con servicio diario y turno nocturno.
-                Cotizamos a partir de la superficie, el tipo de inmueble, la frecuencia y
-                el horario. Es gratis, no compromete a nada y normalmente basta con
-                responder las tres preguntas del formulario.
-              </p>
-            </div>
+            <ul className="mt-9 grid gap-3 text-[15px] text-[#1F1F25]/80 sm:grid-cols-2">
+              {[
+                'Oficinas, corporativos y condominios',
+                'Casas, departamentos y personal de hogar',
+                'Post-obra, sanitización, pisos y alturas',
+                'Facturación y alcance por escrito',
+              ].map((item) => (
+                <li key={item} className="flex gap-3"><span className="mt-2 size-1.5 rounded-full bg-[#C9A24A]" aria-hidden="true" />{item}</li>
+              ))}
+            </ul>
           </div>
 
-          <div>
-            <div className="rounded-xl overflow-hidden border border-[#EDEDEA]">
+          <div className="relative">
+            <figure className="overflow-hidden rounded-[2.25rem] border border-black/10 bg-white shadow-[0_30px_90px_rgba(31,31,37,0.16)]">
               <Image
-                src="/images/service_office.png"
-                alt="Personal de limpieza atendiendo un área de oficinas"
-                width={800}
-                height={600}
-                sizes="(max-width: 1024px) 100vw, 420px"
-                className="w-full h-auto object-cover"
+                src="/images/hero_ultra_premium.png"
+                alt="Imagen ambiental de limpieza profesional en un lobby corporativo moderno"
+                width={768}
+                height={768}
+                priority
+                sizes="(max-width: 1024px) 100vw, 52vw"
+                className="aspect-[4/3] w-full object-cover lg:aspect-[5/4]"
+              />
+              <figcaption className="sr-only">Imagen ambiental ilustrativa; no representa personal o instalaciones propias.</figcaption>
+            </figure>
+            <div className="absolute -bottom-5 left-5 right-5 rounded-[1.5rem] border border-black/10 bg-white/92 p-4 shadow-xl backdrop-blur md:left-auto md:w-80">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2F5D50]">Lo que sí queda claro</p>
+              <p className="mt-2 text-sm leading-6 text-[#1F1F25]/78">Qué se limpia, cada cuándo, con cuánta gente, qué insumos entran y qué queda fuera.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cotizar" className="scroll-mt-24 bg-white">
+        <div className="lm-container grid gap-8 py-14 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+          <div className="pt-2">
+            <p className="lm-chip">Cotizador ligero</p>
+            <h2 className="mt-4 font-display text-4xl leading-tight text-[#101014] sm:text-5xl">Tres pasos. Una propuesta seria.</h2>
+            <p className="mt-5 text-[17px] leading-8 text-[#1F1F25]/75">
+              El formulario no reemplaza el levantamiento: lo acelera. Con tipo de espacio, tamaño,
+              frecuencia y zona podemos responder con una propuesta útil o pedir solo el dato que falte.
+            </p>
+            <p className="mt-4 text-sm text-[#1F1F25]/55">También puedes escribir a WhatsApp si tu servicio es urgente.</p>
+          </div>
+          <Cotizador />
+        </div>
+      </section>
+
+      <section className="border-y border-black/10 bg-[#FAFAF7]">
+        <div className="lm-container py-16">
+          <SectionIntro eyebrow="Servicios" title="Una página por intención; un servicio por necesidad.">
+            <p>El sitio separa las búsquedas principales: servicio general en CDMX, oficinas, hogar y trabajos especializados. Así Google —y un agente de IA— no tienen que adivinar qué vendemos.</p>
+          </SectionIntro>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {SERVICIOS.map((s) => (
+              <article key={s.slug} className="lm-card p-7">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2F5D50]">Servicio</p>
+                <h3 className="mt-4 font-display text-3xl leading-tight text-[#101014]">{s.nombre}</h3>
+                <p className="mt-4 text-[15px] leading-7 text-[#1F1F25]/72">{s.resumen}</p>
+                <Link href={s.slug} className="mt-6 inline-flex text-sm font-bold text-[#2F5D50] underline underline-offset-4">Ver detalle</Link>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white">
+        <div className="lm-container grid gap-12 py-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
+          <div className="lm-prose max-w-3xl">
+            <h2>Qué debe resolver una empresa de limpieza en la Ciudad de México</h2>
+            <p>
+              Contratar un servicio de limpieza en CDMX no es solo encontrar a alguien que barra y trapee. En oficinas, el reto es laboral y operativo: alta del personal, cobertura de ausencias, supervisión, acceso al edificio, manejo de residuos, limpieza de sanitarios de alto tráfico y respuesta rápida cuando algo falla. En casas y departamentos, el punto central es la confianza: saber quién entra, que la persona esté verificada y que el servicio sea consistente.
+            </p>
+            <p>
+              Por eso Limpieza México no publica una tarifa universal. Un departamento de 80 m², una oficina de 900 m², una torre en Santa Fe y una cocina de restaurante en Polanco no se cotizan igual. La propuesta se arma con superficie, frecuencia, horario, insumos, equipo y restricciones de acceso. Si algo requiere maquinaria, trabajo en alturas o desengrase especializado, se separa desde el inicio para evitar sorpresas.
+            </p>
+            <p>
+              El objetivo del rediseño es que esa claridad se vea desde el primer scroll: qué hacemos, dónde operamos, cómo se cotiza y cómo contactarnos. Nada de clientes inventados, rankings sin fuente o promesas de precio que después no se sostienen.
+            </p>
+          </div>
+          <div className="space-y-5">
+            <div className="lm-card overflow-hidden">
+              <Image
+                src="/images/cta_modern_building.png"
+                alt="Atrio corporativo limpio y luminoso como referencia ambiental"
+                width={768}
+                height={768}
+                sizes="(max-width: 1024px) 100vw, 42vw"
+                className="aspect-[4/3] w-full object-cover"
               />
             </div>
-            <div className="mt-6 rounded-xl bg-[#EDEDEA]/60 p-6">
-              <h3 className="font-display text-xl mb-3">Zonas con atención frecuente</h3>
-              <ul className="space-y-2 text-[15px]">
-                {ZONAS.map((z) => (
-                  <li key={z.slug}>
-                    <Link href={z.slug} className="underline underline-offset-4 decoration-[#9B9BA3]">
-                      Servicio de limpieza en {z.nombre}
-                    </Link>
-                  </li>
-                ))}
+            <div className="rounded-[1.75rem] bg-[#101014] p-6 text-white">
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#C9A24A]">Cobertura</p>
+              <ul className="mt-4 space-y-2 text-sm leading-6 text-white/78">
+                {COBERTURA.map((c) => <li key={c}>{c}</li>)}
               </ul>
-              <p className="text-sm text-[#9B9BA3] mt-4">
-                Cubrimos toda la CDMX y la Zona Metropolitana. Estas son las zonas donde
-                tenemos mayor densidad de operación.
-              </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* ---------------- CÓMO FUNCIONA ---------------- */}
-      <section className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="font-display text-3xl sm:text-4xl mb-9">Cómo se solicita el servicio</h2>
-        <ol className="grid gap-8 md:grid-cols-3 counter-reset">
-          {[
-            {
-              t: 'Nos dices qué necesitas',
-              d: 'Tres preguntas en el formulario: tipo de servicio, tamaño y frecuencia, y cómo contactarte. Toma menos de un minuto desde el celular.',
-            },
-            {
-              t: 'Armamos la propuesta',
-              d: 'Calculamos personal, horas e insumos para tu espacio. Si el proyecto lo amerita, agendamos una visita sin costo para medir en sitio.',
-            },
-            {
-              t: 'Arranca el servicio',
-              d: 'Se define fecha, horario y accesos. Queda asignado un supervisor responsable y un canal directo para reportar cualquier tema.',
-            },
-          ].map((p, i) => (
-            <li key={p.t}>
-              <p className="font-display text-4xl text-[#9B9BA3] mb-2">{i + 1}</p>
-              <h3 className="font-semibold text-lg mb-2">{p.t}</h3>
-              <p className="text-[15px] leading-relaxed text-[#1F1F25]/75">{p.d}</p>
-            </li>
-          ))}
-        </ol>
+      <section className="border-y border-black/10 bg-[#FAFAF7]">
+        <div className="lm-container py-16">
+          <SectionIntro eyebrow="Zonas" title="Contenido local real para Polanco, Santa Fe, Interlomas, Condesa y Roma.">
+            <p>Cada zona explica logística, accesos y tipo de inmueble. No son páginas plantilla con el nombre de la colonia cambiado.</p>
+          </SectionIntro>
+          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {ZONAS.map((z) => (
+              <Link key={z.slug} href={z.slug} className="rounded-[1.5rem] border border-black/10 bg-white p-5 hover:border-[#2F5D50]/50">
+                <span className="block font-display text-2xl text-[#101014]">{z.nombre}</span>
+                <span className="mt-1 block text-sm text-[#1F1F25]/60">{z.alcaldia}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
       </section>
 
-      {/* ---------------- FAQ ---------------- */}
-      <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-16">
-        <Faq faqs={[...FAQ_HOME]} />
-        <p className="mt-6">
-          <Link
-            href="/preguntas-frecuentes"
-            className="font-semibold underline underline-offset-4 decoration-[#2C7A4B] decoration-2"
-          >
-            Ver todas las preguntas frecuentes
-          </Link>
-        </p>
+      <section className="bg-white">
+        <div className="lm-container grid gap-10 py-16 lg:grid-cols-[0.9fr_1.1fr]">
+          <SectionIntro eyebrow="Preguntas" title="Respuestas escritas como pregunta real de usuario.">
+            <p>El FAQ ayuda a SEO y a agentes de IA: precio, zonas, factura, personal e insumos se responden sin relleno.</p>
+            <p className="mt-6"><Link href="/preguntas-frecuentes" className="lm-button-secondary">Ver FAQ completo</Link></p>
+          </SectionIntro>
+          <div className="-mt-16 lg:mt-0"><Faq faqs={[...FAQ_HOME]} /></div>
+        </div>
       </section>
 
-      {/* ---------------- CTA FINAL ---------------- */}
-      <section className="bg-[#1F1F25] text-white">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <h2 className="font-display text-3xl sm:text-4xl mb-4">
-            Cotiza tu servicio de limpieza
-          </h2>
-          <p className="text-[17px] text-white/75 mb-8">
-            Sin costo y sin compromiso. Un asesor revisa tu solicitud y te responde con la
-            propuesta.
-          </p>
-          <Link
-            href="/contacto"
-            className="inline-flex rounded-lg bg-[#2C7A4B] px-8 py-4 font-semibold text-white hover:bg-[#235f3b]"
-          >
-            Solicitar cotización
-          </Link>
+      <section className="bg-[#101014] text-white">
+        <div className="lm-container py-16 text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#C9A24A]">Siguiente paso</p>
+          <h2 className="mx-auto mt-4 max-w-3xl font-display text-4xl leading-tight sm:text-5xl">Cotiza el servicio con alcance claro antes de contratar.</h2>
+          <p className="mx-auto mt-5 max-w-2xl text-[17px] leading-8 text-white/70">WhatsApp si quieres rapidez; formulario si prefieres dejar el detalle completo.</p>
+          <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+            {wa && <a href={wa} className="lm-button-primary">Cotizar por WhatsApp</a>}
+            <Link href="/contacto" className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-bold text-[#101014]">Ir al formulario</Link>
+          </div>
         </div>
       </section>
     </>
