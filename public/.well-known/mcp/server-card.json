@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "2025-06-18",
+  "serverInfo": {
+    "name": "limpieza-mexico-agent-ready",
+    "displayName": "Limpieza México MCP",
+    "version": "2026-09-08",
+    "description": "Servidor MCP público y real para consultar servicios, zonas y solicitar cotizaciones de Limpieza México. Sin autenticación; con validación estricta, honeypot y controles antiabuso."
+  },
+  "transport": {
+    "type": "streamable-http",
+    "endpoint": "https://www.limpiezamexico.com/api/mcp",
+    "methods": ["POST", "GET", "DELETE"],
+    "contentType": "application/json",
+    "cors": true
+  },
+  "capabilities": {
+    "tools": [
+      {
+        "name": "consultar_servicios",
+        "description": "Devuelve el catálogo real de servicios desde src/lib/site.ts.",
+        "inputSchema": { "type": "object", "additionalProperties": false, "properties": {} }
+      },
+      {
+        "name": "consultar_zonas",
+        "description": "Devuelve zonas publicadas, cobertura y contacto real.",
+        "inputSchema": { "type": "object", "additionalProperties": false, "properties": {} }
+      },
+      {
+        "name": "solicitar_cotizacion",
+        "description": "Solicita una cotización real por el mismo backend de correo del formulario, con etiqueta [AGENTE].",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nombre", "telefono", "servicio"],
+          "properties": {
+            "nombre": { "type": "string", "minLength": 2, "maxLength": 80 },
+            "telefono": { "type": "string", "description": "E.164 (+525539643612) o 10 dígitos MX.", "minLength": 10, "maxLength": 20 },
+            "email": { "type": "string", "format": "email", "maxLength": 120 },
+            "servicio": {
+              "type": "string",
+              "enum": ["/limpieza-de-oficinas", "/limpieza-domestica", "/limpieza-especializada"]
+            },
+            "zona": { "type": "string", "maxLength": 80 },
+            "detalles": { "type": "string", "maxLength": 1000 },
+            "website": { "type": "string", "description": "Honeypot anti-spam; omitir." }
+          }
+        }
+      }
+    ]
+  },
+  "security": [],
+  "auth": { "type": "none", "description": "No hay OAuth ni tokens: el servidor es público para agentes y está protegido con validación estricta, honeypot y rate-limit." },
+  "contact": {
+    "email": "ventas@limpiezamexico.com",
+    "phone": "+525539643612",
+    "url": "https://www.limpiezamexico.com/contacto"
+  }
+}

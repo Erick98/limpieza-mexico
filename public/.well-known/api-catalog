@@ -6,6 +6,13 @@
         { "href": "https://www.limpiezamexico.com/llms.txt", "type": "text/markdown", "title": "Limpieza México — guía para agentes (llms.txt)" },
         { "href": "https://www.limpiezamexico.com/.well-known/agent-skills/SKILL.md", "type": "text/markdown", "title": "Cómo cotizar un servicio de limpieza en CDMX" }
       ],
+      "service-desc": [
+        { "href": "https://www.limpiezamexico.com/api/openapi.json", "type": "application/vnd.oai.openapi+json;version=3.1", "title": "OpenAPI real de cotización para agentes" },
+        { "href": "https://www.limpiezamexico.com/.well-known/mcp/server-card.json", "type": "application/json", "title": "MCP Server Card real" }
+      ],
+      "status": [
+        { "href": "https://www.limpiezamexico.com/api/health", "type": "application/json", "title": "Estado mínimo de la API" }
+      ],
       "describedby": [
         { "href": "https://www.limpiezamexico.com/.well-known/ai-catalog.json", "type": "application/json", "title": "ARD capability manifest" }
       ]
