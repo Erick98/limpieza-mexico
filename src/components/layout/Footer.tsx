@@ -24,7 +24,7 @@ export default function Footer() {
   return (
     <footer className="border-t border-[#EDEDEA] bg-[#1F1F25] text-white mt-20">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-14">
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div>
             <p className="font-display text-xl mb-3">Limpieza México</p>
             <p className="text-[15px] leading-relaxed text-[#62626B]">
@@ -53,6 +53,37 @@ export default function Footer() {
             </ul>
           </nav>
 
+          <nav aria-labelledby="footer-recursos">
+            <p id="footer-recursos" className="font-semibold mb-3">
+              Antes de contratar
+            </p>
+            <ul className="space-y-2 text-[15px] text-[#62626B]">
+              <li>
+                <Link
+                  href="/mejor-empresa-de-limpieza-en-mexico"
+                  className="hover:text-white hover:underline"
+                >
+                  Cómo elegir empresa de limpieza
+                </Link>
+              </li>
+              <li>
+                <Link href="/guias" className="hover:text-white hover:underline">
+                  Guías para empresas y condominios
+                </Link>
+              </li>
+              <li>
+                <Link href="/preguntas-frecuentes" className="hover:text-white hover:underline">
+                  Preguntas frecuentes
+                </Link>
+              </li>
+              <li>
+                <Link href="/nosotros" className="hover:text-white hover:underline">
+                  Nosotros
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
           <nav aria-labelledby="footer-zonas">
             <p id="footer-zonas" className="font-semibold mb-3">
               Zonas de servicio
@@ -65,11 +96,6 @@ export default function Footer() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link href="/preguntas-frecuentes" className="hover:text-white hover:underline">
-                  Preguntas frecuentes
-                </Link>
-              </li>
             </ul>
           </nav>
 

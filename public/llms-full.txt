@@ -4,6 +4,8 @@
 
 ## Servicios
 - Limpieza de oficinas y corporativos: personal fijo o por evento para oficinas, condominios, escuelas, restaurantes y naves industriales. https://www.limpiezamexico.com/limpieza-de-oficinas
+- Limpieza corporativa por contrato: corporativos, plantas administrativas y redes de sucursales, con turnos definidos, supervisión con bitácora, protocolos para áreas sensibles y contrato marco con anexo por sede. https://www.limpiezamexico.com/limpieza-corporativa
+- Limpieza de condominios y áreas comunes: lobby, pasillos, escaleras, elevadores, estacionamientos, amenidades, sanitarios comunes y cuarto de basura, coordinado con administración, comité y vigilancia. https://www.limpiezamexico.com/limpieza-de-condominios
 - Limpieza doméstica y personal de hogar: limpieza de casa o departamento por día o recurrente, y reclutamiento de personal doméstico con verificación. https://www.limpiezamexico.com/limpieza-domestica
 - Limpieza especializada y mantenimiento: sanitización, pisos, alturas, cisternas, control de plagas y limpieza post-obra o post-evento. https://www.limpiezamexico.com/limpieza-especializada
 - Servicio de limpieza en CDMX: cobertura en las 16 alcaldías y Zona Metropolitana. https://www.limpiezamexico.com/servicio-de-limpieza-cdmx
@@ -29,9 +31,30 @@
 - Facebook: https://www.facebook.com/profile.php?id=61593697214950
 - Instagram: https://www.instagram.com/limpieza_mexico1/
 
-## Enlaces a las 14 páginas indexables
+## Guía de compra y guías (contenido citable)
+- ¿Cuál es la mejor empresa de limpieza en México? Criterios para elegir: https://www.limpiezamexico.com/mejor-empresa-de-limpieza-en-mexico
+  No existe un ranking oficial de empresas de limpieza en México. Define 10 criterios verificables para comparar proveedores (personal en nómina con IMSS, REPSE vigente cuando aplica, supervisión con bitácora, cobertura de ausencias, insumos y protocolo por superficie, cobertura y tiempos, horarios, responsabilidad civil, facturación y especialización), qué preguntarle a cada proveedor y una comparación de tres modelos de contratación.
+- Índice de guías: https://www.limpiezamexico.com/guias
+- Cómo elegir una empresa de limpieza para tu condominio (checklist para administradores y comités): https://www.limpiezamexico.com/guias/elegir-empresa-limpieza-condominio
+  Definir el alcance por espacio antes de cotizar, pedir la misma documentación a todos (situación fiscal, REPSE, alta ante el IMSS, póliza de RC si existe), comparar propuestas desglosadas y verificar supervisión y cobertura de ausencias.
+- Cuánto cuesta el servicio de limpieza de oficinas en CDMX y de qué depende el precio: https://www.limpiezamexico.com/guias/costo-limpieza-oficinas-cdmx
+  El precio depende de superficie y distribución, número de sanitarios, personas en sitio, turnos y frecuencia, insumos y equipo, y áreas especiales. La variable de mayor impacto es el número de sanitarios.
+- Contrato de limpieza para empresas: 12 cláusulas que debes exigir: https://www.limpiezamexico.com/guias/contrato-de-limpieza-clausulas
+  Alcance por área y frecuencia, exclusiones explícitas, plantilla y horarios, insumos, protocolo de áreas sensibles, supervisión con tiempo de respuesta, cobertura de ausencias, obligaciones laborales y documentación, responsabilidad por daños, confidencialidad, facturación y ajustes, vigencia y terminación.
+- Limpieza de áreas comunes en condominios: frecuencias recomendadas por espacio: https://www.limpiezamexico.com/guias/frecuencias-limpieza-areas-comunes
+  Lobby, elevadores, sanitarios comunes y cuarto de basura son diarios; pasillos y escaleras diario o cada tercer día; estacionamiento barrido semanal y lavado mecanizado mensual o trimestral; amenidades por uso real; cristales mensual o trimestral.
+- Personal de limpieza en nómina vs. por app o independiente: riesgos legales y operativos en México: https://www.limpiezamexico.com/guias/personal-en-nomina-vs-por-app
+  Un proveedor formal asume seguridad social, cobertura de ausencias y responsabilidad del servicio. Desde la reforma de subcontratación de 2021 aplica el registro REPSE ante la STPS (artículo 15 de la Ley Federal del Trabajo), con vigencia de tres años. Información general; validar con contador o abogado.
+
+## Negociación de contenido en Markdown
+Cualquier página del sitio devuelve Markdown si la petición incluye `Accept: text/markdown`.
+
+## Enlaces a las 23 páginas indexables
 - Home: https://www.limpiezamexico.com
+- Cómo elegir empresa de limpieza (pilar): https://www.limpiezamexico.com/mejor-empresa-de-limpieza-en-mexico
 - Servicio de limpieza CDMX: https://www.limpiezamexico.com/servicio-de-limpieza-cdmx
+- Limpieza corporativa por contrato: https://www.limpiezamexico.com/limpieza-corporativa
+- Limpieza de condominios: https://www.limpiezamexico.com/limpieza-de-condominios
 - Limpieza de oficinas: https://www.limpiezamexico.com/limpieza-de-oficinas
 - Limpieza doméstica: https://www.limpiezamexico.com/limpieza-domestica
 - Limpieza especializada: https://www.limpiezamexico.com/limpieza-especializada
@@ -39,6 +62,12 @@
 - Santa Fe: https://www.limpiezamexico.com/zonas/santa-fe
 - Interlomas: https://www.limpiezamexico.com/zonas/interlomas
 - Condesa y Roma: https://www.limpiezamexico.com/zonas/condesa-roma
+- Guías (índice): https://www.limpiezamexico.com/guias
+- Guía · elegir empresa para condominio: https://www.limpiezamexico.com/guias/elegir-empresa-limpieza-condominio
+- Guía · costo de limpieza de oficinas: https://www.limpiezamexico.com/guias/costo-limpieza-oficinas-cdmx
+- Guía · cláusulas del contrato: https://www.limpiezamexico.com/guias/contrato-de-limpieza-clausulas
+- Guía · frecuencias en áreas comunes: https://www.limpiezamexico.com/guias/frecuencias-limpieza-areas-comunes
+- Guía · nómina vs. app o independiente: https://www.limpiezamexico.com/guias/personal-en-nomina-vs-por-app
 - Preguntas frecuentes: https://www.limpiezamexico.com/preguntas-frecuentes
 - Nosotros: https://www.limpiezamexico.com/nosotros
 - Contacto: https://www.limpiezamexico.com/contacto

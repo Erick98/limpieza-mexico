@@ -34,5 +34,18 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/', '/servicio-de-limpieza-cdmx', '/limpieza-de-oficinas', '/limpieza-domestica', '/limpieza-especializada', '/zonas/:path*', '/preguntas-frecuentes'],
+  matcher: [
+    '/',
+    '/mejor-empresa-de-limpieza-en-mexico',
+    '/servicio-de-limpieza-cdmx',
+    '/limpieza-corporativa',
+    '/limpieza-de-condominios',
+    '/limpieza-de-oficinas',
+    '/limpieza-domestica',
+    '/limpieza-especializada',
+    '/guias',
+    '/guias/:path*',
+    '/zonas/:path*',
+    '/preguntas-frecuentes',
+  ],
 };

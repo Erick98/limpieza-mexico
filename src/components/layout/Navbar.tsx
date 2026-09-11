@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { SERVICIOS } from '@/lib/site';
+import { NAV_PRINCIPAL } from '@/lib/site';
 
-const ENLACES = [
-  { href: '/servicio-de-limpieza-cdmx', label: 'CDMX' },
-  ...SERVICIOS.map((s) => ({ href: s.slug, label: s.corto })),
-  { href: '/preguntas-frecuentes', label: 'FAQ' },
-  { href: '/nosotros', label: 'Nosotros' },
-];
+/**
+ * La barra ya NO se deriva de SERVICIOS. Con 5 servicios en el catálogo y sus nombres
+ * completos, las píldoras desbordaban el contenedor entre 1024 y 1280 px. NAV_PRINCIPAL
+ * (site.ts) lleva etiquetas cortas curadas; FAQ y Nosotros viven en el footer, que es
+ * donde se buscan, y el catálogo completo con nombre largo también está ahí.
+ */
+const ENLACES = NAV_PRINCIPAL;
 
 export default function Navbar() {
   return (
@@ -29,6 +30,8 @@ export default function Navbar() {
             <div className="absolute right-0 top-12 w-[min(82vw,22rem)] rounded-[1.5rem] border border-black/10 bg-white p-2 shadow-2xl">
               <ul className="space-y-1">
                 {ENLACES.map((e) => <li key={e.href}><Link href={e.href} className="block rounded-2xl px-4 py-3 font-semibold hover:bg-[#FAFAF7]">{e.label}</Link></li>)}
+                <li><Link href="/preguntas-frecuentes" className="block rounded-2xl px-4 py-3 font-semibold hover:bg-[#FAFAF7]">Preguntas frecuentes</Link></li>
+                <li><Link href="/nosotros" className="block rounded-2xl px-4 py-3 font-semibold hover:bg-[#FAFAF7]">Nosotros</Link></li>
                 <li><Link href="/contacto" className="mt-2 block rounded-full bg-[#2F5D50] px-4 py-3 text-center font-bold text-white">Cotizar ahora</Link></li>
               </ul>
             </div>

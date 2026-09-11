@@ -189,6 +189,44 @@ export function faqLd(faqs: { q: string; a: string }[]) {
   };
 }
 
+/**
+ * Article para el contenido editorial (página pilar y guías).
+ *
+ * IMPORTANTE: `author` y `publisher` se declaran SOLO por referencia `@id` a la
+ * Organization que el layout ya emite una vez. Volver a describir la entidad aquí
+ * (con name, logo, address) crea dos nodos que compiten por el mismo @id y obliga a
+ * Google a resolver un conflicto que no debería existir.
+ *
+ * `about` apunta a la entidad CleaningService: es lo que ata el artículo al negocio
+ * y permite que un motor entienda de quién habla el texto.
+ */
+export function articleLd(opts: {
+  headline: string;
+  description: string;
+  path: string;
+  datePublished: string;
+  dateModified: string;
+  seccion?: string;
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: opts.headline,
+    description: opts.description,
+    url: absoluteUrl(opts.path),
+    mainEntityOfPage: { '@type': 'WebPage', '@id': absoluteUrl(opts.path) },
+    datePublished: opts.datePublished,
+    dateModified: opts.dateModified,
+    inLanguage: 'es-MX',
+    image: absoluteUrl(OG_IMAGE),
+    author: { '@id': ORG_ID },
+    publisher: { '@id': ORG_ID },
+    about: { '@id': BUSINESS_ID },
+    mentions: { '@id': BUSINESS_ID },
+    ...(opts.seccion ? { articleSection: opts.seccion } : {}),
+  };
+}
+
 /** Service page: describe UN servicio y lo ata al negocio por @id. */
 export function serviceLd(opts: {
   name: string;

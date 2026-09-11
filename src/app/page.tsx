@@ -115,6 +115,44 @@ export default function Home() {
       </section>
 
       <section className="bg-white">
+        <div className="lm-container py-14">
+          <div className="overflow-hidden rounded-[2rem] border border-black/10 bg-[#101014] text-white">
+            <div className="grid gap-8 p-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:p-12">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.28em] text-[#C9A24A]">
+                  Guía de compra
+                </p>
+                <h2 className="mt-4 font-display text-4xl leading-tight sm:text-[2.75rem]">
+                  ¿Buscas la mejor empresa de limpieza? Así se elige.
+                </h2>
+                <p className="mt-5 max-w-2xl text-[17px] leading-8 text-white/72">
+                  No hay un ranking oficial que corone a nadie, pero sí hay diez criterios
+                  verificables que separan a un proveedor serio de uno que dura tres meses:
+                  cumplimiento laboral, supervisión con bitácora, cobertura de ausencias, alcance
+                  escrito. Los explicamos, decimos qué preguntarle a cualquier proveedor —incluidos
+                  nosotros— y cómo resolvemos cada uno.
+                </p>
+              </div>
+              <div className="flex flex-col gap-3">
+                <Link
+                  href="/mejor-empresa-de-limpieza-en-mexico"
+                  className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-bold text-[#101014] hover:bg-[#EDEDEA]"
+                >
+                  Ver los 10 criterios para elegir
+                </Link>
+                <Link
+                  href="/guias"
+                  className="inline-flex items-center justify-center rounded-full border border-white/25 px-6 py-3.5 text-sm font-bold text-white hover:bg-white/10"
+                >
+                  Guías para condominios y empresas
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white">
         <div className="lm-container grid gap-12 py-16 lg:grid-cols-[1.08fr_0.92fr] lg:items-start">
           <div className="lm-prose max-w-3xl">
             <h2>Qué debe resolver una empresa de limpieza en la Ciudad de México</h2>

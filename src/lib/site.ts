@@ -79,7 +79,10 @@ export type RouteDef = {
  */
 export const STATIC_ROUTES: RouteDef[] = [
   { path: '', priority: 1.0, changeFrequency: 'weekly' },
+  { path: '/mejor-empresa-de-limpieza-en-mexico', priority: 0.95, changeFrequency: 'monthly' },
   { path: '/servicio-de-limpieza-cdmx', priority: 0.95, changeFrequency: 'weekly' },
+  { path: '/limpieza-corporativa', priority: 0.9, changeFrequency: 'weekly' },
+  { path: '/limpieza-de-condominios', priority: 0.9, changeFrequency: 'weekly' },
   { path: '/limpieza-de-oficinas', priority: 0.9, changeFrequency: 'weekly' },
   { path: '/limpieza-domestica', priority: 0.9, changeFrequency: 'weekly' },
   { path: '/limpieza-especializada', priority: 0.85, changeFrequency: 'weekly' },
@@ -87,6 +90,12 @@ export const STATIC_ROUTES: RouteDef[] = [
   { path: '/zonas/santa-fe', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/zonas/interlomas', priority: 0.7, changeFrequency: 'monthly' },
   { path: '/zonas/condesa-roma', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/guias', priority: 0.7, changeFrequency: 'monthly' },
+  { path: '/guias/elegir-empresa-limpieza-condominio', priority: 0.65, changeFrequency: 'monthly' },
+  { path: '/guias/costo-limpieza-oficinas-cdmx', priority: 0.65, changeFrequency: 'monthly' },
+  { path: '/guias/contrato-de-limpieza-clausulas', priority: 0.65, changeFrequency: 'monthly' },
+  { path: '/guias/frecuencias-limpieza-areas-comunes', priority: 0.65, changeFrequency: 'monthly' },
+  { path: '/guias/personal-en-nomina-vs-por-app', priority: 0.65, changeFrequency: 'monthly' },
   { path: '/preguntas-frecuentes', priority: 0.6, changeFrequency: 'monthly' },
   { path: '/nosotros', priority: 0.6, changeFrequency: 'monthly' },
   { path: '/contacto', priority: 0.8, changeFrequency: 'monthly' },
@@ -107,6 +116,20 @@ export const SERVICIOS = [
       'Personal fijo o por evento para oficinas, condominios, escuelas, restaurantes y naves industriales.',
   },
   {
+    slug: '/limpieza-corporativa',
+    nombre: 'Limpieza corporativa por contrato',
+    corto: 'Corporativo por contrato',
+    resumen:
+      'Contrato de limpieza para corporativos, plantas administrativas y redes de sucursales, con turnos, supervisión e indicadores acordados.',
+  },
+  {
+    slug: '/limpieza-de-condominios',
+    nombre: 'Limpieza de condominios y áreas comunes',
+    corto: 'Condominios',
+    resumen:
+      'Áreas comunes, lobby, pasillos, elevadores, estacionamientos, amenidades y cuarto de basura, coordinado con administración y comité.',
+  },
+  {
     slug: '/limpieza-domestica',
     nombre: 'Limpieza doméstica y personal de hogar',
     corto: 'Hogar y personal doméstico',
@@ -120,6 +143,24 @@ export const SERVICIOS = [
     resumen:
       'Sanitización, pisos, alturas, cisternas, control de plagas y limpieza post-obra o post-evento.',
   },
+] as const;
+
+/**
+ * Navegación superior. Se cura A MANO y NO se deriva de SERVICIOS.
+ *
+ * Motivo: el catálogo son 5 servicios y sus nombres completos desbordan la barra de
+ * píldoras en laptops de 1024–1280 px. Aquí van etiquetas cortas de una palabra; el
+ * catálogo completo con nombre largo vive en el footer y en /servicio-de-limpieza-cdmx.
+ * Si agregas un servicio a SERVICIOS, decide explícitamente si entra aquí.
+ */
+export const NAV_PRINCIPAL = [
+  { href: '/servicio-de-limpieza-cdmx', label: 'CDMX' },
+  { href: '/limpieza-corporativa', label: 'Corporativo' },
+  { href: '/limpieza-de-condominios', label: 'Condominios' },
+  { href: '/limpieza-de-oficinas', label: 'Oficinas' },
+  { href: '/limpieza-domestica', label: 'Hogar' },
+  { href: '/limpieza-especializada', label: 'Especializada' },
+  { href: '/guias', label: 'Guías' },
 ] as const;
 
 /** Zonas con página propia. Solo las que tienen contenido real y diferenciado. */
