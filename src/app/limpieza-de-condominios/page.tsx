@@ -73,7 +73,7 @@ const FRECUENCIAS = [
   ['Estacionamiento (barrido)', 'Semanal', 'Acumula polvo, hojas y residuos; el barrido frecuente evita el lavado costoso.'],
   ['Estacionamiento (lavado mecanizado)', 'Mensual o trimestral', 'Requiere liberar niveles por etapas y equipo específico.'],
   ['Amenidades', 'Según uso y calendario de reservas', 'Un gimnasio usado a diario no se compara con un salón que se reserva dos veces al mes.'],
-  ['Cristales y cancelería de áreas comunes', 'Mensual o trimestral', 'En temporada seca el polvo se nota antes; en altura requiere equipo certificado.'],
+  ['Cristales y cancelería de áreas comunes', 'Mensual o trimestral', 'En temporada seca el polvo se nota antes; en altura requiere equipo para trabajo en alturas.'],
 ] as const;
 
 export default function LimpiezaCondominios() {
@@ -189,7 +189,7 @@ export default function LimpiezaCondominios() {
               responsable de contacto por ambas partes, condiciones de facturación y causales de
               terminación. Para condominio conviene añadir dos cláusulas que casi siempre faltan:
               qué ocurre en días festivos y quién cubre los consumibles de los sanitarios comunes.
-              Son la fuente número uno de discusiones a los tres meses de firmado.
+              Son la discusión más recurrente a los tres meses de firmado.
             </p>
             <p>
               Si están armando el comparativo para la asamblea, la{' '}

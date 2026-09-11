@@ -154,7 +154,7 @@ export const GUIAS: Guia[] = [
     titulo: 'Cuánto cuesta el servicio de limpieza de oficinas en CDMX y de qué depende el precio',
     tituloSeo: 'Costo de limpieza de oficinas en CDMX',
     descripcion:
-      'Qué variables determinan el precio de la limpieza de oficinas en CDMX, cómo leer una cotización y qué comparar entre propuestas para que sean equivalentes.',
+      'Qué variables determinan el precio de la limpieza de oficinas en CDMX y qué debe traer una cotización para poder compararla con otra.',
     entrada:
       'La pregunta tiene respuesta, pero no es un número: es una fórmula. Quien publica una tarifa por metro cuadrado sin haber visto el espacio está adivinando, y esa cifra se corrige a la alza o el servicio se cae.',
     resumen:
@@ -387,7 +387,7 @@ export const GUIAS: Guia[] = [
     titulo: 'Limpieza de áreas comunes en condominios: frecuencias recomendadas por espacio',
     tituloSeo: 'Frecuencias de limpieza de áreas comunes',
     descripcion:
-      'Con qué frecuencia limpiar lobby, pasillos, elevadores, estacionamientos, amenidades y cuarto de basura en un condominio, y cómo ajustarla al tráfico real.',
+      'Con qué frecuencia limpiar lobby, pasillos, elevadores, estacionamientos, amenidades y cuarto de basura en un condominio, según el tráfico real.',
     entrada:
       'La pregunta que llega a casi toda administración es la misma: "¿cada cuándo se debe limpiar esto?". La respuesta corta es que no todos los espacios llevan la misma frecuencia, y tratarlos igual es la forma más común de gastar de más en unos y quedarse corto en otros.',
     resumen:
@@ -495,7 +495,7 @@ export const GUIAS: Guia[] = [
     titulo: 'Personal de limpieza en nómina vs. por app o independiente: riesgos legales y operativos en México',
     tituloSeo: 'Limpieza en nómina vs. por app: riesgos',
     descripcion:
-      'Diferencias reales entre contratar limpieza con personal en nómina, por app o independiente en México: obligaciones de seguridad social, REPSE y riesgo operativo.',
+      'Diferencias entre contratar limpieza con personal en nómina, por app o independiente en México: seguridad social, REPSE y riesgo operativo.',
     entrada:
       'La comparación suele plantearse como una decisión de precio. En realidad es una decisión sobre dónde queda el riesgo cuando algo sale mal, y ese costo no aparece en ninguna cotización.',
     resumen:

@@ -67,16 +67,80 @@ export default function GuiasIndex() {
         </p>
       </section>
 
-      <section className="lm-container pb-16">
-        <ul className="grid gap-5 lg:grid-cols-2">
+      <section className="border-y border-black/10 bg-white">
+        <div className="lm-container py-14">
+          <h2 className="font-display text-3xl leading-tight text-[#101014] sm:text-4xl">
+            Por dónde empezar según tu caso
+          </h2>
+          <div className="mt-8 grid gap-5 md:grid-cols-3">
+            <div className="rounded-[1.5rem] border border-black/10 bg-[#FAFAF7] p-6">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2F5D50]">
+                Administras un condominio
+              </p>
+              <p className="mt-3 text-[15px] leading-7 text-[#1F1F25]/75">
+                Empieza por el{' '}
+                <Link href="/guias/elegir-empresa-limpieza-condominio" className="font-bold underline underline-offset-4">
+                  checklist para administradores y comités
+                </Link>{' '}
+                para armar el alcance antes de pedir cotizaciones, y sigue con las{' '}
+                <Link href="/guias/frecuencias-limpieza-areas-comunes" className="font-bold underline underline-offset-4">
+                  frecuencias por espacio
+                </Link>
+                , que es lo que define cuánta gente necesita el inmueble.
+              </p>
+            </div>
+            <div className="rounded-[1.5rem] border border-black/10 bg-[#FAFAF7] p-6">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2F5D50]">
+                Llevas facilities o compras
+              </p>
+              <p className="mt-3 text-[15px] leading-7 text-[#1F1F25]/75">
+                La guía de{' '}
+                <Link href="/guias/costo-limpieza-oficinas-cdmx" className="font-bold underline underline-offset-4">
+                  costo de limpieza de oficinas
+                </Link>{' '}
+                explica cómo igualar propuestas para que sean comparables, y las{' '}
+                <Link href="/guias/contrato-de-limpieza-clausulas" className="font-bold underline underline-offset-4">
+                  12 cláusulas del contrato
+                </Link>{' '}
+                cubren lo que suele faltar en el documento que te mandan a firmar.
+              </p>
+            </div>
+            <div className="rounded-[1.5rem] border border-black/10 bg-[#FAFAF7] p-6">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#2F5D50]">
+                Dudas entre esquemas
+              </p>
+              <p className="mt-3 text-[15px] leading-7 text-[#1F1F25]/75">
+                Si estás comparando contratar a una empresa contra personal directo o por
+                aplicación, la guía de{' '}
+                <Link href="/guias/personal-en-nomina-vs-por-app" className="font-bold underline underline-offset-4">
+                  nómina vs. app o independiente
+                </Link>{' '}
+                explica dónde queda el riesgo laboral y qué papel juega el REPSE.
+              </p>
+            </div>
+          </div>
+          <p className="mt-8 max-w-3xl text-[16px] leading-8 text-[#1F1F25]/72">
+            Las cinco guías están escritas para leerse sueltas: cada una abre con un resumen que
+            responde la pregunta de entrada, y el detalle viene después. Ninguna publica precios,
+            porque cualquier cifra sin haber visto el inmueble sería inventada; en su lugar
+            explican de qué depende el número, que es lo que de verdad permite negociar.
+          </p>
+        </div>
+      </section>
+
+      <section className="lm-container py-16">
+        <h2 className="font-display text-3xl leading-tight text-[#101014] sm:text-4xl">
+          Las cinco guías
+        </h2>
+        <ul className="mt-8 grid gap-5 lg:grid-cols-2">
           {GUIAS.map((g) => (
             <li key={g.slug}>
               <article className="lm-card flex h-full flex-col p-7">
-                <h2 className="font-display text-2xl leading-tight text-[#101014]">
+                <h3 className="font-display text-2xl leading-tight text-[#101014]">
                   <Link href={`/guias/${g.slug}`} className="hover:underline underline-offset-4">
                     {g.titulo}
                   </Link>
-                </h2>
+                </h3>
                 <p className="mt-4 flex-grow text-[15px] leading-7 text-[#1F1F25]/72">{g.entrada}</p>
                 <Link
                   href={`/guias/${g.slug}`}

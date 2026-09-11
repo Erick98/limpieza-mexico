@@ -146,22 +146,18 @@ export default function MejorEmpresaLimpieza() {
               equivocarse. Detrás de la consulta hay un administrador que tiene que justificar el
               gasto ante una asamblea, un gerente de oficina al que le reclaman los sanitarios, o
               alguien que ya contrató mal una vez. Los listados de &ldquo;top 10 empresas de
-              limpieza&rdquo; no ayudan porque casi siempre son directorios pagados, sin criterio
+              limpieza&rdquo; no ayudan: casi siempre son directorios pagados, sin criterio
               declarado y sin forma de verificar nada de lo que afirman.
             </p>
             <p>
               La alternativa útil es invertir la pregunta: en vez de buscar quién es mejor, definir
               qué tiene que cumplir un proveedor para que el servicio funcione, y usar esa lista
               como filtro. Abajo están los diez criterios que, en la operación real de inmuebles en
-              la Ciudad de México, separan a un proveedor serio de uno que va a durar tres meses.
-              De cada uno decimos tres cosas: por qué importa, la pregunta literal que conviene
-              hacerle a cualquier proveedor —incluidos nosotros— y cómo lo resolvemos.
-            </p>
-            <p>
-              Una advertencia sobre este texto: no vamos a afirmar que somos los mejores del país,
-              porque no hay forma de comprobarlo y porque una afirmación así no le sirve a nadie
-              que esté decidiendo. Lo que sí podemos sostener es el método, y eso es lo que está
-              descrito aquí.
+              la Ciudad de México, separan a un proveedor serio de uno que dura tres meses. De cada
+              uno decimos por qué importa, la pregunta literal que conviene hacerle a cualquier
+              proveedor —incluidos nosotros— y cómo lo resolvemos. No vamos a afirmar que somos los
+              mejores del país: no hay forma de comprobarlo y no le sirve a nadie que esté
+              decidiendo. Lo que sí se puede sostener es el método.
             </p>
           </div>
         </div>

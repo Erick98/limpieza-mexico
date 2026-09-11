@@ -36,7 +36,7 @@ export const CRITERIOS: Criterio[] = [
   {
     titulo: 'Personal en nómina y con seguridad social',
     porQue:
-      'Es el criterio que más dinero puede costar si se elige mal. Cuando el personal de limpieza no está formalmente contratado por nadie, el riesgo laboral no desaparece: se queda en el inmueble donde trabaja. Un accidente dentro de tu oficina o de tu condominio, con una persona sin alta ante el IMSS, es el escenario que ningún presupuesto de mantenimiento tiene contemplado.',
+      'Es el criterio que más dinero puede costar si se elige mal. Cuando el personal no está formalmente contratado por nadie, el riesgo laboral no desaparece: se queda en el inmueble donde trabaja. Un accidente dentro de tu oficina o tu condominio, con una persona sin alta ante el IMSS, es el escenario que ningún presupuesto de mantenimiento contempla.',
     preguntar:
       '¿El personal que va a entrar a mi inmueble está en tu nómina y dado de alta ante el IMSS? ¿Me lo puedes acreditar antes de arrancar?',
     nosotros:
@@ -45,7 +45,7 @@ export const CRITERIOS: Criterio[] = [
   {
     titulo: 'Registro REPSE vigente cuando aplica',
     porQue:
-      'Desde la reforma en materia de subcontratación de 2021, quien pone trabajadores propios a disposición de un contratante debe estar inscrito en el REPSE de la Secretaría del Trabajo y Previsión Social, conforme al artículo 15 de la Ley Federal del Trabajo. El registro tiene vigencia de tres años y su ausencia afecta la deducibilidad del gasto para quien contrata. Para un área de compras, esto no es un detalle: es un requisito de alta de proveedor.',
+      'Desde la reforma en materia de subcontratación de 2021, quien pone trabajadores propios a disposición de un contratante debe estar inscrito en el REPSE de la Secretaría del Trabajo y Previsión Social, conforme al artículo 15 de la Ley Federal del Trabajo. El registro vence a los tres años y su ausencia afecta la deducibilidad del gasto. Para un área de compras no es un detalle: es requisito de alta de proveedor.',
     preguntar:
       '¿Cuál es tu número de registro REPSE y cuándo vence? ¿Me entregas la constancia junto con la propuesta?',
     nosotros:
@@ -54,7 +54,7 @@ export const CRITERIOS: Criterio[] = [
   {
     titulo: 'Supervisión en sitio, no supervisión declarativa',
     porQue:
-      'Casi todos los proveedores dicen que supervisan. La diferencia está en si existe una persona con nombre responsable de la cuenta, si deja registro de sus recorridos y si el cliente sabe a quién escribirle a las 7 de la mañana cuando un sanitario no se atendió. Sin eso, la calidad depende del ánimo del día.',
+      'Casi todos los proveedores dicen que supervisan. La diferencia está en si hay una persona con nombre responsable de la cuenta, si deja registro de sus recorridos y si sabes a quién escribirle a las 7 de la mañana cuando un sanitario no se atendió. Sin eso, la calidad depende del ánimo del día.',
     preguntar:
       '¿Quién es el supervisor asignado a mi cuenta, con qué frecuencia hace recorrido y dónde queda el registro? ¿Cuál es el tiempo de respuesta comprometido ante una incidencia?',
     nosotros:
@@ -81,7 +81,7 @@ export const CRITERIOS: Criterio[] = [
   {
     titulo: 'Cobertura real y tiempo de respuesta',
     porQue:
-      'Un proveedor que declara cobertura nacional desde una sola base opera con subcontratistas que no controla, y eso se nota en la rotación y en el tiempo que tarda en llegar alguien cuando hay una urgencia. Es preferible un proveedor que sea honesto sobre dónde opera bien.',
+      'Quien declara cobertura nacional desde una sola base suele operar con subcontratistas que no controla, y eso se nota en la rotación y en lo que tarda en llegar alguien cuando hay una urgencia. Es preferible un proveedor honesto sobre dónde opera bien.',
     preguntar:
       '¿Atiendes mi zona con equipo propio o subcontratas? ¿Cuánto tardas en hacer un levantamiento y en atender una emergencia en mi dirección?',
     nosotros:
@@ -99,7 +99,7 @@ export const CRITERIOS: Criterio[] = [
   {
     titulo: 'Responsabilidad civil y credencialización',
     porQue:
-      'Un derrame sobre equipo de cómputo, un cristal roto en una fachada o una caída en un piso recién trapeado son incidentes normales de la actividad. La pregunta no es si pueden ocurrir, sino quién responde cuando ocurren y con qué respaldo documental.',
+      'Un derrame sobre equipo de cómputo, un cristal roto o una caída en piso recién trapeado son incidentes normales de la actividad. La pregunta no es si pueden ocurrir, sino quién responde y con qué respaldo documental.',
     preguntar:
       '¿Cuentas con póliza de responsabilidad civil vigente? ¿Qué cubre, por qué monto y me entregas la carátula? ¿Tu personal porta identificación de la empresa?',
     nosotros:
@@ -108,7 +108,7 @@ export const CRITERIOS: Criterio[] = [
   {
     titulo: 'Facturación y formalidad administrativa',
     porQue:
-      'Para una empresa o un condominio, un proveedor que no factura correctamente no es más barato: es un gasto no deducible y un problema para el administrador frente a la asamblea o frente a su propio consejo. La formalidad administrativa es parte del servicio, no un extra.',
+      'Un proveedor que no factura correctamente no es más barato: es un gasto no deducible y un problema para quien tiene que rendir cuentas ante una asamblea o un consejo. La formalidad administrativa es parte del servicio, no un extra.',
     preguntar:
       '¿Facturas con CFDI vigente? ¿Cuál es tu periodicidad de facturación y tus condiciones de pago? ¿Cómo manejas un ajuste de alcance a mitad del contrato?',
     nosotros:
