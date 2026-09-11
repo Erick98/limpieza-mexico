@@ -35,7 +35,7 @@ export default function TrustPanel({ compact = false }: { compact?: boolean }) {
           Formulario
         </Link>
       </div>
-      <p className="mt-4 text-xs text-[#1F1F25]/55">Teléfono real: {PHONE_E164}. Atención sujeta a confirmación de disponibilidad.</p>
+      <p className="mt-4 text-xs text-[#1F1F25]/70">Teléfono real: {PHONE_E164}. Atención sujeta a confirmación de disponibilidad.</p>
     </aside>
   );
 }

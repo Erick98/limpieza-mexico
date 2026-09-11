@@ -5,10 +5,14 @@
   "skills": [
     {
       "name": "cotizar-servicio-limpieza-cdmx",
-      "description": "Cómo cotizar un servicio de limpieza en CDMX con Limpieza México por WhatsApp, formulario o email.",
+      "description": "Cómo elegir y cotizar un servicio de limpieza en CDMX con Limpieza México: criterios para comparar proveedores, páginas por segmento (corporativo, condominios, oficinas, hogar, especializada) y cotización por MCP, API, WhatsApp, formulario o email.",
       "url": "https://www.limpiezamexico.com/.well-known/agent-skills/SKILL.md",
-      "input_modes": ["text"],
-      "output_modes": ["text"]
+      "input_modes": [
+        "text"
+      ],
+      "output_modes": [
+        "text"
+      ]
     }
   ]
 }

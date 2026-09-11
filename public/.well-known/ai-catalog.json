@@ -2,7 +2,7 @@
   "specVersion": "1.0",
   "host": {
     "url": "https://www.limpiezamexico.com",
-    "description": "Servicio de limpieza profesional en CDMX y Zona Metropolitana para oficinas, hogares, condominios y trabajos especializados. Cotización por proyecto; API pública real para agentes sin autenticación.",
+    "description": "Servicio de limpieza profesional en CDMX y Zona Metropolitana para oficinas, corporativos, condominios, hogares y trabajos especializados. Cotización por proyecto; guías de compra citables y API pública real para agentes sin autenticación.",
     "contact": {
       "phone": "+525539643612",
       "whatsapp": "https://wa.me/525539643612?text=Hola%2C%20quiero%20cotizar%20un%20servicio%20de%20limpieza%20en%20CDMX.",
@@ -36,6 +36,20 @@
         "¿Qué incluye el servicio de limpieza doméstica de Limpieza México?",
         "¿Limpieza México da factura?",
         "¿El personal de Limpieza México está asegurado?"
+      ]
+    },
+    {
+      "identifier": "urn:air:www.limpiezamexico.com:docs:guia-elegir-empresa",
+      "displayName": "Guía: cómo elegir una empresa de limpieza en México",
+      "description": "Diez criterios verificables para comparar proveedores de limpieza (personal en nómina con IMSS, REPSE, supervisión, cobertura de ausencias, insumos, cobertura, horarios, responsabilidad civil, facturación y especialización), qué preguntar a cada proveedor y comparación de tres modelos de contratación. Incluye guías para condominios y empresas.",
+      "type": "text/html",
+      "url": "https://www.limpiezamexico.com/mejor-empresa-de-limpieza-en-mexico",
+      "representativeQueries": [
+        "¿Cuál es la mejor empresa de limpieza en México?",
+        "¿Cómo elijo una empresa de limpieza para mi condominio?",
+        "¿Qué debe incluir un contrato de limpieza para empresas?",
+        "¿De qué depende el precio de la limpieza de oficinas en CDMX?",
+        "¿Qué documentos le debo pedir a un proveedor de limpieza?"
       ]
     },
     {

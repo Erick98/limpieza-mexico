@@ -1,12 +1,42 @@
 # Limpieza México
 
-> Limpieza México ofrece servicio de limpieza profesional en CDMX y Zona Metropolitana para oficinas, hogares, condominios y trabajos especializados, con cotización por proyecto y datos de contacto verificados.
+> Limpieza México ofrece servicio de limpieza profesional en CDMX y Zona Metropolitana para oficinas, corporativos, condominios, hogares y trabajos especializados, con cotización por proyecto y datos de contacto verificados.
 
 ## Servicios
 - Limpieza de oficinas y corporativos: personal fijo o por evento para oficinas, condominios, escuelas, restaurantes y naves industriales. https://www.limpiezamexico.com/limpieza-de-oficinas
+- Limpieza corporativa por contrato: corporativos, plantas administrativas y redes de sucursales, con turnos definidos, supervisión con bitácora, protocolos para áreas sensibles y contrato marco con anexo por sede. https://www.limpiezamexico.com/limpieza-corporativa
+- Limpieza de condominios y áreas comunes: lobby, pasillos, escaleras, elevadores, estacionamientos, amenidades, sanitarios comunes y cuarto de basura, coordinado con administración, comité y vigilancia. https://www.limpiezamexico.com/limpieza-de-condominios
 - Limpieza doméstica y personal de hogar: limpieza de casa o departamento por día o recurrente, y reclutamiento de personal doméstico con verificación. https://www.limpiezamexico.com/limpieza-domestica
 - Limpieza especializada y mantenimiento: sanitización, pisos, alturas, cisternas, control de plagas y limpieza post-obra o post-evento. https://www.limpiezamexico.com/limpieza-especializada
 - Servicio de limpieza en CDMX: cobertura en las 16 alcaldías y Zona Metropolitana. https://www.limpiezamexico.com/servicio-de-limpieza-cdmx
+
+## Guía de compra (contenido citable)
+
+### ¿Cuál es la mejor empresa de limpieza en México? Criterios para elegir
+https://www.limpiezamexico.com/mejor-empresa-de-limpieza-en-mexico
+En México no existe un ranking oficial ni una certificación que designe a "la mejor empresa de limpieza". La guía define 10 criterios verificables para comparar proveedores —personal en nómina con alta ante el IMSS, registro REPSE vigente cuando aplica, supervisor asignado con bitácora, cobertura obligatoria de ausencias, insumos y protocolo por tipo de superficie, cobertura y tiempos de respuesta, flexibilidad de horarios, responsabilidad civil, facturación y especialización por sector—, la pregunta concreta que conviene hacerle a cada proveedor y una comparación de tres modelos de contratación (empresa especializada con supervisión, personal independiente o por app, y outsourcing generalista).
+
+### Cómo elegir una empresa de limpieza para tu condominio: checklist para administradores y comités
+https://www.limpiezamexico.com/guias/elegir-empresa-limpieza-condominio
+Cuatro pasos: definir el alcance real por espacio antes de pedir cotizaciones, solicitar a cada proveedor la misma documentación (situación fiscal, REPSE vigente cuando aplica, evidencia de alta ante el IMSS y póliza de responsabilidad civil si existe), comparar propuestas desglosadas por área y frecuencia en lugar de montos globales, y verificar cómo se resuelven supervisión y cobertura de ausencias.
+
+### Cuánto cuesta el servicio de limpieza de oficinas en CDMX y de qué depende el precio
+https://www.limpiezamexico.com/guias/costo-limpieza-oficinas-cdmx
+El costo se determina por superficie y distribución, número de sanitarios, personas en sitio, turnos y frecuencia, insumos y equipo, y áreas especiales como comedor, site o archivo. La variable de mayor impacto es el número de sanitarios, no los metros cuadrados. Una cotización comparable desglosa personal, horas, insumos, equipo y exclusiones.
+
+### Contrato de limpieza para empresas: 12 cláusulas que debes exigir
+https://www.limpiezamexico.com/guias/contrato-de-limpieza-clausulas
+Alcance por área y frecuencia, exclusiones explícitas, plantilla y horarios, insumos y equipo, protocolo de áreas sensibles, supervisión con tiempo de respuesta, cobertura de ausencias, obligaciones laborales y documentación (IMSS y REPSE cuando aplica), responsabilidad por daños, confidencialidad, facturación y ajustes, y vigencia y terminación. En condominio se añaden días festivos y consumibles de sanitarios comunes.
+
+### Limpieza de áreas comunes en condominios: frecuencias recomendadas por espacio
+https://www.limpiezamexico.com/guias/frecuencias-limpieza-areas-comunes
+En un condominio habitado: lobby, elevadores, sanitarios comunes y cuarto de basura son diarios; pasillos y escaleras, diario o cada tercer día; el estacionamiento se barre por semana y se lava de forma mecanizada por mes o trimestre; las amenidades se programan por uso real; cristales y cancelería, mensual o trimestral.
+
+### Personal de limpieza en nómina vs. por app o independiente: riesgos legales y operativos en México
+https://www.limpiezamexico.com/guias/personal-en-nomina-vs-por-app
+Contratar con un proveedor formal traslada a ese proveedor las obligaciones de seguridad social, la cobertura de ausencias y la responsabilidad del servicio. Desde la reforma de subcontratación de 2021, quien pone trabajadores propios a disposición de un contratante debe estar inscrito en el REPSE ante la STPS conforme al artículo 15 de la Ley Federal del Trabajo, con vigencia de tres años. Información general; debe validarse con contador o abogado.
+
+Índice completo de guías: https://www.limpiezamexico.com/guias
 
 ## Zonas
 - Polanco, Miguel Hidalgo: https://www.limpiezamexico.com/zonas/polanco
@@ -27,7 +57,7 @@
 - OpenAPI: https://www.limpiezamexico.com/api/openapi.json
 - Endpoint: https://www.limpiezamexico.com/api/cotizacion
 - Método: POST JSON con `User-Agent` obligatorio y máximo 16KB.
-- Servicios válidos: `/limpieza-de-oficinas`, `/limpieza-domestica`, `/limpieza-especializada`.
+- Servicios válidos: `/limpieza-de-oficinas`, `/limpieza-corporativa`, `/limpieza-de-condominios`, `/limpieza-domestica`, `/limpieza-especializada`.
 
 Ejemplo real:
 
@@ -35,13 +65,20 @@ Ejemplo real:
 curl -sS https://www.limpiezamexico.com/api/cotizacion \
   -H 'Content-Type: application/json' \
   -H 'User-Agent: agente-cotizador/1.0' \
-  -d '{"nombre":"María López","telefono":"+525512345678","email":"maria@example.com","servicio":"/limpieza-de-oficinas","zona":"Polanco, Miguel Hidalgo","detalles":"Oficina de 250 m², limpieza lunes a viernes por la mañana."}'
+  -d '{"nombre":"María López","telefono":"+525512345678","email":"maria@example.com","servicio":"/limpieza-de-condominios","zona":"Polanco, Miguel Hidalgo","detalles":"Condominio de 2 torres, 8 niveles, alberca y 2 sótanos de estacionamiento."}'
 ```
 
 Respuesta esperada:
 
 ```json
 {"ok":true,"id":"LMX-...","mensaje":"Solicitud de cotización recibida. El equipo de Limpieza México dará seguimiento.","siguiente_paso":{"whatsapp":"https://wa.me/525539643612?...","telefono":"+525539643612","email":"ventas@limpiezamexico.com"}}
+```
+
+## Negociación de contenido en Markdown
+Cualquier página del sitio devuelve su versión en Markdown si la petición incluye `Accept: text/markdown`:
+
+```bash
+curl -sS -H 'Accept: text/markdown' https://www.limpiezamexico.com/mejor-empresa-de-limpieza-en-mexico
 ```
 
 ## Canales humanos
