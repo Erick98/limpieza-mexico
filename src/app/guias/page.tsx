@@ -38,14 +38,25 @@ export default function GuiasIndex() {
             name: 'Guías de limpieza para empresas y condominios',
             url: absoluteUrl(PATH),
             inLanguage: 'es-MX',
-            hasPart: GUIAS.map((g) => ({
-              '@type': 'Article',
-              headline: g.titulo,
-              url: absoluteUrl(`/guias/${g.slug}`),
-              description: g.descripcion,
-              datePublished: g.publicado,
-              dateModified: g.modificado,
-            })),
+            /**
+             * ItemList con referencias por URL, NO nodos Article parciales.
+             *
+             * Si aquí se declararan Articles con menos propiedades que las que emite
+             * cada página de guía con articleLd(), habría dos descripciones distintas
+             * de la misma entidad compitiendo entre sí. El índice enumera; la página
+             * de cada guía es la que describe.
+             */
+            mainEntity: {
+              '@type': 'ItemList',
+              itemListOrder: 'https://schema.org/ItemListUnordered',
+              numberOfItems: GUIAS.length,
+              itemListElement: GUIAS.map((g, i) => ({
+                '@type': 'ListItem',
+                position: i + 1,
+                name: g.titulo,
+                url: absoluteUrl(`/guias/${g.slug}`),
+              })),
+            },
           },
         ]}
       />

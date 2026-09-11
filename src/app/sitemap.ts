@@ -1,5 +1,20 @@
 import type { MetadataRoute } from 'next';
 import { absoluteUrl, STATIC_ROUTES } from '@/lib/site';
+import { GUIAS } from '@/lib/guias';
+import { PILAR_PATH, PILAR_MODIFICADO } from '@/lib/mejor-empresa';
+
+/**
+ * Fechas reales de publicación del contenido editorial.
+ *
+ * El resto de las rutas usa la fecha de build, que para páginas de servicio es una
+ * aproximación aceptable. Para pilar y guías no lo es: son artículos con fecha real y
+ * declarar "modificado hoy" en cada despliegue es una señal falsa que los rastreadores
+ * terminan ignorando.
+ */
+const FECHAS_EDITORIALES: Record<string, string> = {
+  [PILAR_PATH]: PILAR_MODIFICADO,
+  ...Object.fromEntries(GUIAS.map((g) => [`/guias/${g.slug}`, g.modificado])),
+};
 
 /**
  * Sitemap 100% estático y verificado.
@@ -17,7 +32,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return STATIC_ROUTES.map((route) => ({
     url: absoluteUrl(route.path),
-    lastModified,
+    lastModified: FECHAS_EDITORIALES[route.path]
+      ? new Date(FECHAS_EDITORIALES[route.path])
+      : lastModified,
     changeFrequency: route.changeFrequency,
     priority: route.priority,
   }));

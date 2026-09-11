@@ -27,7 +27,7 @@ export default function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5">
           <div>
             <p className="font-display text-xl mb-3">Limpieza México</p>
-            <p className="text-[15px] leading-relaxed text-[#62626B]">
+            <p className="text-[15px] leading-relaxed text-[#9599A0]">
               Servicios de limpieza y mantenimiento para empresas y hogares en la Ciudad de
               México y la Zona Metropolitana.
             </p>
@@ -37,7 +37,7 @@ export default function Footer() {
             <p id="footer-servicios" className="font-semibold mb-3">
               Servicios
             </p>
-            <ul className="space-y-2 text-[15px] text-[#62626B]">
+            <ul className="space-y-2 text-[15px] text-[#9599A0]">
               {SERVICIOS.map((s) => (
                 <li key={s.slug}>
                   <Link href={s.slug} className="hover:text-white hover:underline">
@@ -57,7 +57,7 @@ export default function Footer() {
             <p id="footer-recursos" className="font-semibold mb-3">
               Antes de contratar
             </p>
-            <ul className="space-y-2 text-[15px] text-[#62626B]">
+            <ul className="space-y-2 text-[15px] text-[#9599A0]">
               <li>
                 <Link
                   href="/mejor-empresa-de-limpieza-en-mexico"
@@ -88,7 +88,7 @@ export default function Footer() {
             <p id="footer-zonas" className="font-semibold mb-3">
               Zonas de servicio
             </p>
-            <ul className="space-y-2 text-[15px] text-[#62626B]">
+            <ul className="space-y-2 text-[15px] text-[#9599A0]">
               {ZONAS.map((z) => (
                 <li key={z.slug}>
                   <Link href={z.slug} className="hover:text-white hover:underline">
@@ -101,7 +101,7 @@ export default function Footer() {
 
           <div>
             <p className="font-semibold mb-3">Contacto</p>
-            <address className="not-italic space-y-2 text-[15px] text-[#62626B]">
+            <address className="not-italic space-y-2 text-[15px] text-[#9599A0]">
               <p>{ADDRESS.full}</p>
               <p>
                 <a href={`mailto:${EMAIL_CONTACTO}`} className="hover:text-white hover:underline">
@@ -142,7 +142,7 @@ export default function Footer() {
                     href={r.url}
                     target="_blank"
                     rel="noopener noreferrer me"
-                    className="text-[#62626B] hover:text-white hover:underline"
+                    className="text-[#9599A0] hover:text-white hover:underline"
                   >
                     {r.nombre}
                   </a>
@@ -152,7 +152,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-4 justify-between text-sm text-[#62626B]">
+        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-4 justify-between text-sm text-[#9599A0]">
           <p>© {anio} Limpieza México. Todos los derechos reservados.</p>
           <div className="flex gap-5">
             <Link href="/privacidad" className="hover:text-white hover:underline">

@@ -176,7 +176,7 @@ export default function MejorEmpresaLimpieza() {
         <ol className="mt-10 grid gap-5 lg:grid-cols-2">
           {CRITERIOS.map((c, i) => (
             <li key={c.titulo} className="lm-card flex flex-col p-7">
-              <p className="font-display text-4xl leading-none text-[#C9A24A]">
+              <p className="font-display text-4xl leading-none text-[#A67F2B]">
                 {String(i + 1).padStart(2, '0')}
               </p>
               <h3 className="mt-4 font-display text-2xl leading-tight text-[#101014]">{c.titulo}</h3>
@@ -188,7 +188,7 @@ export default function MejorEmpresaLimpieza() {
                 <p className="mt-2 text-[15px] leading-7 text-[#1F1F25]/80">{c.preguntar}</p>
               </div>
               <div className="mt-4 border-t border-black/10 pt-4">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1F1F25]/45">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#1F1F25]/65">
                   Cómo lo resolvemos
                 </p>
                 <p className="mt-2 text-[15px] leading-7 text-[#1F1F25]/75">{c.nosotros}</p>
@@ -314,7 +314,7 @@ export default function MejorEmpresaLimpieza() {
               incluye alcance por área, personal, insumos y exclusiones —que es exactamente lo que
               esta guía recomienda exigirle a cualquier proveedor.
             </p>
-            <p className="mt-4 text-sm text-[#1F1F25]/55">
+            <p className="mt-4 text-sm text-[#1F1F25]/70">
               Si prefieres rapidez, WhatsApp al 55 3964 3612. La cotización no tiene costo ni
               compromiso.
             </p>
