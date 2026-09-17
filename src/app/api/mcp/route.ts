@@ -115,7 +115,7 @@ function getServer(req: Request) {
           };
         }
         const userAgent = req.headers.get('user-agent')?.trim() || 'mcp-client/unknown';
-        const result = await solicitarCotizacionAgente(args, { userAgent, fuente: 'mcp' });
+        const result = await solicitarCotizacionAgente(args, { userAgent, fuente: 'mcp', ip });
         return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
       } catch (error) {
         if (error instanceof CotizacionError) {

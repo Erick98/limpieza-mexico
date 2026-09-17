@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { sendEmail } from '@/lib/mailer';
 import { rateLimit, ipDeRequest } from '@/lib/rate-limit';
+import { actualizarCorreoLead, registrarLead } from '@/lib/lead-log';
 import { OPCIONES_VALIDAS, etiqueta } from '@/lib/cotizacion';
 import { ADDRESS } from '@/lib/site';
 
@@ -40,6 +41,8 @@ const MAX_BODY_BYTES = 8 * 1024;
 const ORIGENES_PERMITIDOS = new Set([
   'https://www.limpiezamexico.com',
   'https://limpiezamexico.com',
+  'http://localhost:3893',
+  'http://127.0.0.1:3893',
 ]);
 
 function origenPermitido(req: Request): boolean {
@@ -86,6 +89,10 @@ function esContactoValido(valor: string): boolean {
   const email = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
   const digitos = valor.replace(/\D/g, '');
   return email.test(valor) || (digitos.length >= 10 && digitos.length <= 15);
+}
+
+function etiquetaSegura(campo: keyof typeof OPCIONES_VALIDAS, id: string): string {
+  return (OPCIONES_VALIDAS[campo] as readonly string[]).includes(id) ? etiqueta(campo, id) : id;
 }
 
 function json(status: number, body: Record<string, unknown>) {
@@ -172,20 +179,36 @@ export async function POST(req: Request) {
     return json(400, { success: false, message: 'Formato de solicitud inválido.' });
   }
 
+  const str = (v: unknown) => (typeof v === 'string' ? v : '');
+
+  const nombre = limpiarLinea(str(data.nombre), LIMITES_TEXTO.nombre);
+  const contacto = limpiarLinea(str(data.contacto), LIMITES_TEXTO.contacto);
+  const detalle = str(data.detalle).slice(0, LIMITES_TEXTO.detalle).trim();
+  const userAgent = limpiarLinea(req.headers.get('user-agent') ?? '', 200);
+
   // 5) Honeypot --------------------------------------------------------
   if (typeof data.website === 'string' && data.website.trim() !== '') {
+    await registrarLead({
+      canal: 'web',
+      nombre,
+      servicio: etiquetaSegura('tipo', limpiarLinea(str(data.tipo), 40)),
+      zona: etiquetaSegura('zona', limpiarLinea(str(data.zona), 40)),
+      tamano: etiquetaSegura('tamano', limpiarLinea(str(data.tamano), 40)),
+      frecuencia: etiquetaSegura('frecuencia', limpiarLinea(str(data.frecuencia), 40)),
+      contacto,
+      detalle,
+      correoEnviado: false,
+      destinatarios: DESTINATARIOS.join(', '),
+      ip,
+      userAgent,
+      honeypot: true,
+    });
     // Respuesta 200 deliberada: el bot no aprende que fue detectado.
     return json(200, { success: true, message: 'Recibido' });
   }
 
   // 6) Validación estricta --------------------------------------------
   const errores: string[] = [];
-
-  const str = (v: unknown) => (typeof v === 'string' ? v : '');
-
-  const nombre = limpiarLinea(str(data.nombre), LIMITES_TEXTO.nombre);
-  const contacto = limpiarLinea(str(data.contacto), LIMITES_TEXTO.contacto);
-  const detalle = str(data.detalle).slice(0, LIMITES_TEXTO.detalle).trim();
 
   if (nombre.length < 2) errores.push('nombre');
   if (!esContactoValido(contacto)) errores.push('contacto');
@@ -264,7 +287,24 @@ export async function POST(req: Request) {
       </p>
     </div>`;
 
+  const leadLog = await registrarLead({
+    canal: 'web',
+    nombre,
+    servicio: etiqueta('tipo', tipo),
+    zona: zona ? etiqueta('zona', zona) : '',
+    tamano: tamano ? etiqueta('tamano', tamano) : '',
+    frecuencia: frecuencia ? etiqueta('frecuencia', frecuencia) : '',
+    contacto,
+    detalle,
+    correoEnviado: false,
+    destinatarios: DESTINATARIOS.join(', '),
+    ip,
+    userAgent,
+    honeypot: false,
+  });
+
   const enviado = await sendEmail(DESTINATARIOS.join(', '), subject, htmlContent);
+  await actualizarCorreoLead(leadLog.pageId, enviado);
 
   if (!enviado) {
     // No exponemos detalles de infraestructura al cliente.

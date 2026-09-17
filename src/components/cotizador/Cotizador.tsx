@@ -19,7 +19,7 @@
  * la ruta alterna visible: el correo de ventas en el footer y en /contacto.
  */
 
-import { useId, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import {
   TIPOS_SERVICIO,
   TAMANOS,
@@ -27,6 +27,7 @@ import {
   ZONAS_COTIZACION,
 } from '@/lib/cotizacion';
 import { whatsappUrl } from '@/lib/site';
+import { track, trackOnce } from '@/lib/analytics';
 
 type Estado = 'idle' | 'enviando' | 'ok' | 'error';
 
@@ -41,6 +42,8 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
   const [estado, setEstado] = useState<Estado>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const headingRef = useRef<HTMLParagraphElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const pasosMedidos = useRef(new Set<number>());
 
   const [tipo, setTipo] = useState('');
   const [tamano, setTamano] = useState('');
@@ -54,7 +57,37 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
 
   const wa = whatsappUrl();
 
+  function medirApertura() {
+    trackOnce('cotizador_abierto', 'cotizador_abierto');
+  }
+
+  function medirPaso(n: number) {
+    if (pasosMedidos.current.has(n)) return;
+    pasosMedidos.current.add(n);
+    track('cotizador_paso', { paso: n });
+  }
+
+  useEffect(() => {
+    const form = formRef.current;
+    if (!form) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return;
+        medirApertura();
+        medirPaso(1);
+        observer.disconnect();
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(form);
+    return () => observer.disconnect();
+  }, []);
+
   function irA(n: number) {
+    medirApertura();
+    medirPaso(n);
     setPaso(n);
     // Mover el foco al encabezado del paso para que un lector de pantalla anuncie el cambio.
     requestAnimationFrame(() => headingRef.current?.focus());
@@ -87,12 +120,15 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
             ? 'Recibimos varias solicitudes desde tu conexión. Espera un minuto e intenta de nuevo.'
             : json?.message || 'No pudimos enviar tu solicitud. Intenta otra vez.'
         );
+        track('cotizador_envio_error', { codigo: res.status });
         setEstado('error');
         return;
       }
+      track('cotizador_envio_ok', { canal: 'web', tipo, zona });
       setEstado('ok');
     } catch {
       setErrorMsg('Hubo un problema de conexión. Revisa tu red e intenta de nuevo.');
+      track('cotizador_envio_error', { codigo: 'network' });
       setEstado('error');
     }
   }
@@ -113,6 +149,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
           {wa && (
             <a
               href={wa}
+              onClick={() => track('click_whatsapp', { ubicacion: 'cotizador' })}
               className="inline-flex justify-center items-center rounded-full bg-[#2F5D50] px-5 py-3 font-bold text-white hover:bg-[#24483F]"
             >
               Escribir por WhatsApp
@@ -131,6 +168,7 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
 
   return (
     <form
+      ref={formRef}
       onSubmit={onSubmit}
       action="/api/notify"
       method="post"
@@ -381,6 +419,8 @@ export default function Cotizador({ compacto = false }: { compacto?: boolean }) 
       <input type="hidden" name="action" value="cotizacion" />
       <input type="hidden" name="tipo" value={tipo} />
       <input type="hidden" name="tamano" value={tamano} />
+      <input type="hidden" name="frecuencia" value={frecuencia} />
+      <input type="hidden" name="zona" value={zona} />
     </form>
   );
 }

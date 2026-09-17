@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { whatsappUrl } from '@/lib/site';
+import TrackedLink from '@/components/analytics/TrackedLink';
 
 export default function BarraMovil() {
   const [oculta, setOculta] = useState(false);
@@ -48,13 +48,13 @@ export default function BarraMovil() {
       >
         <div className="mx-auto flex max-w-md gap-2.5">
           {wa && (
-            <a href={wa} className="flex-1 rounded-full bg-[#2F5D50] px-4 py-3 text-center text-sm font-bold text-white">
+            <TrackedLink href={wa} event="click_whatsapp" params={{ ubicacion: 'barra_movil' }} className="flex-1 rounded-full bg-[#2F5D50] px-4 py-3 text-center text-sm font-bold text-white">
               WhatsApp
-            </a>
+            </TrackedLink>
           )}
-          <Link href="/contacto" className="flex-1 rounded-full border border-[#1F1F25]/20 bg-white px-4 py-3 text-center text-sm font-bold">
+          <TrackedLink href="/contacto" event="cotizador_abierto" onceKey="cotizador_abierto" className="flex-1 rounded-full border border-[#1F1F25]/20 bg-white px-4 py-3 text-center text-sm font-bold">
             Cotizar
-          </Link>
+          </TrackedLink>
         </div>
       </div>
     </>

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Cotizador from '@/components/cotizador/Cotizador';
+import TrackedLink from '@/components/analytics/TrackedLink';
 import JsonLd from '@/components/JsonLd';
 import Breadcrumbs from '@/components/ui/Breadcrumbs';
 import { pageMetadata, breadcrumbLd } from '@/lib/seo';
@@ -29,7 +30,7 @@ export default function Contacto() {
           <div className="mt-9 grid gap-4">
             <div className="lm-card p-6"><h2 className="font-display text-2xl">Oficinas</h2><address className="mt-3 not-italic text-[16px] leading-7 text-[#1F1F25]/75">{ADDRESS.full}</address></div>
             <div className="lm-card p-6"><h2 className="font-display text-2xl">Correo</h2><p className="mt-3 text-[16px] leading-7"><a href={`mailto:${EMAIL_CONTACTO}`} className="underline underline-offset-4">{EMAIL_CONTACTO}</a><br /><a href={`mailto:${EMAIL_VENTAS}`} className="underline underline-offset-4">{EMAIL_VENTAS}</a></p></div>
-            {PHONE_CONFIRMED && PHONE_DISPLAY && <div className="lm-card p-6"><h2 className="font-display text-2xl">Teléfono y WhatsApp</h2><p className="mt-3 text-[16px] leading-7"><a href={`tel:${PHONE_E164}`} className="underline underline-offset-4">{PHONE_DISPLAY}</a>{whatsappUrl() && <><br /><a href={whatsappUrl()!} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Escríbenos por WhatsApp</a></>}</p></div>}
+            {PHONE_CONFIRMED && PHONE_DISPLAY && <div className="lm-card p-6"><h2 className="font-display text-2xl">Teléfono y WhatsApp</h2><p className="mt-3 text-[16px] leading-7"><TrackedLink href={`tel:${PHONE_E164}`} event="click_telefono" params={{ ubicacion: 'contacto' }} className="underline underline-offset-4">{PHONE_DISPLAY}</TrackedLink>{whatsappUrl() && <><br /><TrackedLink href={whatsappUrl()!} event="click_whatsapp" params={{ ubicacion: 'contacto' }} target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Escríbenos por WhatsApp</TrackedLink></>}</p></div>}
             <div className="lm-card p-6"><h2 className="font-display text-2xl">Cobertura</h2><ul className="mt-3 space-y-1.5 text-[16px] leading-7 text-[#1F1F25]/75">{COBERTURA.map((c) => <li key={c}>{c}</li>)}</ul></div>
           </div>
         </div>

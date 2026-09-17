@@ -130,7 +130,7 @@ export default function LimpiezaEspecializada() {
             cuadran.
           </p>
           <p>
-            El caso más claro es la limpieza post-obra. Parece "limpiar más fuerte", pero
+            El caso más claro es la limpieza post-obra. Parece &quot;limpiar más fuerte&quot;, pero
             no lo es: el polvo de yeso y cemento se comporta distinto, se mete en cada
             rendija y obliga a repasar el espacio varias veces conforme se va asentando. Un
             departamento que se limpió una sola vez después de obra amanece con polvo al
