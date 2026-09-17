@@ -48,6 +48,22 @@ export const EMAIL_VENTAS = 'ventas@limpiezamexico.com';
  * URLs limpias (sin parámetros de tracking fbclid / edit_entry_point).
  * Se usan en el footer y en `sameAs` del JSON-LD (Organization + CleaningService).
  */
+/**
+ * REPSE — Registro de Prestadoras de Servicios Especializados (STPS).
+ * Datos tomados del Padrón Público de la STPS, captura enviada por Erick 2026-09-16.
+ * Limpieza México es la marca comercial; la razón social registrada es Butún S.A.P.I. de C.V.
+ * Verificable en: https://repse.stps.gob.mx/
+ */
+export const REPSE = {
+  folio: '357141',
+  razonSocial: 'Butún S.A.P.I. de C.V.',
+  aviso: 'AR-212141/2026',
+  entidad: 'Ciudad de México / Miguel Hidalgo',
+  vigencia: '20 de enero de 2029',
+  vigenciaISO: '2029-01-20',
+  verificarUrl: 'https://repse.stps.gob.mx/',
+} as const;
+
 export const SOCIAL = [
   { nombre: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61593697214950' },
   { nombre: 'Instagram', url: 'https://www.instagram.com/limpieza_mexico1/' },

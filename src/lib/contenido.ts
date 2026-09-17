@@ -171,7 +171,7 @@ export const FAQ_CORPORATIVA = [
   },
   {
     q: '¿Qué documentos debe entregar el proveedor antes de arrancar?',
-    a: 'Constancia de situación fiscal, registro REPSE vigente ante la STPS cuando aplica, evidencia de alta ante el IMSS del personal asignado, identificación y credencialización del equipo, y el convenio de confidencialidad firmado si se maneja información sensible. Si la administración del edificio pide póliza vigente, se acredita como parte del alta de la cuenta.',
+    a: 'Constancia de situación fiscal, registro REPSE vigente ante la STPS (Limpieza México: folio 357141, vigente a enero de 2029), evidencia de alta ante el IMSS del personal asignado, identificación y credencialización del equipo, y el convenio de confidencialidad firmado si se maneja información sensible. Si la administración del edificio pide póliza vigente, se acredita como parte del alta de la cuenta.',
   },
   {
     q: '¿Cómo se manejan áreas sensibles como el site o el comedor?',

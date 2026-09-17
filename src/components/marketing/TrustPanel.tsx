@@ -2,6 +2,7 @@ import TrackedLink from '@/components/analytics/TrackedLink';
 import { PHONE_DISPLAY, PHONE_E164, whatsappUrl } from '@/lib/site';
 
 const CHECKS = [
+  'REPSE folio 357141, vigente a enero de 2029',
   'Personal formal y supervisión por cuenta',
   'Insumos y equipo definidos desde la propuesta',
   'Cotización por superficie, frecuencia y horario',

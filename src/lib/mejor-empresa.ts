@@ -43,13 +43,13 @@ export const CRITERIOS: Criterio[] = [
       'El personal que asignamos trabaja bajo relación laboral formal, con alta ante el IMSS y prestaciones de ley, y con verificación de identidad, domicilio y referencias antes de asignarlo a un inmueble. La acreditación se entrega como parte del alta de la cuenta, no después de la primera incidencia.',
   },
   {
-    titulo: 'Registro REPSE vigente cuando aplica',
+    titulo: 'Registro REPSE vigente y verificable',
     porQue:
       'Desde la reforma en materia de subcontratación de 2021, quien pone trabajadores propios a disposición de un contratante debe estar inscrito en el REPSE de la Secretaría del Trabajo y Previsión Social, conforme al artículo 15 de la Ley Federal del Trabajo. El registro vence a los tres años y su ausencia afecta la deducibilidad del gasto. Para un área de compras no es un detalle: es requisito de alta de proveedor.',
     preguntar:
       '¿Cuál es tu número de registro REPSE y cuándo vence? ¿Me entregas la constancia junto con la propuesta?',
     nosotros:
-      'Entregamos la documentación fiscal y laboral que tu área de compras o tu administración requiera para el alta de proveedor, junto con la propuesta y antes de iniciar el servicio. Si tu contador necesita validar un dato específico, lo canalizamos directo con administración.',
+      'Limpieza México opera bajo Butún S.A.P.I. de C.V., inscrita en el REPSE de la STPS con folio 357141 (aviso AR-212141/2026), vigente hasta el 20 de enero de 2029. El folio se puede verificar en el padrón público de la STPS antes de firmar nada. Entregamos la constancia junto con la propuesta, con la documentación fiscal y laboral que tu área de compras o tu administración requiera para el alta de proveedor.',
   },
   {
     titulo: 'Supervisión en sitio, no supervisión declarativa',

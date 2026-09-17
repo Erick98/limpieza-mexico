@@ -10,6 +10,7 @@ import {
   PHONE_DISPLAY,
   PHONE_E164,
   SOCIAL,
+  REPSE,
   whatsappUrl,
 } from '@/lib/site';
 
@@ -156,7 +157,9 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-4 justify-between text-sm text-[#9599A0]">
-          <p>© {anio} Limpieza México. Todos los derechos reservados.</p>
+          <p>
+            © {anio} Limpieza México · Butún S.A.P.I. de C.V. · REPSE {REPSE.folio}, vigente al {REPSE.vigencia}.
+          </p>
           <div className="flex gap-5">
             <Link href="/privacidad" className="hover:text-white hover:underline">
               Aviso de privacidad

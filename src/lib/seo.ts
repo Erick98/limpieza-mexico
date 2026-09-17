@@ -15,6 +15,7 @@ import {
   EMAIL_CONTACTO,
   PHONE_CONFIRMED,
   SOCIAL,
+  REPSE,
   PHONE_E164,
   SERVICIOS,
 } from './site';
@@ -141,9 +142,18 @@ export function organizationLd() {
     '@type': 'Organization',
     '@id': ORG_ID,
     name: SITE_NAME,
+    legalName: REPSE.razonSocial,
     url: SITE_URL,
     logo: { '@type': 'ImageObject', url: absoluteUrl('/logo.png') },
     email: EMAIL_CONTACTO,
+    identifier: {
+      '@type': 'PropertyValue',
+      propertyID: 'REPSE',
+      name: 'Registro de Prestadoras de Servicios Especializados (STPS)',
+      value: REPSE.folio,
+      validThrough: REPSE.vigenciaISO,
+      url: REPSE.verificarUrl,
+    },
     address: postalAddress,
     sameAs: SOCIAL.map((r) => r.url),
   };
