@@ -71,6 +71,9 @@ export const SOCIAL = [
   { nombre: 'Google Maps', url: 'https://maps.google.com/?cid=11034402824251565887' },
 ] as const;
 
+/** Link corto oficial de "Pedir reseñas" del Google Business Profile (Erick, 2026-09-16). */
+export const GOOGLE_REVIEW_URL = 'https://g.page/r/CT_nFOjnEiKZEAI/review';
+
 /** Dirección real confirmada en el repo y en el sitio vivo. */
 export const ADDRESS = {
   street: 'Sófocles 133, Polanco, Granada, Miguel Hidalgo',

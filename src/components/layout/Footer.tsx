@@ -11,6 +11,7 @@ import {
   PHONE_E164,
   SOCIAL,
   REPSE,
+  GOOGLE_REVIEW_URL,
   whatsappUrl,
 } from '@/lib/site';
 
@@ -140,6 +141,16 @@ export default function Footer() {
               )}
             </address>
             <ul className="mt-5 flex gap-4 text-sm" aria-label="Redes sociales">
+              <li>
+                <a
+                  href={GOOGLE_REVIEW_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#9B9BA3] hover:text-white hover:underline"
+                >
+                  Califícanos en Google
+                </a>
+              </li>
               {SOCIAL.map((r) => (
                 <li key={r.url}>
                   <a
