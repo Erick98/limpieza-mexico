@@ -51,6 +51,8 @@ export const EMAIL_VENTAS = 'ventas@limpiezamexico.com';
 export const SOCIAL = [
   { nombre: 'Facebook', url: 'https://www.facebook.com/profile.php?id=61593697214950' },
   { nombre: 'Instagram', url: 'https://www.instagram.com/limpieza_mexico1/' },
+  // Google Business Profile — creado por Erick 2026-09-16. CID estable del lugar en Maps.
+  { nombre: 'Google Maps', url: 'https://maps.google.com/?cid=11034402824251565887' },
 ] as const;
 
 /** Dirección real confirmada en el repo y en el sitio vivo. */
