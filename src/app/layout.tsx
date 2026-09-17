@@ -87,6 +87,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Script id="ga4" strategy="lazyOnload">
           {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-E4NQM3CMJD');`}
         </Script>
+        {/* Metricool (pedido por Erick 2026-09-16). Misma estrategia lazyOnload que GA4. */}
+        <Script id="metricool" strategy="lazyOnload">
+          {`function loadScript(a){var b=document.getElementsByTagName("head")[0],c=document.createElement("script");c.type="text/javascript",c.src="https://tracker.metricool.com/resources/be.js",c.onreadystatechange=a,c.onload=a,b.appendChild(c)}loadScript(function(){beTracker.t({hash:"ae629c64883e336d5afd3e560113d726"})});`}
+        </Script>
       </body>
     </html>
   );
