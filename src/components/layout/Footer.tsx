@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import TrackedLink from '@/components/analytics/TrackedLink';
 import {
   SERVICIOS,
   ZONAS,
@@ -116,20 +117,22 @@ export default function Footer() {
               {/* Teléfono: solo si hay dato real confirmado. */}
               {PHONE_CONFIRMED && PHONE_DISPLAY && (
                 <p>
-                  <a href={`tel:${PHONE_E164}`} className="hover:text-white hover:underline">
+                  <TrackedLink href={`tel:${PHONE_E164}`} event="click_telefono" params={{ ubicacion: 'footer' }} className="hover:text-white hover:underline">
                     {PHONE_DISPLAY}
-                  </a>
+                  </TrackedLink>
                   {whatsappUrl() && (
                     <>
                       {' · '}
-                      <a
+                      <TrackedLink
                         href={whatsappUrl()!}
+                        event="click_whatsapp"
+                        params={{ ubicacion: 'footer' }}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="hover:text-white hover:underline"
                       >
                         WhatsApp
-                      </a>
+                      </TrackedLink>
                     </>
                   )}
                 </p>

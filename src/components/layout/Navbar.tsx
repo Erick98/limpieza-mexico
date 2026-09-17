@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import TrackedLink from '@/components/analytics/TrackedLink';
 import Image from 'next/image';
 import { NAV_PRINCIPAL } from '@/lib/site';
 
@@ -23,7 +24,7 @@ export default function Navbar() {
             {ENLACES.map((e) => <li key={e.href}><Link href={e.href} className="block rounded-full px-4 py-2.5 text-[#1F1F25]/75 transition-colors hover:bg-[#EDEDEA] hover:text-[#1F1F25]">{e.label}</Link></li>)}
           </ul>
 
-          <Link href="/contacto" className="hidden lg:inline-flex lm-button-primary">Cotizar</Link>
+          <TrackedLink href="/contacto" event="cotizador_abierto" onceKey="cotizador_abierto" className="hidden lg:inline-flex lm-button-primary">Cotizar</TrackedLink>
 
           <details className="group relative lg:hidden">
             <summary className="list-none rounded-full border border-black/10 bg-white px-4 py-2.5 text-sm font-bold marker:hidden">Menú</summary>
@@ -32,7 +33,7 @@ export default function Navbar() {
                 {ENLACES.map((e) => <li key={e.href}><Link href={e.href} className="block rounded-2xl px-4 py-3 font-semibold hover:bg-[#FAFAF7]">{e.label}</Link></li>)}
                 <li><Link href="/preguntas-frecuentes" className="block rounded-2xl px-4 py-3 font-semibold hover:bg-[#FAFAF7]">Preguntas frecuentes</Link></li>
                 <li><Link href="/nosotros" className="block rounded-2xl px-4 py-3 font-semibold hover:bg-[#FAFAF7]">Nosotros</Link></li>
-                <li><Link href="/contacto" className="mt-2 block rounded-full bg-[#2F5D50] px-4 py-3 text-center font-bold text-white">Cotizar ahora</Link></li>
+                <li><TrackedLink href="/contacto" event="cotizador_abierto" onceKey="cotizador_abierto" className="mt-2 block rounded-full bg-[#2F5D50] px-4 py-3 text-center font-bold text-white">Cotizar ahora</TrackedLink></li>
               </ul>
             </div>
           </details>

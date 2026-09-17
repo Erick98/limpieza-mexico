@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import TrackedLink from '@/components/analytics/TrackedLink';
 import Image from 'next/image';
 import type { Metadata } from 'next';
 import LazyCotizador from '@/components/cotizador/LazyCotizador';
@@ -45,8 +46,8 @@ export default function Home() {
               genéricas ni promesas imposibles.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              {wa && <a href={wa} className="lm-button-primary">Cotizar por WhatsApp</a>}
-              <Link href="#cotizar" className="lm-button-secondary">Usar formulario de 3 pasos</Link>
+              {wa && <TrackedLink href={wa} event="click_whatsapp" params={{ ubicacion: 'hero' }} className="lm-button-primary">Cotizar por WhatsApp</TrackedLink>}
+              <TrackedLink href="#cotizar" event="cotizador_abierto" onceKey="cotizador_abierto" className="lm-button-secondary">Usar formulario de 3 pasos</TrackedLink>
             </div>
             <ul className="mt-9 grid gap-3 text-[15px] text-[#1F1F25]/80 sm:grid-cols-2">
               {[
@@ -219,8 +220,8 @@ export default function Home() {
           <h2 className="mx-auto mt-4 max-w-3xl font-display text-4xl leading-tight sm:text-5xl">Cotiza el servicio con alcance claro antes de contratar.</h2>
           <p className="mx-auto mt-5 max-w-2xl text-[17px] leading-8 text-white/70">WhatsApp si quieres rapidez; formulario si prefieres dejar el detalle completo.</p>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            {wa && <a href={wa} className="lm-button-primary">Cotizar por WhatsApp</a>}
-            <Link href="/contacto" className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-bold text-[#101014]">Ir al formulario</Link>
+            {wa && <TrackedLink href={wa} event="click_whatsapp" params={{ ubicacion: 'hero' }} className="lm-button-primary">Cotizar por WhatsApp</TrackedLink>}
+            <TrackedLink href="/contacto" event="cotizador_abierto" onceKey="cotizador_abierto" className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3.5 text-sm font-bold text-[#101014]">Ir al formulario</TrackedLink>
           </div>
         </div>
       </section>

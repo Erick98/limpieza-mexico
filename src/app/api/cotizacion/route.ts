@@ -5,6 +5,7 @@ import {
   leerJsonLimitado,
   solicitarCotizacionAgente,
 } from '@/lib/agent-cotizacion';
+import { ipDeRequest } from '@/lib/rate-limit';
 
 export const runtime = 'nodejs';
 
@@ -39,7 +40,11 @@ export async function POST(req: Request) {
   try {
     aplicaRateLimitCotizacion(req);
     const body = await leerJsonLimitado(req);
-    const result = await solicitarCotizacionAgente(body, { userAgent, fuente: 'api' });
+    const result = await solicitarCotizacionAgente(body, {
+      userAgent,
+      fuente: 'api',
+      ip: ipDeRequest(req),
+    });
     return json(200, result);
   } catch (error) {
     if (error instanceof CotizacionError) {

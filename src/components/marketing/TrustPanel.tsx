@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import TrackedLink from '@/components/analytics/TrackedLink';
 import { PHONE_DISPLAY, PHONE_E164, whatsappUrl } from '@/lib/site';
 
 const CHECKS = [
@@ -27,13 +27,13 @@ export default function TrustPanel({ compact = false }: { compact?: boolean }) {
       </ul>
       <div className="mt-7 grid gap-3 sm:grid-cols-2">
         {wa && (
-          <a className="rounded-full bg-[#2F5D50] px-5 py-3 text-center text-sm font-bold text-white hover:bg-[#24483f]" href={wa}>
+          <TrackedLink className="rounded-full bg-[#2F5D50] px-5 py-3 text-center text-sm font-bold text-white hover:bg-[#24483f]" href={wa} event="click_whatsapp" params={{ ubicacion: 'cotizador' }}>
             WhatsApp {PHONE_DISPLAY}
-          </a>
+          </TrackedLink>
         )}
-        <Link className="rounded-full border border-[#1F1F25]/20 px-5 py-3 text-center text-sm font-bold hover:bg-white" href="/contacto">
+        <TrackedLink className="rounded-full border border-[#1F1F25]/20 px-5 py-3 text-center text-sm font-bold hover:bg-white" href="/contacto" event="cotizador_abierto" onceKey="cotizador_abierto">
           Formulario
-        </Link>
+        </TrackedLink>
       </div>
       <p className="mt-4 text-xs text-[#1F1F25]/70">Teléfono real: {PHONE_E164}. Atención sujeta a confirmación de disponibilidad.</p>
     </aside>

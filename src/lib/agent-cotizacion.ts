@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { sendEmail } from '@/lib/mailer';
+import { actualizarCorreoLead, registrarLead } from '@/lib/lead-log';
 import { rateLimit, ipDeRequest } from '@/lib/rate-limit';
 import {
   ADDRESS,
@@ -208,7 +209,7 @@ function destinatarios(): string {
 
 export async function solicitarCotizacionAgente(
   input: unknown,
-  opciones: { userAgent: string; fuente: 'api' | 'mcp' }
+  opciones: { userAgent: string; fuente: 'api' | 'mcp'; ip?: string }
 ): Promise<ResultadoCotizacionAgente> {
   const parsed = cotizacionAgenteSchema.safeParse(input);
   if (!parsed.success) {
@@ -216,10 +217,27 @@ export async function solicitarCotizacionAgente(
   }
 
   const data = parsed.data;
-  if (data.website) return respuestaHoneypot();
+  const ua = limpiarLinea(opciones.userAgent, 180);
+  const destinatariosCorreo = destinatarios();
+
+  if (data.website) {
+    await registrarLead({
+      canal: opciones.fuente,
+      nombre: data.nombre,
+      servicio: servicioNombre(data.servicio),
+      zona: data.zona,
+      contacto: [data.telefono, data.email].filter(Boolean).join(' / '),
+      detalle: data.detalles,
+      correoEnviado: false,
+      destinatarios: destinatariosCorreo,
+      ip: opciones.ip,
+      userAgent: ua,
+      honeypot: true,
+    });
+    return respuestaHoneypot();
+  }
 
   const id = `LMX-${new Date().toISOString().replace(/[-:.TZ]/g, '').slice(0, 14)}-${crypto.randomUUID().slice(0, 8)}`;
-  const ua = limpiarLinea(opciones.userAgent, 180);
   const fuente = opciones.fuente === 'mcp' ? 'MCP' : 'API';
   const subject = limpiarLinea(`[AGENTE] Cotización ${fuente} · ${servicioNombre(data.servicio)} · ${data.nombre}`, 140);
 
@@ -252,9 +270,25 @@ export async function solicitarCotizacionAgente(
       </p>
     </div>`;
 
+  const leadLog = await registrarLead({
+    canal: opciones.fuente,
+    nombre: data.nombre,
+    servicio: servicioNombre(data.servicio),
+    zona: data.zona,
+    contacto: [data.telefono, data.email].filter(Boolean).join(' / '),
+    detalle: data.detalles,
+    correoEnviado: false,
+    destinatarios: destinatariosCorreo,
+    ip: opciones.ip,
+    userAgent: ua,
+    id,
+    honeypot: false,
+  });
+
   const dryRun = process.env.COTIZACION_DRY_RUN === '1' || process.env.COTIZACION_DRY_RUN === 'true';
   if (!dryRun) {
-    const enviado = await sendEmail(destinatarios(), subject, htmlContent);
+    const enviado = await sendEmail(destinatariosCorreo, subject, htmlContent);
+    await actualizarCorreoLead(leadLog.pageId, enviado);
     if (!enviado) {
       throw new CotizacionError(502, 'No pudimos enviar la solicitud. Usa WhatsApp o email como siguiente paso.');
     }
