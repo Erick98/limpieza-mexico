@@ -74,14 +74,14 @@ export const SOCIAL = [
 /** Link corto oficial de "Pedir reseñas" del Google Business Profile (Erick, 2026-09-16). */
 export const GOOGLE_REVIEW_URL = 'https://g.page/r/CT_nFOjnEiKZEAI/review';
 
-/** Dirección real confirmada en el repo y en el sitio vivo. */
+/** Dirección canónica confirmada por Erick 2026-09-17: Polanco II Sección, CP 11530 (misma que la ficha de Google Business Profile). */
 export const ADDRESS = {
-  street: 'Sófocles 133, Polanco, Granada, Miguel Hidalgo',
+  street: 'Sófocles 133, Polanco II Sección, Miguel Hidalgo',
   locality: 'Ciudad de México',
   region: 'CDMX',
   postalCode: '11530',
   country: 'MX',
-  full: 'Sófocles 133, Polanco, Granada, Miguel Hidalgo, 11530 Ciudad de México, CDMX',
+  full: 'Sófocles 133, Polanco II Sección, Miguel Hidalgo, 11530 Ciudad de México, CDMX',
 } as const;
 
 /* ------------------------------------------------------------------ */

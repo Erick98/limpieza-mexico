@@ -74,7 +74,7 @@ export const ZONAS_CONTENIDO: Record<string, Zona> = {
       },
       {
         q: '¿Cuál es su tiempo de respuesta en Polanco?',
-        a: 'Es la zona con el tiempo más corto porque nuestras oficinas están en Sófocles 133, dentro de la colonia Granada. Podemos agendar visitas de levantamiento con mayor rapidez que en el resto de la ciudad.',
+        a: 'Es la zona con el tiempo más corto porque nuestras oficinas están en Sófocles 133, en Polanco II Sección. Podemos agendar visitas de levantamiento con mayor rapidez que en el resto de la ciudad.',
       },
     ],
   },
